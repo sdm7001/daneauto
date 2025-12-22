@@ -1,14 +1,22 @@
-import { Link } from "react-router-dom";
-import { ShoppingCart, User, Menu, X, Search } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { ShoppingCart, User, Menu, X, Search, LogOut } from "lucide-react";
 import { useState } from "react";
 import Logo from "./Logo";
 import { Button } from "./ui/button";
 import { useCart } from "@/contexts/CartContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { items } = useCart();
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
   const cartCount = items.reduce((sum, item) => sum + item.quantity, 0);
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/");
+  };
 
   const navLinks = [
     { name: "Home", path: "/" },
@@ -54,12 +62,27 @@ const Header = () => {
                 )}
               </Button>
             </Link>
-            <Link to="/account" className="hidden md:flex">
-              <Button variant="outline" size="sm">
-                <User className="w-4 h-4 mr-2" />
-                Account
-              </Button>
-            </Link>
+            
+            {user ? (
+              <div className="hidden md:flex items-center gap-2">
+                <Link to="/account">
+                  <Button variant="outline" size="sm">
+                    <User className="w-4 h-4 mr-2" />
+                    Account
+                  </Button>
+                </Link>
+                <Button variant="ghost" size="icon" onClick={handleSignOut}>
+                  <LogOut className="w-4 h-4" />
+                </Button>
+              </div>
+            ) : (
+              <Link to="/account" className="hidden md:flex">
+                <Button variant="outline" size="sm">
+                  <User className="w-4 h-4 mr-2" />
+                  Sign In
+                </Button>
+              </Link>
+            )}
 
             {/* Mobile Menu Toggle */}
             <Button
@@ -91,8 +114,19 @@ const Header = () => {
               className="block py-3 text-foreground/80 hover:text-primary transition-colors duration-300 font-display uppercase tracking-wider"
               onClick={() => setIsMenuOpen(false)}
             >
-              My Account
+              {user ? "My Account" : "Sign In"}
             </Link>
+            {user && (
+              <button
+                onClick={() => {
+                  handleSignOut();
+                  setIsMenuOpen(false);
+                }}
+                className="block py-3 text-foreground/80 hover:text-primary transition-colors duration-300 font-display uppercase tracking-wider w-full text-left"
+              >
+                Sign Out
+              </button>
+            )}
           </nav>
         )}
       </div>
