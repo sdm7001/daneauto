@@ -14,6 +14,7 @@ import Account from "./pages/Account";
 import Categories from "./pages/Categories";
 import Contact from "./pages/Contact";
 import About from "./pages/About";
+import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -37,6 +38,7 @@ const App = () => (
                   <Route path="/categories" element={<Categories />} />
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/about" element={<About />} />
+                  <Route path="/admin" element={<Admin />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </div>
