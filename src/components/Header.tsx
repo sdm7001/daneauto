@@ -1,17 +1,38 @@
 import { Link, useNavigate } from "react-router-dom";
-import { ShoppingCart, User, Menu, X, Search, LogOut } from "lucide-react";
-import { useState } from "react";
+import { ShoppingCart, User, Menu, X, Search, LogOut, Shield } from "lucide-react";
+import { useState, useEffect } from "react";
 import Logo from "./Logo";
 import { Button } from "./ui/button";
 import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const { items } = useCart();
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
   const cartCount = items.reduce((sum, item) => sum + item.quantity, 0);
+
+  useEffect(() => {
+    if (user) {
+      checkAdminRole();
+    } else {
+      setIsAdmin(false);
+    }
+  }, [user]);
+
+  const checkAdminRole = async () => {
+    const { data } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", user?.id)
+      .eq("role", "admin")
+      .maybeSingle();
+    
+    setIsAdmin(!!data);
+  };
 
   const handleSignOut = async () => {
     await signOut();
@@ -65,6 +86,13 @@ const Header = () => {
             
             {user ? (
               <div className="hidden md:flex items-center gap-2">
+                {isAdmin && (
+                  <Link to="/admin">
+                    <Button variant="ghost" size="icon" title="Admin Dashboard">
+                      <Shield className="w-5 h-5 text-accent" />
+                    </Button>
+                  </Link>
+                )}
                 <Link to="/account">
                   <Button variant="outline" size="sm">
                     <User className="w-4 h-4 mr-2" />
@@ -109,6 +137,15 @@ const Header = () => {
                 {link.name}
               </Link>
             ))}
+            {isAdmin && (
+              <Link
+                to="/admin"
+                className="block py-3 text-accent hover:text-primary transition-colors duration-300 font-display uppercase tracking-wider"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Admin Dashboard
+              </Link>
+            )}
             <Link
               to="/account"
               className="block py-3 text-foreground/80 hover:text-primary transition-colors duration-300 font-display uppercase tracking-wider"
