@@ -9,6 +9,51 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+// HTML escape function to prevent XSS/injection attacks
+function escapeHtml(text: string): string {
+  const htmlEntities: Record<string, string> = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  };
+  return text.replace(/[&<>"']/g, (char) => htmlEntities[char] || char);
+}
+
+// Generate safe email HTML with escaped content
+function generateSafeEmailHtml(body: string): string {
+  const sanitizedBody = escapeHtml(body).replace(/\n/g, '<br>');
+  return `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <style>
+          body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+          .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+          .header { background: #1a1f2e; color: #4ecdc4; padding: 20px; text-align: center; }
+          .content { padding: 20px; background: #f9f9f9; }
+          .footer { text-align: center; padding: 20px; color: #666; font-size: 12px; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1>Dane Auto Parts Ltd</h1>
+          </div>
+          <div class="content">
+            ${sanitizedBody}
+          </div>
+          <div class="footer">
+            <p>You received this email because you're a registered user of Dane Auto Parts Ltd.</p>
+            <p>123 Auto Parts Drive, Industrial District, NY 10001</p>
+          </div>
+        </div>
+      </body>
+    </html>
+  `;
+}
+
 interface SendEmailRequest {
   subject: string;
   body: string;
@@ -116,34 +161,7 @@ serve(async (req: Request): Promise<Response> => {
           from: "Dane Auto Parts <onboarding@resend.dev>",
           to: batch,
           subject: subject,
-          html: `
-            <!DOCTYPE html>
-            <html>
-              <head>
-                <style>
-                  body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-                  .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-                  .header { background: #1a1f2e; color: #4ecdc4; padding: 20px; text-align: center; }
-                  .content { padding: 20px; background: #f9f9f9; }
-                  .footer { text-align: center; padding: 20px; color: #666; font-size: 12px; }
-                </style>
-              </head>
-              <body>
-                <div class="container">
-                  <div class="header">
-                    <h1>Dane Auto Parts Ltd</h1>
-                  </div>
-                  <div class="content">
-                    ${body.replace(/\n/g, '<br>')}
-                  </div>
-                  <div class="footer">
-                    <p>You received this email because you're a registered user of Dane Auto Parts Ltd.</p>
-                    <p>123 Auto Parts Drive, Industrial District, NY 10001</p>
-                  </div>
-                </div>
-              </body>
-            </html>
-          `,
+          html: generateSafeEmailHtml(body),
         });
 
         if (sendError) {
