@@ -173,3 +173,8 @@
 ::-webkit-scrollbar-thumb:hover {
   background: hsl(var(--primary));
 }
+
+/* Hide Lovable badge */
+#lovable-badge {
+  display: none !important;
+}
