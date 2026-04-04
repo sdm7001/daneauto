@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import ProductCard from "@/components/ProductCard";
 import WishlistButton from "@/components/WishlistButton";
 import StructuredData from "@/components/StructuredData";
+import { useRecentlyViewed } from "@/hooks/useRecentlyViewed";
 
 const BASE_TITLE = "Dane Auto Parts Ltd";
 
@@ -24,9 +25,11 @@ const ProductDetail = () => {
   const { data: product, isLoading, error } = useProduct(decodedSku);
   const { data: relatedProducts } = useRelatedProducts(product);
   const { data: compatibleVehicles } = useCompatibleVehicles(product?.partslink_number);
+  const { track } = useRecentlyViewed();
 
   useEffect(() => {
     if (product) {
+      track(product.sku);
       document.title = `${product.description ?? product.sku} | ${BASE_TITLE}`;
       const price = product.net_price ?? product.list_price;
       const desc = [

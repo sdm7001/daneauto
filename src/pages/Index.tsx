@@ -8,6 +8,7 @@ import Testimonials from "@/components/Testimonials";
 import heroBg from "@/assets/hero-bg.jpg";
 import { usePageTitle } from "@/hooks/usePageTitle";
 import StructuredData from "@/components/StructuredData";
+import RecentlyViewed from "@/components/RecentlyViewed";
 
 const ORG_SCHEMA = {
   "@context": "https://schema.org",
@@ -82,6 +83,9 @@ const Index = () => {
 
       {/* Featured Products */}
       <FeaturedProducts />
+
+      {/* Recently Viewed */}
+      <RecentlyViewed />
 
       {/* Why Choose Us */}
       <WhyChooseUs />
