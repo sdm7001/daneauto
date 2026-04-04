@@ -42,7 +42,7 @@ const ProductCard = forwardRef<HTMLDivElement, ProductCardProps>(({ product }, r
     : 0;
 
   return (
-    <div className="group bg-gradient-card rounded-xl border border-border overflow-hidden shadow-card hover:shadow-elevated transition-all duration-500 hover:-translate-y-1">
+    <div ref={ref} className="group bg-gradient-card rounded-xl border border-border overflow-hidden shadow-card hover:shadow-elevated transition-all duration-500 hover:-translate-y-1">
       <Link to={`/product/${encodeURIComponent(product.sku)}`} className="block relative overflow-hidden">
         <div className="aspect-square bg-secondary/30 flex items-center justify-center">
           {product.image_url ? (
