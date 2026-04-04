@@ -9,6 +9,7 @@ import {
   HIDDEN_SUBCATEGORIES,
 } from "@/lib/categoryIcons";
 import { Wrench as WrenchIcon } from "lucide-react";
+import PageBreadcrumb from "@/components/PageBreadcrumb";
 
 const Categories = () => {
   usePageTitle("Parts Categories", "Browse auto body and collision parts by category. Bumpers, fenders, head lamps, tail lamps, hoods, doors, mirrors, radiators and more.");
