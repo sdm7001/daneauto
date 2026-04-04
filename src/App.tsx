@@ -42,6 +42,7 @@ const App = () => (
                   <Route path="/about" element={<About />} />
                   <Route path="/admin" element={<Admin />} />
                   <Route path="/product/:sku" element={<ProductDetail />} />
+                  <Route path="/wishlist" element={<Wishlist />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </div>
