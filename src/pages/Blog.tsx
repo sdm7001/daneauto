@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Calendar, Clock, ArrowRight } from "lucide-react";
 import { usePageTitle } from "@/hooks/usePageTitle";
 import { Button } from "@/components/ui/button";
+import PageBreadcrumb from "@/components/PageBreadcrumb";
 
 export interface BlogPost {
   slug: string;
