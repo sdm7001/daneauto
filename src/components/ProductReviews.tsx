@@ -156,7 +156,7 @@ export default function ProductReviews({ sku }: { sku: string }) {
   const { data: reviews = [], isLoading } = useQuery<Review[]>({
     queryKey: ["reviews", sku],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("product_reviews")
         .select("id, reviewer_name, rating, title, body, verified_purchase, created_at")
         .eq("sku", sku)
