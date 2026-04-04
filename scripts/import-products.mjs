@@ -43,6 +43,7 @@ const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY, {
 })
 
 async function main() {
+  console.log(`🔗  Supabase URL: ${SUPABASE_URL}`)
   console.log(`📦  Starting import from: ${JSONL_PATH}`)
   console.log(`    Batch size: ${BATCH_SIZE} | Skip first: ${START_LINE} lines\n`)
 
