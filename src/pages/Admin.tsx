@@ -214,6 +214,32 @@ const Admin = () => {
     setMessages((prev) => prev.map((m) => m.id === id ? { ...m, status: "read" } : m));
   };
 
+  const fetchChatConversations = async () => {
+    setLoadingChats(true);
+    const { data, error } = await supabase
+      .from("chat_conversations")
+      .select("*")
+      .order("updated_at", { ascending: false });
+    if (!error && data) setChatConversations(data as ChatConversation[]);
+    setLoadingChats(false);
+  };
+
+  const archiveChat = async (id: string) => {
+    await supabase.from("chat_conversations").update({ status: "archived" }).eq("id", id);
+    setChatConversations((prev) => prev.map((c) => c.id === id ? { ...c, status: "archived" } : c));
+    toast.success("Chat archived");
+  };
+
+  const reopenChat = async (id: string) => {
+    await supabase.from("chat_conversations").update({ status: "new" }).eq("id", id);
+    setChatConversations((prev) => prev.map((c) => c.id === id ? { ...c, status: "new" } : c));
+  };
+
+  const filteredChats = chatConversations.filter((c) => {
+    if (chatFilter === "all") return true;
+    return c.status === chatFilter;
+  });
+
   const handleImport = async () => {
     if (!importFile) return;
     setImporting(true);
