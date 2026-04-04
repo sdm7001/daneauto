@@ -105,7 +105,7 @@ const ChatBot = () => {
         }
       }
     },
-    [contactInfo]
+    [contactInfo, conversationId]
   );
 
   const send = async () => {
