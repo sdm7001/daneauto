@@ -47,7 +47,18 @@ interface EmailLog {
   created_at: string;
 }
 
-type AdminTab = "dashboard" | "users" | "emails" | "messages" | "import";
+type AdminTab = "dashboard" | "users" | "emails" | "messages" | "chats" | "import";
+
+interface ChatConversation {
+  id: string;
+  contact_name: string;
+  contact_email: string;
+  contact_phone: string | null;
+  messages: any;
+  status: string;
+  created_at: string;
+  updated_at: string;
+}
 
 interface ContactSubmission {
   id: string;
