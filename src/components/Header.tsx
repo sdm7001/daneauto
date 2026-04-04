@@ -160,6 +160,15 @@ const Header = () => {
                 Admin Dashboard
               </Link>
             )}
+            {user && (
+              <Link
+                to="/wishlist"
+                className="block py-3 text-foreground/80 hover:text-primary transition-colors duration-300 font-display uppercase tracking-wider"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Wishlist {wishlistCount > 0 && `(${wishlistCount})`}
+              </Link>
+            )}
             <Link
               to="/account"
               className="block py-3 text-foreground/80 hover:text-primary transition-colors duration-300 font-display uppercase tracking-wider"
