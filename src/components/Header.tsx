@@ -1,8 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
 import { ShoppingCart, User, Menu, X, Search, LogOut, Shield, Heart } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Logo from "./Logo";
 import { Button } from "./ui/button";
+import { Input } from "./ui/input";
 import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -11,6 +12,9 @@ import { useWishlist } from "@/hooks/useWishlist";
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const { items } = useCart();
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
@@ -41,6 +45,18 @@ const Header = () => {
     navigate("/");
   };
 
+  const openSearch = () => {
+    setSearchOpen(true);
+    setTimeout(() => searchInputRef.current?.focus(), 50);
+  };
+
+  const submitSearch = () => {
+    const q = searchQuery.trim();
+    if (q) navigate(`/shop?search=${encodeURIComponent(q)}`);
+    setSearchOpen(false);
+    setSearchQuery("");
+  };
+
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "Shop", path: "/shop" },
@@ -69,12 +85,36 @@ const Header = () => {
           </nav>
 
           {/* Actions */}
-          <div className="flex items-center gap-4">
-            <Link to="/shop" className="hidden md:flex">
-              <Button variant="ghost" size="icon">
-                <Search className="w-5 h-5" />
-              </Button>
-            </Link>
+          <div className="flex items-center gap-2">
+            {/* Inline search */}
+            <div className="hidden md:flex items-center">
+              {searchOpen ? (
+                <div className="flex items-center gap-1 animate-fade-in">
+                  <Input
+                    ref={searchInputRef}
+                    type="text"
+                    placeholder="Search parts..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") submitSearch();
+                      if (e.key === "Escape") { setSearchOpen(false); setSearchQuery(""); }
+                    }}
+                    className="h-9 w-48 text-sm"
+                  />
+                  <Button variant="ghost" size="icon" onClick={submitSearch}>
+                    <Search className="w-4 h-4" />
+                  </Button>
+                  <Button variant="ghost" size="icon" onClick={() => { setSearchOpen(false); setSearchQuery(""); }}>
+                    <X className="w-4 h-4" />
+                  </Button>
+                </div>
+              ) : (
+                <Button variant="ghost" size="icon" onClick={openSearch}>
+                  <Search className="w-5 h-5" />
+                </Button>
+              )}
+            </div>
             {user && (
               <Link to="/wishlist" className="relative hidden md:flex">
                 <Button variant="ghost" size="icon">
