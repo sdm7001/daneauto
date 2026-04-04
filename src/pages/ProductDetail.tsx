@@ -136,24 +136,54 @@ const ProductDetail = () => {
     },
   };
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://daneautoparts.com" },
+      { "@type": "ListItem", position: 2, name: "Shop", item: "https://daneautoparts.com/shop" },
+      {
+        "@type": "ListItem", position: 3,
+        name: `${product.year} ${product.make} ${product.model}`,
+        item: `https://daneautoparts.com/shop?year=${product.year}&make=${product.make}&model=${product.model}`,
+      },
+      {
+        "@type": "ListItem", position: 4,
+        name: product.product_line,
+        item: `https://daneautoparts.com/shop?year=${product.year}&make=${product.make}&model=${product.model}&line=${encodeURIComponent(product.product_line)}`,
+      },
+      { "@type": "ListItem", position: 5, name: product.description ?? product.sku },
+    ],
+  };
+
   return (
     <main className="min-h-screen py-6 md:py-10">
       <StructuredData data={productSchema} id={`product-${product.sku}`} />
+      <StructuredData data={breadcrumbSchema} id={`breadcrumb-${product.sku}`} />
       <div className="container mx-auto px-4 max-w-7xl">
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-6 md:mb-8 flex-wrap">
+        <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs text-muted-foreground mb-6 md:mb-8 flex-wrap">
           <Link to="/" className="hover:text-primary transition-colors">Home</Link>
           <ChevronRight className="w-3 h-3" />
           <Link to="/shop" className="hover:text-primary transition-colors">Shop</Link>
           <ChevronRight className="w-3 h-3" />
           <Link
-            to={`/shop?year=${product.year}&make=${product.make}&model=${product.model}`}
+            to={`/shop?year=${product.year}&make=${encodeURIComponent(product.make)}&model=${encodeURIComponent(product.model)}`}
             className="hover:text-primary transition-colors"
           >
             {product.year} {product.make} {product.model}
           </Link>
           <ChevronRight className="w-3 h-3" />
-          <span className="text-foreground font-medium truncate max-w-[200px]">{product.sku}</span>
+          <Link
+            to={`/shop?year=${product.year}&make=${encodeURIComponent(product.make)}&model=${encodeURIComponent(product.model)}&line=${encodeURIComponent(product.product_line)}`}
+            className="hover:text-primary transition-colors"
+          >
+            {product.product_line}
+          </Link>
+          <ChevronRight className="w-3 h-3" />
+          <span className="text-foreground font-medium truncate max-w-[180px]" title={product.description ?? product.sku}>
+            {product.description ?? product.sku}
+          </span>
         </nav>
 
         {/* Main Product Section */}
