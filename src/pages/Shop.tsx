@@ -238,7 +238,10 @@ const Shop = () => {
                 )}
               </div>
             </aside>
-          )}
+
+          {/* Products */}
+          <div className="flex-1">
+            {productLine && (
               <div className="mb-6">
                 <Button
                   variant="outline"
