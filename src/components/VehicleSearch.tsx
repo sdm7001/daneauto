@@ -34,9 +34,10 @@ const VehicleSearch = () => {
       </h3>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <div>
-          <label className="block text-sm font-medium text-muted-foreground mb-2">Year</label>
+          <label htmlFor="vs-year" className="block text-sm font-medium text-muted-foreground mb-2">Year</label>
           <div className="relative">
             <select
+              id="vs-year"
               value={year}
               onChange={(e) => { setYear(e.target.value); setMake(""); setModel(""); }}
               disabled={yearsLoading}
@@ -49,9 +50,10 @@ const VehicleSearch = () => {
           </div>
         </div>
         <div>
-          <label className="block text-sm font-medium text-muted-foreground mb-2">Make</label>
+          <label htmlFor="vs-make" className="block text-sm font-medium text-muted-foreground mb-2">Make</label>
           <div className="relative">
             <select
+              id="vs-make"
               value={make}
               onChange={(e) => { setMake(e.target.value); setModel(""); }}
               disabled={!year || makesLoading}
@@ -64,9 +66,10 @@ const VehicleSearch = () => {
           </div>
         </div>
         <div>
-          <label className="block text-sm font-medium text-muted-foreground mb-2">Model</label>
+          <label htmlFor="vs-model" className="block text-sm font-medium text-muted-foreground mb-2">Model</label>
           <div className="relative">
             <select
+              id="vs-model"
               value={model}
               onChange={(e) => setModel(e.target.value)}
               disabled={!make || modelsLoading}
