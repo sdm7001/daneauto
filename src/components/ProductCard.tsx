@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
-import { ShoppingCart, Star } from "lucide-react";
+import { ShoppingCart, ImageOff } from "lucide-react";
 import { Button } from "./ui/button";
 import { useCart } from "@/contexts/CartContext";
 import { toast } from "sonner";
-import type { Product } from "@/data/products";
+import type { Product } from "@/hooks/useProducts";
 
 interface ProductCardProps {
   product: Product;
@@ -14,79 +14,78 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
   const handleAddToCart = () => {
     addItem({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      image: product.image,
-      category: product.category,
+      id: product.sku,
+      name: product.description ?? product.sku,
+      price: product.net_price ?? product.list_price ?? 0,
+      image: product.image_url ?? "",
+      category: product.product_line,
     });
-    toast.success(`${product.name} added to cart!`);
+    toast.success(`${product.sku} added to cart!`);
   };
 
-  const discount = product.originalPrice
-    ? Math.round((1 - product.price / product.originalPrice) * 100)
+  const displayPrice = product.net_price ?? product.list_price;
+  const hasDiscount = product.list_price && product.net_price && product.net_price < product.list_price;
+  const discount = hasDiscount
+    ? Math.round((1 - product.net_price! / product.list_price!) * 100)
     : 0;
 
   return (
     <div className="group bg-gradient-card rounded-xl border border-border overflow-hidden shadow-card hover:shadow-elevated transition-all duration-500 hover:-translate-y-1">
-      <Link to={`/product/${product.id}`} className="block relative overflow-hidden">
-        <div className="aspect-square bg-secondary/30">
-          <img
-            src={product.image}
-            alt={product.name}
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-          />
+      <Link to={`/product/${encodeURIComponent(product.sku)}`} className="block relative overflow-hidden">
+        <div className="aspect-square bg-secondary/30 flex items-center justify-center">
+          {product.image_url ? (
+            <img
+              src={product.image_url}
+              alt={product.description ?? product.sku}
+              className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 p-2"
+              onError={(e) => {
+                (e.target as HTMLImageElement).style.display = "none";
+                (e.target as HTMLImageElement).nextElementSibling?.removeAttribute("style");
+              }}
+            />
+          ) : null}
+          <ImageOff className="w-12 h-12 text-muted-foreground/30" style={product.image_url ? { display: "none" } : undefined} />
         </div>
         {discount > 0 && (
           <span className="absolute top-3 left-3 bg-destructive text-destructive-foreground text-xs font-bold px-2 py-1 rounded">
             -{discount}%
           </span>
         )}
-        {!product.inStock && (
-          <div className="absolute inset-0 bg-background/80 flex items-center justify-center">
-            <span className="text-muted-foreground font-display uppercase tracking-wider">
-              Out of Stock
-            </span>
-          </div>
-        )}
       </Link>
 
       <div className="p-4">
-        <span className="text-xs text-primary font-display uppercase tracking-wider">
-          {product.brand}
+        <span className="text-xs text-primary font-display uppercase tracking-wider line-clamp-1">
+          {product.product_line}
         </span>
-        <Link to={`/product/${product.id}`}>
-          <h3 className="font-display text-lg font-semibold mt-1 line-clamp-2 hover:text-primary transition-colors">
-            {product.name}
+        <Link to={`/product/${encodeURIComponent(product.sku)}`}>
+          <h3 className="font-display text-sm font-semibold mt-1 line-clamp-2 hover:text-primary transition-colors min-h-[2.5rem]">
+            {product.description ?? product.sku}
           </h3>
         </Link>
-        
-        <div className="flex items-center gap-2 mt-2">
-          <div className="flex items-center text-accent">
-            <Star className="w-4 h-4 fill-current" />
-            <span className="text-sm ml-1">{product.rating}</span>
-          </div>
-          <span className="text-xs text-muted-foreground">
-            ({product.reviews} reviews)
-          </span>
-        </div>
+        <p className="text-xs text-muted-foreground mt-1">SKU: {product.sku}</p>
 
         <div className="flex items-center justify-between mt-4">
           <div>
-            <span className="text-xl font-bold text-primary">
-              ${product.price.toFixed(2)}
-            </span>
-            {product.originalPrice && (
-              <span className="text-sm text-muted-foreground line-through ml-2">
-                ${product.originalPrice.toFixed(2)}
-              </span>
+            {displayPrice != null ? (
+              <>
+                <span className="text-lg font-bold text-primary">
+                  ${displayPrice.toFixed(2)}
+                </span>
+                {hasDiscount && (
+                  <span className="text-xs text-muted-foreground line-through ml-2">
+                    ${product.list_price!.toFixed(2)}
+                  </span>
+                )}
+              </>
+            ) : (
+              <span className="text-sm text-muted-foreground">Call for price</span>
             )}
           </div>
           <Button
             size="icon"
             onClick={handleAddToCart}
-            disabled={!product.inStock}
-            className="shrink-0"
+            disabled={displayPrice == null}
+            title="Add to cart"
           >
             <ShoppingCart className="w-4 h-4" />
           </Button>

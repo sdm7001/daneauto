@@ -1,47 +1,57 @@
-import { useState, useMemo } from "react";
+import { useState, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Search, SlidersHorizontal, X } from "lucide-react";
+import { Search, SlidersHorizontal, X, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import ProductCard from "@/components/ProductCard";
-import { products, categories } from "@/data/products";
+import { useProducts } from "@/hooks/useProducts";
+import { useProductLines } from "@/hooks/useVehicles";
+
+const PAGE_SIZE = 24;
 
 const Shop = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchInput, setSearchInput] = useState(searchParams.get("search") ?? "");
   const [showFilters, setShowFilters] = useState(false);
 
-  const selectedCategory = searchParams.get("category") || "";
-  const selectedYear = searchParams.get("year") || "";
-  const selectedMake = searchParams.get("make") || "";
-  const selectedModel = searchParams.get("model") || "";
+  const year       = searchParams.get("year") ?? "";
+  const make       = searchParams.get("make") ?? "";
+  const model      = searchParams.get("model") ?? "";
+  const productLine = searchParams.get("line") ?? "";
+  const search     = searchParams.get("search") ?? "";
+  const page       = parseInt(searchParams.get("page") ?? "1");
 
-  const filteredProducts = useMemo(() => {
-    return products.filter((product) => {
-      // Category filter
-      if (selectedCategory && product.category !== selectedCategory) {
-        return false;
-      }
+  const { data, isLoading, isPlaceholderData } = useProducts({
+    year, make, model, productLine, search, page, pageSize: PAGE_SIZE,
+  });
 
-      // Search filter
-      if (
-        searchQuery &&
-        !product.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
-        !product.brand.toLowerCase().includes(searchQuery.toLowerCase())
-      ) {
-        return false;
-      }
+  const { data: lines = [] } = useProductLines(year, make, model);
 
-      return true;
-    });
-  }, [selectedCategory, searchQuery]);
+  const products = data?.products ?? [];
+  const total    = data?.total ?? 0;
+  const totalPages = Math.ceil(total / PAGE_SIZE);
+  const hasFilter = !!(year || make || model || productLine || search);
 
-  const clearFilters = () => {
-    setSearchParams({});
-    setSearchQuery("");
+  const setParam = useCallback((key: string, value: string) => {
+    const p = new URLSearchParams(searchParams);
+    if (value) p.set(key, value); else p.delete(key);
+    p.delete("page");
+    setSearchParams(p);
+  }, [searchParams, setSearchParams]);
+
+  const setPage = (n: number) => {
+    const p = new URLSearchParams(searchParams);
+    if (n > 1) p.set("page", String(n)); else p.delete("page");
+    setSearchParams(p);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const hasActiveFilters = selectedCategory || selectedYear || selectedMake || selectedModel;
+  const clearFilters = () => {
+    setSearchInput("");
+    setSearchParams({});
+  };
+
+  const handleSearch = () => setParam("search", searchInput.trim());
 
   return (
     <main className="min-h-screen">
@@ -52,42 +62,39 @@ const Shop = () => {
             Shop <span className="text-primary">Auto Parts</span>
           </h1>
 
-          {/* Vehicle Info */}
-          {(selectedYear || selectedMake || selectedModel) && (
-            <div className="flex items-center gap-2 text-muted-foreground mb-4">
+          {(year || make || model) && (
+            <div className="flex items-center gap-2 text-muted-foreground mb-4 flex-wrap">
               <span>Parts for:</span>
               <span className="text-primary font-semibold">
-                {[selectedYear, selectedMake, selectedModel].filter(Boolean).join(" ")}
+                {[year, make, model].filter(Boolean).join(" ")}
               </span>
+              {total > 0 && (
+                <span className="text-sm">— {total.toLocaleString()} parts found</span>
+              )}
             </div>
           )}
 
-          {/* Search & Filter Bar */}
           <div className="flex flex-col md:flex-row gap-4">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
               <Input
                 type="text"
-                placeholder="Search parts by name or brand..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search by SKU, description, OEM number..."
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                 className="pl-10"
               />
             </div>
+            <Button onClick={handleSearch} variant="default">Search</Button>
             <Button
               variant="outline"
               onClick={() => setShowFilters(!showFilters)}
-              className="md:w-auto"
             >
               <SlidersHorizontal className="w-4 h-4 mr-2" />
               Filters
-              {hasActiveFilters && (
-                <span className="ml-2 w-5 h-5 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center">
-                  !
-                </span>
-              )}
             </Button>
-            {hasActiveFilters && (
+            {hasFilter && (
               <Button variant="ghost" onClick={clearFilters}>
                 <X className="w-4 h-4 mr-2" />
                 Clear
@@ -99,73 +106,111 @@ const Shop = () => {
 
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Sidebar Filters */}
-          <aside
-            className={`lg:w-64 shrink-0 ${showFilters ? "block" : "hidden lg:block"}`}
-          >
-            <div className="bg-gradient-card rounded-xl border border-border p-6 sticky top-24">
-              <h3 className="font-display text-lg font-semibold mb-4">
-                Categories
-              </h3>
-              <ul className="space-y-2">
-                <li>
-                  <button
-                    onClick={() => {
-                      searchParams.delete("category");
-                      setSearchParams(searchParams);
-                    }}
-                    className={`w-full text-left py-2 px-3 rounded-md transition-colors ${
-                      !selectedCategory
-                        ? "bg-primary text-primary-foreground"
-                        : "text-muted-foreground hover:text-foreground hover:bg-secondary"
-                    }`}
-                  >
-                    All Categories
-                  </button>
-                </li>
-                {categories.map((category) => (
-                  <li key={category.id}>
+          {/* Sidebar */}
+          {lines.length > 0 && (
+            <aside className={`lg:w-56 shrink-0 ${showFilters ? "block" : "hidden lg:block"}`}>
+              <div className="bg-gradient-card rounded-xl border border-border p-5 sticky top-24">
+                <h3 className="font-display text-base font-semibold mb-4 uppercase tracking-wider">
+                  Product Line
+                </h3>
+                <ul className="space-y-1">
+                  <li>
                     <button
-                      onClick={() => {
-                        searchParams.set("category", category.id);
-                        setSearchParams(searchParams);
-                      }}
-                      className={`w-full text-left py-2 px-3 rounded-md transition-colors flex items-center gap-2 ${
-                        selectedCategory === category.id
-                          ? "bg-primary text-primary-foreground"
-                          : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                      onClick={() => setParam("line", "")}
+                      className={`w-full text-left py-1.5 px-3 rounded-md text-sm transition-colors ${
+                        !productLine ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-secondary"
                       }`}
                     >
-                      <span>{category.icon}</span>
-                      {category.name}
+                      All Lines
                     </button>
                   </li>
-                ))}
-              </ul>
-            </div>
-          </aside>
-
-          {/* Products Grid */}
-          <div className="flex-1">
-            <div className="flex items-center justify-between mb-6">
-              <p className="text-muted-foreground">
-                Showing <span className="text-foreground font-semibold">{filteredProducts.length}</span> products
-              </p>
-            </div>
-
-            {filteredProducts.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-                {filteredProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
+                  {lines.map((line) => (
+                    <li key={line}>
+                      <button
+                        onClick={() => setParam("line", line)}
+                        className={`w-full text-left py-1.5 px-3 rounded-md text-sm transition-colors ${
+                          productLine === line ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                        }`}
+                      >
+                        {line}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
               </div>
-            ) : (
+            </aside>
+          )}
+
+          {/* Products */}
+          <div className="flex-1">
+            {!hasFilter ? (
+              <div className="text-center py-20">
+                <Search className="w-16 h-16 text-muted-foreground/30 mx-auto mb-4" />
+                <h2 className="font-display text-2xl font-bold mb-2">Search Our Catalog</h2>
+                <p className="text-muted-foreground max-w-md mx-auto">
+                  Use the vehicle search on the home page to find parts for your vehicle, or search by SKU or OEM number above.
+                </p>
+              </div>
+            ) : isLoading ? (
+              <div className="flex items-center justify-center py-20">
+                <Loader2 className="w-10 h-10 animate-spin text-primary" />
+              </div>
+            ) : products.length === 0 ? (
               <div className="text-center py-16">
                 <p className="text-muted-foreground text-lg mb-4">
                   No products found matching your criteria.
                 </p>
                 <Button onClick={clearFilters}>Clear Filters</Button>
               </div>
+            ) : (
+              <>
+                <div className="flex items-center justify-between mb-6">
+                  <p className="text-muted-foreground text-sm">
+                    Showing{" "}
+                    <span className="text-foreground font-semibold">
+                      {(page - 1) * PAGE_SIZE + 1}–{Math.min(page * PAGE_SIZE, total)}
+                    </span>{" "}
+                    of{" "}
+                    <span className="text-foreground font-semibold">{total.toLocaleString()}</span>{" "}
+                    parts
+                  </p>
+                </div>
+
+                <div
+                  className={`grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 transition-opacity ${
+                    isPlaceholderData ? "opacity-50" : "opacity-100"
+                  }`}
+                >
+                  {products.map((product) => (
+                    <ProductCard key={`${product.sku}-${product.id}`} product={product} />
+                  ))}
+                </div>
+
+                {/* Pagination */}
+                {totalPages > 1 && (
+                  <div className="flex items-center justify-center gap-2 mt-10">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={() => setPage(page - 1)}
+                      disabled={page <= 1}
+                    >
+                      <ChevronLeft className="w-4 h-4" />
+                    </Button>
+                    <span className="text-sm text-muted-foreground px-4">
+                      Page {page} of {totalPages.toLocaleString()}
+                    </span>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={() => setPage(page + 1)}
+                      disabled={page >= totalPages}
+                    >
+                      <ChevronRight className="w-4 h-4" />
+                    </Button>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>

@@ -26,12 +26,12 @@ const Index = () => {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="animate-slide-up">
               <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
-                Quality Auto Parts
+                319,910 Auto Parts
                 <br />
-                <span className="text-primary">Delivered Fast</span>
+                <span className="text-primary">In Stock & Ready to Ship</span>
               </h1>
               <p className="text-lg text-muted-foreground mb-8 max-w-lg">
-                Your trusted source for premium automotive parts. Find the right parts for your vehicle with our easy-to-use search and enjoy fast, reliable delivery.
+                Canada's source for OEM-grade collision and auto body parts. 319,910 SKUs covering vehicles from 1961–2026. Search by year, make and model to find the exact part you need.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link to="/shop">
