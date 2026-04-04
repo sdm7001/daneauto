@@ -75,6 +75,18 @@ const Header = () => {
                 <Search className="w-5 h-5" />
               </Button>
             </Link>
+            {user && (
+              <Link to="/wishlist" className="relative hidden md:flex">
+                <Button variant="ghost" size="icon">
+                  <Heart className="w-5 h-5" />
+                  {wishlistCount > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">
+                      {wishlistCount}
+                    </span>
+                  )}
+                </Button>
+              </Link>
+            )}
             <Link to="/cart" className="relative">
               <Button variant="ghost" size="icon">
                 <ShoppingCart className="w-5 h-5" />
