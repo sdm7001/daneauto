@@ -1,9 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   ShoppingCart, ArrowLeft, ImageOff, Tag, Wrench, Car, Shield,
-  CheckCircle, Package, Truck, RotateCcw, Info, ChevronRight, Copy
+  CheckCircle, Package, Truck, RotateCcw, Info, ChevronRight, Copy, Share2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -20,6 +20,7 @@ const BASE_TITLE = "Dane Auto Parts Ltd";
 const ProductDetail = () => {
   const { sku } = useParams<{ sku: string }>();
   const navigate = useNavigate();
+  const [shareCopied, setShareCopied] = useState(false);
   const { addItem } = useCart();
   const decodedSku = decodeURIComponent(sku ?? "");
   const { data: product, isLoading, error } = useProduct(decodedSku);
@@ -298,14 +299,31 @@ const ProductDetail = () => {
               </div>
             </div>
 
-            <Button
-              variant="outline"
-              className="mt-6 self-start"
-              onClick={() => navigate(-1)}
-            >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Results
-            </Button>
+            <div className="flex gap-3 mt-6">
+              <Button
+                variant="outline"
+                className="self-start"
+                onClick={() => navigate(-1)}
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back to Results
+              </Button>
+              <Button
+                variant="ghost"
+                className="self-start"
+                onClick={() => {
+                  navigator.clipboard.writeText(window.location.href).then(() => {
+                    setShareCopied(true);
+                    setTimeout(() => setShareCopied(false), 2000);
+                  });
+                }}
+                title="Copy link to this part"
+              >
+                {shareCopied
+                  ? <><CheckCircle className="w-4 h-4 mr-2 text-green-400" /> Copied!</>
+                  : <><Share2 className="w-4 h-4 mr-2" /> Share</>}
+              </Button>
+            </div>
           </div>
         </div>
 

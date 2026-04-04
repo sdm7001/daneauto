@@ -181,6 +181,29 @@ const Header = () => {
         {/* Mobile Navigation */}
         {isMenuOpen && (
           <nav className="lg:hidden py-4 border-t border-border animate-fade-in">
+            {/* Mobile Search */}
+            <div className="flex items-center gap-2 mb-4">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Input
+                  type="text"
+                  placeholder="Search parts..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") { submitSearch(); setIsMenuOpen(false); }
+                  }}
+                  className="pl-9 h-10 text-sm"
+                />
+              </div>
+              <Button
+                size="sm"
+                onClick={() => { submitSearch(); setIsMenuOpen(false); }}
+                disabled={!searchQuery.trim()}
+              >
+                Search
+              </Button>
+            </div>
             {navLinks.map((link) => (
               <Link
                 key={link.name}
