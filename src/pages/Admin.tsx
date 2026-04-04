@@ -86,6 +86,17 @@ const Admin = () => {
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [expandedMessage, setExpandedMessage] = useState<string | null>(null);
 
+  // Import state
+  const [importFile, setImportFile] = useState<File | null>(null);
+  const [importing, setImporting] = useState(false);
+  const [importResult, setImportResult] = useState<{
+    inserted: number;
+    skipped: number;
+    failed_batches: number;
+    total_rows: number;
+    errors?: string[];
+  } | null>(null);
+
   useEffect(() => {
     if (!loading && !user) {
       navigate("/account");
