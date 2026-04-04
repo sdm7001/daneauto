@@ -301,6 +301,13 @@ export type Database = {
           product_line: string
         }[]
       }
+      get_top_product_lines: {
+        Args: { p_limit?: number }
+        Returns: {
+          count: number
+          product_line: string
+        }[]
+      }
       get_vehicle_makes: {
         Args: { p_year: string }
         Returns: {
