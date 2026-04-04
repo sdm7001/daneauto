@@ -4,6 +4,7 @@ import { Search, SlidersHorizontal, X, ChevronLeft, ChevronRight, Loader2 } from
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import ProductCard from "@/components/ProductCard";
+import VehicleSearch from "@/components/VehicleSearch";
 import { useProducts } from "@/hooks/useProducts";
 import { useProductLines } from "@/hooks/useVehicles";
 
@@ -144,12 +145,14 @@ const Shop = () => {
           {/* Products */}
           <div className="flex-1">
             {!hasFilter ? (
-              <div className="text-center py-20">
-                <Search className="w-16 h-16 text-muted-foreground/30 mx-auto mb-4" />
-                <h2 className="font-display text-2xl font-bold mb-2">Search Our Catalog</h2>
-                <p className="text-muted-foreground max-w-md mx-auto">
-                  Use the vehicle search on the home page to find parts for your vehicle, or search by SKU or OEM number above.
-                </p>
+              <div className="py-8 max-w-xl mx-auto">
+                <div className="text-center mb-6">
+                  <h2 className="font-display text-2xl font-bold mb-2">Find Parts for Your Vehicle</h2>
+                  <p className="text-muted-foreground text-sm">
+                    Select your year, make, and model — or search by SKU / OEM number above.
+                  </p>
+                </div>
+                <VehicleSearch />
               </div>
             ) : isLoading ? (
               <div className="flex items-center justify-center py-20">

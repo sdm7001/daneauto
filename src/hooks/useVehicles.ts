@@ -42,6 +42,23 @@ export function useVehicleModels(year: string, make: string) {
   })
 }
 
+export interface ProductLineCount {
+  product_line: string
+  count: number
+}
+
+export function useTopProductLines(limit = 16) {
+  return useQuery<ProductLineCount[]>({
+    queryKey: ['vehicles', 'top-lines', limit],
+    queryFn: async () => {
+      const { data, error } = await (supabase as any).rpc('get_top_product_lines', { p_limit: limit })
+      if (error) throw error
+      return (data as ProductLineCount[]) ?? []
+    },
+    staleTime: Infinity,
+  })
+}
+
 export function useProductLines(year: string, make: string, model: string) {
   return useQuery<string[]>({
     queryKey: ['vehicles', 'lines', year, make, model],
