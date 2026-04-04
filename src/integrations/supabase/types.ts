@@ -353,6 +353,18 @@ export type Database = {
           model: string
         }[]
       }
+      get_vehicle_product_lines: {
+        Args: {
+          p_limit?: number
+          p_make: string
+          p_model: string
+          p_year: string
+        }
+        Returns: {
+          count: number
+          product_line: string
+        }[]
+      }
       get_vehicle_years: {
         Args: never
         Returns: {

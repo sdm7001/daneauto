@@ -6,6 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import ProductCard from "@/components/ProductCard";
+import PopularForVehicle from "@/components/PopularForVehicle";
 import VehicleSearch from "@/components/VehicleSearch";
 import { useProducts, type ProductSort } from "@/hooks/useProducts";
 import { useProductLines } from "@/hooks/useVehicles";
@@ -194,6 +195,16 @@ const Shop = () => {
 
           {/* Products */}
           <div className="flex-1">
+            {(year && make && model && !isLoading) && (
+              <PopularForVehicle
+                year={year}
+                make={make}
+                model={model}
+                activeLine={productLine}
+                onSelectLine={(line) => setParam("line", line)}
+              />
+            )}
+
             {!hasFilter ? (
               <div className="py-8 max-w-xl mx-auto">
                 <div className="text-center mb-6">
