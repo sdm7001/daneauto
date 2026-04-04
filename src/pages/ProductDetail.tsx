@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   ShoppingCart, ArrowLeft, ImageOff, Tag, Wrench, Car, Shield,
-  CheckCircle, Package, Truck, RotateCcw, Info, ChevronRight
+  CheckCircle, Package, Truck, RotateCcw, Info, ChevronRight, Copy
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -415,14 +415,30 @@ const ProductDetail = () => {
 function PartDetail({ icon: Icon, label, value, muted }: {
   icon: React.ElementType; label: string; value: string; muted?: boolean;
 }) {
+  const [copied, setCopied] = useState(false);
+  const copy = () => {
+    navigator.clipboard.writeText(value).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    });
+  };
   return (
-    <div className="flex items-start gap-2.5">
+    <button
+      onClick={copy}
+      className="flex items-start gap-2.5 text-left group hover:bg-secondary/40 rounded-lg p-1 -m-1 transition-colors"
+      title={`Copy ${label}`}
+    >
       <Icon className={`w-4 h-4 mt-0.5 shrink-0 ${muted ? "text-muted-foreground" : "text-primary"}`} />
-      <div>
+      <div className="flex-1 min-w-0">
         <span className="text-xs text-muted-foreground">{label}</span>
-        <p className="font-mono text-sm">{value}</p>
+        <div className="flex items-center gap-1.5">
+          <p className="font-mono text-sm truncate">{value}</p>
+          {copied
+            ? <CheckCircle className="w-3.5 h-3.5 text-green-400 shrink-0" />
+            : <Copy className="w-3.5 h-3.5 text-muted-foreground/0 group-hover:text-muted-foreground/60 shrink-0 transition-colors" />}
+        </div>
       </div>
-    </div>
+    </button>
   );
 }
 
