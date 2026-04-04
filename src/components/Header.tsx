@@ -56,14 +56,16 @@ const Header = () => {
           />
         </div>
 
-        {isMenuOpen && (
-          <MobileNav
-            isAdmin={isAdmin}
-            onClose={() => setIsMenuOpen(false)}
-            onSignOut={handleSignOut}
-            onSearch={handleSearch}
-          />
-        )}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <MobileNav
+              isAdmin={isAdmin}
+              onClose={() => setIsMenuOpen(false)}
+              onSignOut={handleSignOut}
+              onSearch={handleSearch}
+            />
+          )}
+        </AnimatePresence>
       </div>
     </header>
   );
