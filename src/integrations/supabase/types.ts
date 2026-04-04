@@ -124,6 +124,57 @@ export type Database = {
         }
         Relationships: []
       }
+      products: {
+        Row: {
+          certification: string | null
+          description: string | null
+          id: number
+          image_url: string | null
+          list_price: number | null
+          make: string
+          model: string
+          net_price: number | null
+          oem_number: string | null
+          partslink_number: string | null
+          product_line: string
+          scraped_at: string | null
+          sku: string
+          year: string
+        }
+        Insert: {
+          certification?: string | null
+          description?: string | null
+          id?: number
+          image_url?: string | null
+          list_price?: number | null
+          make: string
+          model: string
+          net_price?: number | null
+          oem_number?: string | null
+          partslink_number?: string | null
+          product_line: string
+          scraped_at?: string | null
+          sku: string
+          year: string
+        }
+        Update: {
+          certification?: string | null
+          description?: string | null
+          id?: number
+          image_url?: string | null
+          list_price?: number | null
+          make?: string
+          model?: string
+          net_price?: number | null
+          oem_number?: string | null
+          partslink_number?: string | null
+          product_line?: string
+          scraped_at?: string | null
+          sku?: string
+          year?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           address: string | null
@@ -223,6 +274,30 @@ export type Database = {
     }
     Functions: {
       get_admin_stats: { Args: never; Returns: Json }
+      get_product_lines: {
+        Args: { p_make: string; p_model: string; p_year: string }
+        Returns: {
+          product_line: string
+        }[]
+      }
+      get_vehicle_makes: {
+        Args: { p_year: string }
+        Returns: {
+          make: string
+        }[]
+      }
+      get_vehicle_models: {
+        Args: { p_make: string; p_year: string }
+        Returns: {
+          model: string
+        }[]
+      }
+      get_vehicle_years: {
+        Args: never
+        Returns: {
+          year: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -230,6 +305,8 @@ export type Database = {
         }
         Returns: boolean
       }
+      show_limit: { Args: never; Returns: number }
+      show_trgm: { Args: { "": string }; Returns: string[] }
     }
     Enums: {
       app_role: "admin" | "user"
