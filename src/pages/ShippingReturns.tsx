@@ -2,6 +2,7 @@ import { usePageTitle } from "@/hooks/usePageTitle";
 import { Truck, RotateCcw, Shield, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import PageBreadcrumb from "@/components/PageBreadcrumb";
 
 const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
   <section className="mb-10">
