@@ -1,6 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
-import { ShoppingCart, User, Menu, X, Search, LogOut, Shield, Heart } from "lucide-react";
+import { ShoppingCart, User, Menu, X, Search, LogOut, Shield, Heart, ChevronDown } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 import Logo from "./Logo";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
