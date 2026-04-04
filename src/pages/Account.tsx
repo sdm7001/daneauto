@@ -239,7 +239,7 @@ const Account = () => {
                           <p className="text-sm text-muted-foreground">{vehicle.nickname}</p>
                         )}
                       </div>
-                      <Link to={`/shop?year=${vehicle.year}&make=${vehicle.make}&model=${vehicle.model}`}>
+                      <Link to={`/shop?year=${vehicle.year}&make=${encodeURIComponent(vehicle.make)}&model=${encodeURIComponent(vehicle.model)}`}>
                         <Button variant="outline" size="sm">
                           Find Parts
                         </Button>
@@ -365,12 +365,13 @@ const Account = () => {
             <form onSubmit={handleSubmit} className="space-y-4">
               {!isLogin && (
                 <div>
-                  <label className="block text-sm font-medium mb-2">
+                  <label htmlFor="acc-name" className="block text-sm font-medium mb-2">
                     Full Name
                   </label>
                   <div className="relative">
                     <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                     <Input
+                      id="acc-name"
                       type="text"
                       placeholder="John Doe"
                       value={formData.name}
@@ -385,12 +386,13 @@ const Account = () => {
               )}
 
               <div>
-                <label className="block text-sm font-medium mb-2">
+                <label htmlFor="acc-email" className="block text-sm font-medium mb-2">
                   Email Address
                 </label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                   <Input
+                    id="acc-email"
                     type="email"
                     placeholder="you@example.com"
                     value={formData.email}
@@ -404,12 +406,13 @@ const Account = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2">
+                <label htmlFor="acc-password" className="block text-sm font-medium mb-2">
                   Password
                 </label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                   <Input
+                    id="acc-password"
                     type={showPassword ? "text" : "password"}
                     placeholder="••••••••"
                     value={formData.password}
@@ -435,12 +438,13 @@ const Account = () => {
 
               {!isLogin && (
                 <div>
-                  <label className="block text-sm font-medium mb-2">
+                  <label htmlFor="acc-confirm" className="block text-sm font-medium mb-2">
                     Confirm Password
                   </label>
                   <div className="relative">
                     <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                     <Input
+                      id="acc-confirm"
                       type={showPassword ? "text" : "password"}
                       placeholder="••••••••"
                       value={formData.confirmPassword}
