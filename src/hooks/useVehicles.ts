@@ -45,6 +45,7 @@ export function useVehicleModels(year: string, make: string) {
 export interface ProductLineCount {
   product_line: string
   count: number
+  sample_image?: string | null
 }
 
 export function useTopProductLines(limit = 16) {
