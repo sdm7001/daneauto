@@ -346,6 +346,18 @@ export type Database = {
           product_line: string
         }[]
       }
+      get_subcategories: {
+        Args: {
+          p_category?: string
+          p_make?: string
+          p_model?: string
+          p_year?: string
+        }
+        Returns: {
+          count: number
+          subcategory: string
+        }[]
+      }
       get_top_product_lines: {
         Args: { p_limit?: number }
         Returns: {
