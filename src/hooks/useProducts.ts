@@ -41,11 +41,11 @@ export interface ProductsResult {
 const db = supabase as any
 
 export function useProducts(filters: ProductFilters = {}) {
-  const { year, make, model, productLine, search, sort = 'sku', page = 1, pageSize = 24 } = filters
+  const { year, make, model, productLine, subcategory, search, sort = 'sku', page = 1, pageSize = 24 } = filters
   const from = (page - 1) * pageSize
   const to = from + pageSize - 1
 
-  const hasFilter = !!(year || make || model || productLine || search)
+  const hasFilter = !!(year || make || model || productLine || subcategory || search)
 
   return useQuery<ProductsResult>({
     queryKey: ['products', { year, make, model, productLine, search, sort, page, pageSize }],
