@@ -132,7 +132,8 @@ const MobileNav = ({ isAdmin, onClose, onSignOut, onSearch }: MobileNavProps) =>
           Sign Out
         </button>
       )}
-    </nav>
+      </div>
+    </motion.nav>
   );
 };
 
