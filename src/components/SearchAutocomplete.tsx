@@ -21,7 +21,9 @@ const SearchAutocomplete = ({
 }: SearchAutocompleteProps) => {
   const [open, setOpen] = useState(false);
   const [debouncedQuery, setDebouncedQuery] = useState("");
+  const [activeIndex, setActiveIndex] = useState(-1);
   const containerRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
   // Debounce the query by 300ms
@@ -39,6 +41,14 @@ const SearchAutocomplete = ({
     open && debouncedQuery.length >= 2
   );
 
+  // Total items = suggestions + "view all" button
+  const itemCount = suggestions.length > 0 ? suggestions.length + 1 : 0;
+
+  // Reset active index when suggestions change
+  useEffect(() => {
+    setActiveIndex(-1);
+  }, [suggestions]);
+
   // Close dropdown on click outside
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -50,6 +60,13 @@ const SearchAutocomplete = ({
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
+  // Scroll active item into view
+  useEffect(() => {
+    if (activeIndex < 0 || !listRef.current) return;
+    const items = listRef.current.querySelectorAll("[data-autocomplete-item]");
+    items[activeIndex]?.scrollIntoView({ block: "nearest" });
+  }, [activeIndex]);
+
   const handleSelect = useCallback(
     (suggestion: SearchSuggestion) => {
       setOpen(false);
@@ -59,12 +76,39 @@ const SearchAutocomplete = ({
   );
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      setOpen(false);
-      onSearch();
+    if (!open || itemCount === 0) {
+      if (e.key === "Enter") {
+        onSearch();
+      }
+      return;
     }
-    if (e.key === "Escape") {
-      setOpen(false);
+
+    switch (e.key) {
+      case "ArrowDown":
+        e.preventDefault();
+        setActiveIndex((prev) => (prev < itemCount - 1 ? prev + 1 : 0));
+        break;
+      case "ArrowUp":
+        e.preventDefault();
+        setActiveIndex((prev) => (prev > 0 ? prev - 1 : itemCount - 1));
+        break;
+      case "Enter":
+        e.preventDefault();
+        if (activeIndex >= 0 && activeIndex < suggestions.length) {
+          handleSelect(suggestions[activeIndex]);
+        } else if (activeIndex === suggestions.length) {
+          // "View all results" item
+          setOpen(false);
+          onSearch();
+        } else {
+          setOpen(false);
+          onSearch();
+        }
+        break;
+      case "Escape":
+        setOpen(false);
+        setActiveIndex(-1);
+        break;
     }
   };
 
@@ -74,7 +118,7 @@ const SearchAutocomplete = ({
   };
 
   return (
-    <div ref={containerRef} className={`relative ${className ?? ""}`}>
+    <div ref={containerRef} className={`relative ${className ?? ""}`} role="combobox" aria-expanded={open && itemCount > 0} aria-haspopup="listbox">
       <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground z-10" />
       {isLoading && debouncedQuery.length >= 2 && (
         <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground animate-spin z-10" />
@@ -90,15 +134,31 @@ const SearchAutocomplete = ({
         onFocus={() => setOpen(true)}
         onKeyDown={handleKeyDown}
         className="pl-10"
+        role="searchbox"
+        aria-autocomplete="list"
+        aria-controls="search-listbox"
+        aria-activedescendant={activeIndex >= 0 ? `search-option-${activeIndex}` : undefined}
       />
 
       {open && suggestions.length > 0 && (
-        <div className="absolute top-full left-0 right-0 mt-1 bg-card border border-border rounded-xl shadow-xl z-50 overflow-hidden max-h-[400px] overflow-y-auto">
-          {suggestions.map((s) => (
+        <div
+          ref={listRef}
+          id="search-listbox"
+          role="listbox"
+          className="absolute top-full left-0 right-0 mt-1 bg-card border border-border rounded-xl shadow-xl z-50 overflow-hidden max-h-[400px] overflow-y-auto"
+        >
+          {suggestions.map((s, index) => (
             <button
               key={s.sku}
+              id={`search-option-${index}`}
+              role="option"
+              aria-selected={index === activeIndex}
+              data-autocomplete-item
               onClick={() => handleSelect(s)}
-              className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-secondary/60 transition-colors border-b border-border/50 last:border-b-0"
+              onMouseEnter={() => setActiveIndex(index)}
+              className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors border-b border-border/50 last:border-b-0 ${
+                index === activeIndex ? "bg-secondary/80" : "hover:bg-secondary/60"
+              }`}
             >
               {/* Thumbnail */}
               <div className="w-10 h-10 rounded-md bg-muted flex items-center justify-center shrink-0 overflow-hidden">
@@ -135,11 +195,18 @@ const SearchAutocomplete = ({
 
           {/* View all results */}
           <button
+            id={`search-option-${suggestions.length}`}
+            role="option"
+            aria-selected={activeIndex === suggestions.length}
+            data-autocomplete-item
             onClick={() => {
               setOpen(false);
               onSearch();
             }}
-            className="w-full px-4 py-3 text-sm text-primary font-medium hover:bg-secondary/60 transition-colors text-center"
+            onMouseEnter={() => setActiveIndex(suggestions.length)}
+            className={`w-full px-4 py-3 text-sm text-primary font-medium transition-colors text-center ${
+              activeIndex === suggestions.length ? "bg-secondary/80" : "hover:bg-secondary/60"
+            }`}
           >
             View all results for "{value.trim()}"
           </button>
