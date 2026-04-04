@@ -73,16 +73,10 @@ const Cart = () => {
   return (
     <main className="min-h-screen py-8">
       <div className="container mx-auto px-4">
-        <div className="flex items-center gap-4 mb-8">
-          <Link to="/shop">
-            <Button variant="ghost" size="icon">
-              <ArrowLeft className="w-5 h-5" />
-            </Button>
-          </Link>
-          <h1 className="font-display text-3xl font-bold">
-            Shopping <span className="text-primary">Cart</span>
-          </h1>
-        </div>
+        <PageBreadcrumb segments={[{ label: "Cart" }]} className="mb-6" />
+        <h1 className="font-display text-3xl font-bold mb-8">
+          Shopping <span className="text-primary">Cart</span>
+        </h1>
 
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Items */}

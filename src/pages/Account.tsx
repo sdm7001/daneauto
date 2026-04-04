@@ -155,6 +155,7 @@ const Account = () => {
       <main className="min-h-screen py-8">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
+            <PageBreadcrumb segments={[{ label: "Account" }]} className="mb-6" />
             <div className="flex items-center justify-between mb-8">
               <div>
                 <h1 className="font-display text-3xl font-bold">

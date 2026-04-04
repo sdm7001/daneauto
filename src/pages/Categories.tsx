@@ -32,6 +32,7 @@ const Categories = () => {
   return (
     <main className="min-h-screen py-8">
       <div className="container mx-auto px-4">
+        <PageBreadcrumb segments={[{ label: "Categories" }]} className="mb-6" />
         <div className="text-center mb-12">
           <h1 className="font-display text-4xl md:text-5xl font-bold mb-4">
             All <span className="text-primary">Categories</span>

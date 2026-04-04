@@ -43,6 +43,7 @@ const About = () => {
   return (
     <main className="min-h-screen py-8">
       <div className="container mx-auto px-4">
+        <PageBreadcrumb segments={[{ label: "About" }]} className="mb-6" />
         {/* Hero */}
         <section className="text-center mb-16">
           <h1 className="font-display text-4xl md:text-5xl font-bold mb-4">

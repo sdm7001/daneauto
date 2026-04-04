@@ -474,13 +474,13 @@ const BlogPost = () => {
   return (
     <main className="min-h-screen py-8">
       <div className="container mx-auto px-4 max-w-3xl">
-        {/* Back link */}
-        <Link
-          to="/blog"
-          className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors text-sm mb-8"
-        >
-          <ArrowLeft className="w-4 h-4" /> Back to Blog
-        </Link>
+        <PageBreadcrumb
+          segments={[
+            { label: "Blog", href: "/blog" },
+            { label: post.title },
+          ]}
+          className="mb-8"
+        />
 
         {/* Header */}
         <div className="mb-8">

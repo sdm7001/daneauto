@@ -15,6 +15,7 @@ import ProductCard from "@/components/ProductCard";
 import WishlistButton from "@/components/WishlistButton";
 import StructuredData from "@/components/StructuredData";
 import { useRecentlyViewed } from "@/hooks/useRecentlyViewed";
+import PageBreadcrumb from "@/components/PageBreadcrumb";
 
 const BASE_TITLE = "Dane Auto Parts Ltd";
 
