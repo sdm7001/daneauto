@@ -126,6 +126,7 @@ const ProductDetail = () => {
                 <img
                   src={product.image_url}
                   alt={product.description ?? product.sku}
+                  decoding="async"
                   className="w-full h-full object-contain"
                 />
               ) : (

@@ -38,6 +38,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
             <img
               src={product.image_url}
               alt={product.description ?? product.sku}
+              loading="lazy"
+              decoding="async"
               className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 p-2"
               onError={(e) => {
                 (e.target as HTMLImageElement).style.display = "none";
