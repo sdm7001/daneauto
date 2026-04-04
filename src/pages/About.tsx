@@ -48,7 +48,8 @@ const About = () => {
             About <span className="text-primary">Dane Auto Parts Ltd</span>
           </h1>
           <p className="text-muted-foreground max-w-3xl mx-auto text-lg">
-            Canada's source for collision and auto body parts. We carry 319,910 SKUs covering vehicles from 1961 to 2026 — with fast shipping to Canada, the US, and Mexico.
+            Based in Winnipeg, Manitoba, we carry 319,910 SKUs covering vehicles from 1961 to 2026 — with fast shipping to Canada, the US, and Mexico. Reach us at{" "}
+            <a href="mailto:sales@daneauto.ca" className="text-primary hover:underline">sales@daneauto.ca</a>.
           </p>
         </section>
 
