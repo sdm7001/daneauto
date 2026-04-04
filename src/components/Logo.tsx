@@ -1,10 +1,11 @@
+import { forwardRef } from "react";
 import { Link } from "react-router-dom";
 import logoHorizontal from "@/assets/logo-horizontal.jpg";
 import logoIcon from "@/assets/logo-icon.jpg";
 
-const Logo = () => {
+const Logo = forwardRef<HTMLAnchorElement>((_, ref) => {
   return (
-    <Link to="/" className="flex items-center group">
+    <Link to="/" className="flex items-center group" ref={ref}>
       <img
         src={logoHorizontal}
         alt="Dane Auto Parts Ltd"
@@ -17,6 +18,8 @@ const Logo = () => {
       />
     </Link>
   );
-};
+});
+
+Logo.displayName = "Logo";
 
 export default Logo;
