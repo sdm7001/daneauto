@@ -363,6 +363,7 @@ export type Database = {
         Returns: {
           count: number
           product_line: string
+          sample_image: string
         }[]
       }
       get_vehicle_years: {
