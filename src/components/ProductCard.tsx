@@ -35,7 +35,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
     toast.success(`${product.sku} added to cart!`);
   };
 
-  const displayPrice = product.net_price ?? product.list_price;
+  const displayPrice = product.list_price ?? product.net_price;
   const hasDiscount = product.list_price && product.net_price && product.net_price < product.list_price;
   const discount = hasDiscount
     ? Math.round((1 - product.net_price! / product.list_price!) * 100)
