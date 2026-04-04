@@ -2,6 +2,7 @@ import { CheckCircle, Users, Wrench, Award, Package, Globe, ShieldCheck, Truck }
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { usePageTitle } from "@/hooks/usePageTitle";
+import PageBreadcrumb from "@/components/PageBreadcrumb";
 
 const About = () => {
   usePageTitle("About Us", "Dane Auto Parts Ltd specializes in OEM-grade collision and body parts covering vehicles from 1961 to 2026. 319,910 parts in catalog. Ships to Canada, USA, and Mexico.");
