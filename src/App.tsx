@@ -16,6 +16,7 @@ import Contact from "./pages/Contact";
 import About from "./pages/About";
 import Admin from "./pages/Admin";
 import ProductDetail from "./pages/ProductDetail";
+import Wishlist from "./pages/Wishlist";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
