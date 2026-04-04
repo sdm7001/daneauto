@@ -178,30 +178,21 @@ const ProductDetail = () => {
       <StructuredData data={productSchema} id={`product-${product.sku}`} />
       <StructuredData data={breadcrumbSchema} id={`breadcrumb-${product.sku}`} />
       <div className="container mx-auto px-4 max-w-7xl">
-        {/* Breadcrumb */}
-        <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs text-muted-foreground mb-6 md:mb-8 flex-wrap">
-          <Link to="/" className="hover:text-primary transition-colors">Home</Link>
-          <ChevronRight className="w-3 h-3" />
-          <Link to="/shop" className="hover:text-primary transition-colors">Shop</Link>
-          <ChevronRight className="w-3 h-3" />
-          <Link
-            to={`/shop?year=${product.year}&make=${encodeURIComponent(product.make)}&model=${encodeURIComponent(product.model)}`}
-            className="hover:text-primary transition-colors"
-          >
-            {product.year} {product.make} {product.model}
-          </Link>
-          <ChevronRight className="w-3 h-3" />
-          <Link
-            to={`/shop?year=${product.year}&make=${encodeURIComponent(product.make)}&model=${encodeURIComponent(product.model)}&line=${encodeURIComponent(product.product_line)}`}
-            className="hover:text-primary transition-colors"
-          >
-            {product.product_line}
-          </Link>
-          <ChevronRight className="w-3 h-3" />
-          <span className="text-foreground font-medium truncate max-w-[180px]" title={product.description ?? product.sku}>
-            {product.description ?? product.sku}
-          </span>
-        </nav>
+        <PageBreadcrumb
+          segments={[
+            { label: "Shop", href: "/shop" },
+            {
+              label: `${product.year} ${product.make} ${product.model}`,
+              href: `/shop?year=${product.year}&make=${encodeURIComponent(product.make)}&model=${encodeURIComponent(product.model)}`,
+            },
+            {
+              label: product.product_line,
+              href: `/shop?year=${product.year}&make=${encodeURIComponent(product.make)}&model=${encodeURIComponent(product.model)}&line=${encodeURIComponent(product.product_line)}`,
+            },
+            { label: product.description ?? product.sku },
+          ]}
+          className="mb-6 md:mb-8"
+        />
 
         {/* Main Product Section */}
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-14">
