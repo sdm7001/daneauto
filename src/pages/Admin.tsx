@@ -98,6 +98,11 @@ const Admin = () => {
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [expandedMessage, setExpandedMessage] = useState<string | null>(null);
 
+  // Chat conversations state
+  const [chatConversations, setChatConversations] = useState<ChatConversation[]>([]);
+  const [loadingChats, setLoadingChats] = useState(false);
+  const [expandedChat, setExpandedChat] = useState<string | null>(null);
+  const [chatFilter, setChatFilter] = useState<"all" | "new" | "archived">("all");
   // Import state
   const [importFile, setImportFile] = useState<File | null>(null);
   const [importing, setImporting] = useState(false);
