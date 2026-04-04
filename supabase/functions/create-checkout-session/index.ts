@@ -83,9 +83,20 @@ serve(async (req) => {
     );
     const shippingCents = subtotal >= 75 ? 0 : 999; // cents
 
+    // Add HST (13%) as a separate line item so Stripe Tax is not required
+    const taxCents = Math.round(subtotal * 0.13 * 100);
+    const taxLineItem = {
+      price_data: {
+        currency: "cad",
+        product_data: { name: "HST (13%)" },
+        unit_amount: taxCents,
+      },
+      quantity: 1,
+    };
+
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
-      line_items: lineItems,
+      line_items: [...lineItems, taxLineItem],
       shipping_address_collection: { allowed_countries: ["CA", "US", "MX"] },
       shipping_options: [{
         shipping_rate_data: {
@@ -98,7 +109,6 @@ serve(async (req) => {
           },
         },
       }],
-      automatic_tax: { enabled: true },
       metadata: { orderId: orderId ?? "", userId: userId ?? "" },
       success_url: `${successUrl}?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: cancelUrl,

@@ -46,7 +46,7 @@ function generateSafeEmailHtml(body: string): string {
           </div>
           <div class="footer">
             <p>You received this email because you're a registered user of Dane Auto Parts Ltd.</p>
-            <p>123 Auto Parts Drive, Industrial District, NY 10001</p>
+            <p>Ontario, Canada &mdash; <a href="https://daneautoparts.com" style="color:#4ecdc4;">daneautoparts.com</a></p>
           </div>
         </div>
       </body>
