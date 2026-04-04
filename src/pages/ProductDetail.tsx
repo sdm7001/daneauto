@@ -86,11 +86,28 @@ const ProductDetail = () => {
 
   if (error || !product) {
     return (
-      <main className="min-h-screen flex flex-col items-center justify-center gap-4">
-        <p className="text-muted-foreground">Product not found.</p>
-        <Button variant="outline" onClick={() => navigate(-1)}>
-          <ArrowLeft className="w-4 h-4 mr-2" /> Go Back
-        </Button>
+      <main className="min-h-screen flex flex-col items-center justify-center gap-6 px-4 text-center">
+        <Package className="w-20 h-20 text-muted-foreground/30" />
+        <div>
+          <h1 className="font-display text-2xl font-bold mb-2">Part Not Found</h1>
+          <p className="text-muted-foreground max-w-sm">
+            We couldn't find a part matching <span className="font-mono text-foreground">{decodedSku}</span>.
+            It may have been discontinued or the SKU may be incorrect.
+          </p>
+        </div>
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          <Button variant="outline" onClick={() => navigate(-1)}>
+            <ArrowLeft className="w-4 h-4 mr-2" /> Go Back
+          </Button>
+          <Link to={`/shop?search=${encodeURIComponent(decodedSku)}`}>
+            <Button variant="default">
+              Search for "{decodedSku}"
+            </Button>
+          </Link>
+          <Link to="/shop">
+            <Button variant="ghost">Browse All Parts</Button>
+          </Link>
+        </div>
       </main>
     );
   }

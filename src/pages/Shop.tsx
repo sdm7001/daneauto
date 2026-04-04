@@ -1,7 +1,7 @@
-import { useState, useCallback } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useState, useCallback, useEffect, useRef } from "react";
+import { useSearchParams, Link } from "react-router-dom";
 import { usePageTitle } from "@/hooks/usePageTitle";
-import { Search, SlidersHorizontal, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { Home, Search, SlidersHorizontal, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,6 +24,18 @@ const Shop = () => {
   const productLine = searchParams.get("line") ?? "";
   const search     = searchParams.get("search") ?? "";
   const page       = parseInt(searchParams.get("page") ?? "1");
+
+  // Auto-search after 400 ms of inactivity (skip on initial render)
+  const isFirstRender = useRef(true);
+  useEffect(() => {
+    if (isFirstRender.current) { isFirstRender.current = false; return; }
+    if (searchInput.trim() === search) return;
+    const timer = setTimeout(() => {
+      setParam("search", searchInput.trim());
+    }, 400);
+    return () => clearTimeout(timer);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchInput]);
 
   const { data, isLoading, isPlaceholderData } = useProducts({
     year, make, model, productLine, search, page, pageSize: PAGE_SIZE,
@@ -62,6 +74,40 @@ const Shop = () => {
       {/* Header */}
       <section className="bg-gradient-card border-b border-border py-8 md:py-12">
         <div className="container mx-auto px-4">
+          {/* Breadcrumbs */}
+          <nav aria-label="Breadcrumb" className="flex items-center gap-1 text-xs text-muted-foreground mb-4 flex-wrap">
+            <Link to="/" className="flex items-center gap-0.5 hover:text-primary transition-colors">
+              <Home className="w-3 h-3" />
+              <span>Home</span>
+            </Link>
+            <ChevronRight className="w-3 h-3" />
+            {hasFilter ? (
+              <Link to="/shop" className="hover:text-primary transition-colors">Shop</Link>
+            ) : (
+              <span className="text-foreground">Shop</span>
+            )}
+            {(year || make || model) && (
+              <>
+                <ChevronRight className="w-3 h-3" />
+                <span className="text-foreground font-medium">
+                  {[year, make, model].filter(Boolean).join(" ")}
+                </span>
+              </>
+            )}
+            {productLine && (
+              <>
+                <ChevronRight className="w-3 h-3" />
+                <span className="text-foreground font-medium">{productLine}</span>
+              </>
+            )}
+            {search && (
+              <>
+                <ChevronRight className="w-3 h-3" />
+                <span className="text-foreground font-medium">"{search}"</span>
+              </>
+            )}
+          </nav>
+
           <h1 className="font-display text-3xl md:text-4xl font-bold mb-4">
             Shop <span className="text-primary">Auto Parts</span>
           </h1>
