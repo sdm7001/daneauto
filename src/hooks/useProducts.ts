@@ -25,6 +25,7 @@ export interface ProductFilters {
   make?: string
   model?: string
   productLine?: string
+  subcategory?: string
   search?: string
   sort?: ProductSort
   page?: number
@@ -40,14 +41,14 @@ export interface ProductsResult {
 const db = supabase as any
 
 export function useProducts(filters: ProductFilters = {}) {
-  const { year, make, model, productLine, search, sort = 'sku', page = 1, pageSize = 24 } = filters
+  const { year, make, model, productLine, subcategory, search, sort = 'sku', page = 1, pageSize = 24 } = filters
   const from = (page - 1) * pageSize
   const to = from + pageSize - 1
 
-  const hasFilter = !!(year || make || model || productLine || search)
+  const hasFilter = !!(year || make || model || productLine || subcategory || search)
 
   return useQuery<ProductsResult>({
-    queryKey: ['products', { year, make, model, productLine, search, sort, page, pageSize }],
+    queryKey: ['products', { year, make, model, productLine, subcategory, search, sort, page, pageSize }],
     queryFn: async () => {
       let query = db
         .from('products')
@@ -63,6 +64,7 @@ export function useProducts(filters: ProductFilters = {}) {
       if (make)        query = query.eq('make', make)
       if (model)       query = query.eq('model', model)
       if (productLine) query = query.eq('product_line', productLine)
+      if (subcategory) query = query.eq('subcategory', subcategory)
       if (search) {
         query = query.or(
           `description.ilike.%${search}%,sku.ilike.%${search}%,oem_number.ilike.%${search}%,partslink_number.ilike.%${search}%`

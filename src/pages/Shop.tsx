@@ -9,7 +9,7 @@ import ProductCard from "@/components/ProductCard";
 import PopularForVehicle from "@/components/PopularForVehicle";
 import VehicleSearch from "@/components/VehicleSearch";
 import { useProducts, type ProductSort } from "@/hooks/useProducts";
-import { useProductLines } from "@/hooks/useVehicles";
+import { useProductLines, useSubcategories } from "@/hooks/useVehicles";
 
 const PAGE_SIZE = 24;
 
@@ -23,6 +23,7 @@ const Shop = () => {
   const make       = searchParams.get("make") ?? "";
   const model      = searchParams.get("model") ?? "";
   const productLine = searchParams.get("line") ?? "";
+  const subcategory = searchParams.get("subcategory") ?? "";
   const search     = searchParams.get("search") ?? "";
   const sort       = (searchParams.get("sort") ?? "sku") as ProductSort;
   const page       = parseInt(searchParams.get("page") ?? "1");
@@ -40,15 +41,16 @@ const Shop = () => {
   }, [searchInput]);
 
   const { data, isLoading, isPlaceholderData } = useProducts({
-    year, make, model, productLine, search, sort, page, pageSize: PAGE_SIZE,
+    year, make, model, productLine, subcategory, search, sort, page, pageSize: PAGE_SIZE,
   });
 
   const { data: lines = [] } = useProductLines(year, make, model);
+  const { data: subcategories = [] } = useSubcategories(year || undefined, make || undefined, model || undefined);
 
   const products = data?.products ?? [];
   const total    = data?.total ?? 0;
   const totalPages = Math.ceil(total / PAGE_SIZE);
-  const hasFilter = !!(year || make || model || productLine || search);
+  const hasFilter = !!(year || make || model || productLine || subcategory || search);
 
   const setParam = useCallback((key: string, value: string) => {
     const p = new URLSearchParams(searchParams);
@@ -100,6 +102,12 @@ const Shop = () => {
               <>
                 <ChevronRight className="w-3 h-3" />
                 <span className="text-foreground font-medium">{productLine}</span>
+              </>
+            )}
+            {subcategory && (
+              <>
+                <ChevronRight className="w-3 h-3" />
+                <span className="text-foreground font-medium">{subcategory}</span>
               </>
             )}
             {search && (
@@ -159,36 +167,75 @@ const Shop = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar */}
-          {lines.length > 0 && (
+          {(lines.length > 0 || subcategories.length > 0) && (
             <aside className={`lg:w-56 shrink-0 ${showFilters ? "block" : "hidden lg:block"}`}>
-              <div className="bg-gradient-card rounded-xl border border-border p-5 sticky top-24">
-                <h3 className="font-display text-base font-semibold mb-4 uppercase tracking-wider">
-                  Product Line
-                </h3>
-                <ul className="space-y-1">
-                  <li>
-                    <button
-                      onClick={() => setParam("line", "")}
-                      className={`w-full text-left py-1.5 px-3 rounded-md text-sm transition-colors ${
-                        !productLine ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-secondary"
-                      }`}
-                    >
-                      All Lines
-                    </button>
-                  </li>
-                  {lines.map((line) => (
-                    <li key={line}>
-                      <button
-                        onClick={() => setParam("line", line)}
-                        className={`w-full text-left py-1.5 px-3 rounded-md text-sm transition-colors ${
-                          productLine === line ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-secondary"
-                        }`}
-                      >
-                        {line}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
+              <div className="bg-gradient-card rounded-xl border border-border p-5 sticky top-24 space-y-6">
+                {/* Subcategory filter */}
+                {subcategories.length > 0 && (
+                  <div>
+                    <h3 className="font-display text-base font-semibold mb-4 uppercase tracking-wider">
+                      Subcategory
+                    </h3>
+                    <ul className="space-y-1">
+                      <li>
+                        <button
+                          onClick={() => setParam("subcategory", "")}
+                          className={`w-full text-left py-1.5 px-3 rounded-md text-sm transition-colors ${
+                            !subcategory ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                          }`}
+                        >
+                          All Subcategories
+                        </button>
+                      </li>
+                      {subcategories.map((sc) => (
+                        <li key={sc.subcategory}>
+                          <button
+                            onClick={() => setParam("subcategory", sc.subcategory)}
+                            className={`w-full text-left py-1.5 px-3 rounded-md text-sm transition-colors ${
+                              subcategory === sc.subcategory ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                            }`}
+                          >
+                            {sc.subcategory}
+                            <span className="text-xs opacity-70 ml-1">({sc.count.toLocaleString()})</span>
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Product Line filter */}
+                {lines.length > 0 && (
+                  <div>
+                    <h3 className="font-display text-base font-semibold mb-4 uppercase tracking-wider">
+                      Product Line
+                    </h3>
+                    <ul className="space-y-1">
+                      <li>
+                        <button
+                          onClick={() => setParam("line", "")}
+                          className={`w-full text-left py-1.5 px-3 rounded-md text-sm transition-colors ${
+                            !productLine ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                          }`}
+                        >
+                          All Lines
+                        </button>
+                      </li>
+                      {lines.map((line) => (
+                        <li key={line}>
+                          <button
+                            onClick={() => setParam("line", line)}
+                            className={`w-full text-left py-1.5 px-3 rounded-md text-sm transition-colors ${
+                              productLine === line ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                            }`}
+                          >
+                            {line}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             </aside>
           )}
