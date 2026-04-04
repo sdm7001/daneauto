@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { User, Mail, Lock, Eye, EyeOff, LogOut, Car, Package, Settings } from "lucide-react";
+import { User, Mail, Lock, Eye, EyeOff, LogOut, Car, Package, Settings, ChevronDown, ChevronUp, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
@@ -16,11 +16,24 @@ interface SavedVehicle {
   is_primary: boolean;
 }
 
+interface OrderItem {
+  id: string;
+  product_id: string;
+  product_name: string;
+  product_image: string | null;
+  quantity: number;
+  price: number;
+}
+
 interface Order {
   id: string;
   status: string;
   total: number;
+  subtotal: number;
+  shipping: number;
+  tax: number;
   created_at: string;
+  items?: OrderItem[];
 }
 
 const Account = () => {
@@ -32,6 +45,7 @@ const Account = () => {
   const [activeTab, setActiveTab] = useState<"profile" | "vehicles" | "orders">("profile");
   const [vehicles, setVehicles] = useState<SavedVehicle[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
+  const [expandedOrder, setExpandedOrder] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -60,11 +74,11 @@ const Account = () => {
   const fetchOrders = async () => {
     const { data, error } = await supabase
       .from("orders")
-      .select("*")
+      .select("*, items:order_items(*)")
       .order("created_at", { ascending: false });
-    
+
     if (!error && data) {
-      setOrders(data);
+      setOrders(data as Order[]);
     }
   };
 
@@ -250,32 +264,71 @@ const Account = () => {
                   </div>
                 ) : (
                   orders.map((order) => (
-                    <div
-                      key={order.id}
-                      className="bg-gradient-card rounded-xl border border-border p-4"
-                    >
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-sm text-muted-foreground">
-                            Order #{order.id.slice(0, 8)}
-                          </p>
-                          <p className="font-display font-semibold text-lg">
-                            ${Number(order.total).toFixed(2)}
-                          </p>
+                    <div key={order.id} className="bg-gradient-card rounded-xl border border-border overflow-hidden">
+                      {/* Order Header */}
+                      <button
+                        className="w-full p-4 flex items-center justify-between hover:bg-secondary/20 transition-colors"
+                        onClick={() => setExpandedOrder(expandedOrder === order.id ? null : order.id)}
+                      >
+                        <div className="text-left">
+                          <p className="text-xs text-muted-foreground font-mono">#{order.id.slice(0, 8).toUpperCase()}</p>
+                          <p className="font-display font-semibold text-lg">${Number(order.total).toFixed(2)} CAD</p>
+                          <p className="text-xs text-muted-foreground">{new Date(order.created_at).toLocaleDateString("en-CA", { year: "numeric", month: "short", day: "numeric" })}</p>
                         </div>
-                        <div className="text-right">
-                          <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium capitalize ${
-                            order.status === "completed" ? "bg-primary/20 text-primary" :
-                            order.status === "pending" ? "bg-accent/20 text-accent" :
+                        <div className="flex items-center gap-3">
+                          <span className={`px-3 py-1 rounded-full text-xs font-medium capitalize ${
+                            order.status === "paid" || order.status === "completed" ? "bg-green-500/20 text-green-400" :
+                            order.status === "pending" ? "bg-yellow-500/20 text-yellow-400" :
+                            order.status === "cancelled" ? "bg-destructive/20 text-destructive" :
                             "bg-secondary text-foreground"
                           }`}>
                             {order.status}
                           </span>
-                          <p className="text-sm text-muted-foreground mt-1">
-                            {new Date(order.created_at).toLocaleDateString()}
-                          </p>
+                          {expandedOrder === order.id
+                            ? <ChevronUp className="w-4 h-4 text-muted-foreground" />
+                            : <ChevronDown className="w-4 h-4 text-muted-foreground" />}
                         </div>
-                      </div>
+                      </button>
+
+                      {/* Order Items */}
+                      {expandedOrder === order.id && (
+                        <div className="border-t border-border">
+                          {order.items && order.items.length > 0 ? (
+                            <>
+                              <div className="divide-y divide-border">
+                                {order.items.map((item) => (
+                                  <div key={item.id} className="flex items-center gap-3 px-4 py-3">
+                                    <div className="w-12 h-12 rounded-lg bg-secondary/30 flex items-center justify-center shrink-0 overflow-hidden">
+                                      {item.product_image
+                                        ? <img src={item.product_image} alt={item.product_name} className="w-full h-full object-contain p-1" />
+                                        : <ShoppingBag className="w-5 h-5 text-muted-foreground/30" />}
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                      <Link to={`/product/${encodeURIComponent(item.product_id)}`} className="text-sm font-medium hover:text-primary transition-colors line-clamp-1">
+                                        {item.product_name}
+                                      </Link>
+                                      <p className="text-xs text-muted-foreground">SKU: {item.product_id} · Qty: {item.quantity}</p>
+                                    </div>
+                                    <span className="text-sm font-semibold text-primary shrink-0">
+                                      ${(Number(item.price) * item.quantity).toFixed(2)}
+                                    </span>
+                                  </div>
+                                ))}
+                              </div>
+                              <div className="px-4 py-3 bg-secondary/10 text-xs text-muted-foreground space-y-1 border-t border-border">
+                                <div className="flex justify-between"><span>Subtotal</span><span>${Number(order.subtotal).toFixed(2)}</span></div>
+                                <div className="flex justify-between"><span>Shipping</span><span>{Number(order.shipping) === 0 ? "Free" : `$${Number(order.shipping).toFixed(2)}`}</span></div>
+                                <div className="flex justify-between"><span>Tax</span><span>${Number(order.tax).toFixed(2)}</span></div>
+                                <div className="flex justify-between font-semibold text-foreground text-sm pt-1 border-t border-border">
+                                  <span>Total</span><span>${Number(order.total).toFixed(2)} CAD</span>
+                                </div>
+                              </div>
+                            </>
+                          ) : (
+                            <p className="px-4 py-3 text-sm text-muted-foreground">No item details available.</p>
+                          )}
+                        </div>
+                      )}
                     </div>
                   ))
                 )}
