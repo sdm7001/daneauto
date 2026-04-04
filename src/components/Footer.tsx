@@ -2,8 +2,6 @@ import { forwardRef } from "react";
 import { Link } from "react-router-dom";
 import { Mail, Phone, MapPin } from "lucide-react";
 import Logo from "./Logo";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
 import { useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
