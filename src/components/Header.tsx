@@ -14,6 +14,7 @@ const Header = () => {
   const { items } = useCart();
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
+  const { count: wishlistCount } = useWishlist();
   const cartCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
   useEffect(() => {
