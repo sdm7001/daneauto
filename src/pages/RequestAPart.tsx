@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
+import PageBreadcrumb from "@/components/PageBreadcrumb";
 
 const YEARS = Array.from({ length: 35 }, (_, i) => String(2024 - i));
 
