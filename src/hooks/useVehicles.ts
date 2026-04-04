@@ -116,18 +116,3 @@ export function useSubcategories(year?: string, make?: string, model?: string, c
     staleTime: Infinity,
   })
 }
-  return useQuery<string[]>({
-    queryKey: ['vehicles', 'lines', year, make, model],
-    queryFn: async () => {
-      const { data, error } = await supabase.rpc('get_product_lines', {
-        p_year: year,
-        p_make: make,
-        p_model: model,
-      })
-      if (error) throw error
-      return (data as { product_line: string }[]).map(r => r.product_line)
-    },
-    enabled: !!year && !!make && !!model,
-    staleTime: Infinity,
-  })
-}
