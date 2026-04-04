@@ -11,7 +11,7 @@ interface ProductCardProps {
   product: Product;
 }
 
-const ProductCard = ({ product }: ProductCardProps) => {
+const ProductCard = forwardRef<HTMLDivElement, ProductCardProps>(({ product }, ref) => {
   const { addItem } = useCart();
   const [copied, setCopied] = useState(false);
 
