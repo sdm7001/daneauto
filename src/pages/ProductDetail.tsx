@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   ShoppingCart, ArrowLeft, ImageOff, Tag, Wrench, Car, Shield,
   CheckCircle, Package, Truck, RotateCcw, Info, ChevronRight
@@ -61,8 +62,21 @@ const ProductDetail = () => {
 
   if (isLoading) {
     return (
-      <main className="min-h-screen flex items-center justify-center">
-        <div className="animate-pulse text-muted-foreground font-display text-lg">Loading...</div>
+      <main className="min-h-screen py-6 md:py-10">
+        <div className="container mx-auto px-4 max-w-7xl">
+          <Skeleton className="h-4 w-64 mb-8" />
+          <div className="grid lg:grid-cols-2 gap-10 mb-16">
+            <Skeleton className="aspect-square rounded-xl" />
+            <div className="space-y-4">
+              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-8 w-3/4" />
+              <Skeleton className="h-4 w-32" />
+              <Skeleton className="h-10 w-28" />
+              <Skeleton className="h-12 w-full mt-4" />
+              <Skeleton className="h-12 w-full" />
+            </div>
+          </div>
+        </div>
       </main>
     );
   }
