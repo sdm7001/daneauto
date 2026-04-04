@@ -41,7 +41,7 @@ const Shop = () => {
   }, [searchInput]);
 
   const { data, isLoading, isPlaceholderData } = useProducts({
-    year, make, model, productLine, search, sort, page, pageSize: PAGE_SIZE,
+    year, make, model, productLine, subcategory, search, sort, page, pageSize: PAGE_SIZE,
   });
 
   const { data: lines = [] } = useProductLines(year, make, model);
