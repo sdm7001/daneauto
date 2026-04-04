@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ShoppingCart, ImageOff } from "lucide-react";
+import { ShoppingCart, ImageOff, Copy, Check } from "lucide-react";
 import { Button } from "./ui/button";
 import { useCart } from "@/contexts/CartContext";
 import { toast } from "sonner";
@@ -12,6 +13,16 @@ interface ProductCardProps {
 
 const ProductCard = ({ product }: ProductCardProps) => {
   const { addItem } = useCart();
+  const [copied, setCopied] = useState(false);
+
+  const copySku = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigator.clipboard.writeText(product.sku).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    });
+  };
 
   const handleAddToCart = () => {
     addItem({
@@ -66,7 +77,16 @@ const ProductCard = ({ product }: ProductCardProps) => {
             {product.description ?? product.sku}
           </h3>
         </Link>
-        <p className="text-xs text-muted-foreground mt-1">SKU: {product.sku}</p>
+        <button
+          onClick={copySku}
+          className="flex items-center gap-1 text-xs text-muted-foreground hover:text-primary mt-1 transition-colors group"
+          title="Copy SKU"
+        >
+          <span>SKU: {product.sku}</span>
+          {copied
+            ? <Check className="w-3 h-3 text-green-400" />
+            : <Copy className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />}
+        </button>
 
         <div className="flex items-center justify-between mt-4">
           <div>
