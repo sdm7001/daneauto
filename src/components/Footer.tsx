@@ -84,7 +84,7 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
           <div>
             <Logo />
             <p className="text-muted-foreground mt-4 text-sm leading-relaxed">
-              Canada's source for collision and auto body parts. 319,910 SKUs. Ships to CA, US, and MX.
+              Canada's source for collision and auto body parts. 319,910 SKUs. Located in Winnipeg, MB. Ships to CA, US, and MX.
             </p>
           </div>
 

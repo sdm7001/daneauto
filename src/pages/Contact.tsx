@@ -16,7 +16,7 @@ const contactInfo = [
 ];
 
 const Contact = () => {
-  usePageTitle("Contact Us", "Contact Dane Auto Parts Ltd. Based in Ontario, Canada. Reach us for parts inquiries, orders, and support.");
+  usePageTitle("Contact Us", "Contact Dane Auto Parts Ltd. Located at 1000 Henry Ave, Winnipeg MB. Call 1-(204) 599-4562 for parts inquiries, orders, and support.");
   const [searchParams] = useSearchParams();
   const [formData, setFormData] = useState({
     name: "", email: "", phone: "",
