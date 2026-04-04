@@ -59,6 +59,24 @@ export function useTopProductLines(limit = 16) {
   })
 }
 
+export function useVehicleProductLines(year: string, make: string, model: string, limit = 8) {
+  return useQuery<ProductLineCount[]>({
+    queryKey: ['vehicles', 'vehicle-lines', year, make, model, limit],
+    queryFn: async () => {
+      const { data, error } = await supabase.rpc('get_vehicle_product_lines', {
+        p_year: year,
+        p_make: make,
+        p_model: model,
+        p_limit: limit,
+      } as any)
+      if (error) throw error
+      return (data as ProductLineCount[]) ?? []
+    },
+    enabled: !!year && !!make && !!model,
+    staleTime: Infinity,
+  })
+}
+
 export function useProductLines(year: string, make: string, model: string) {
   return useQuery<string[]>({
     queryKey: ['vehicles', 'lines', year, make, model],
