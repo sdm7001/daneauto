@@ -13,6 +13,7 @@ const Cart = () => {
   const { items, updateQuantity, removeItem, total, clearCart } = useCart();
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [confirmClear, setConfirmClear] = useState(false);
 
   const shipping = total >= 75 ? 0 : 9.99;
   const tax = total * 0.13; // HST
@@ -122,10 +123,30 @@ const Cart = () => {
               </div>
             ))}
 
-            <Button variant="ghost" onClick={clearCart} className="text-destructive text-sm">
-              <Trash2 className="w-4 h-4 mr-2" />
-              Clear Cart
-            </Button>
+            {confirmClear ? (
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-muted-foreground">Remove all items?</span>
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={() => { clearCart(); setConfirmClear(false); }}
+                >
+                  Yes, clear
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setConfirmClear(false)}
+                >
+                  Cancel
+                </Button>
+              </div>
+            ) : (
+              <Button variant="ghost" onClick={() => setConfirmClear(true)} className="text-destructive text-sm">
+                <Trash2 className="w-4 h-4 mr-2" />
+                Clear Cart
+              </Button>
+            )}
           </div>
 
           {/* Order Summary */}
