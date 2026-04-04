@@ -15,7 +15,7 @@ const contactInfo = [
 ];
 
 const Contact = () => {
-  usePageTitle("Contact Us");
+  usePageTitle("Contact Us", "Contact Dane Auto Parts Ltd. Based in Ontario, Canada. Reach us for parts inquiries, orders, and support.");
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);

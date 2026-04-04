@@ -13,7 +13,7 @@ import { useProductLines } from "@/hooks/useVehicles";
 const PAGE_SIZE = 24;
 
 const Shop = () => {
-  usePageTitle("Shop Auto Parts");
+  usePageTitle("Shop Auto Parts", "Search 319,910 collision and body parts by year, make, and model. Bumpers, fenders, head lamps, hoods, doors, mirrors and more. Ships Canada, USA, Mexico.");
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchInput, setSearchInput] = useState(searchParams.get("search") ?? "");
   const [showFilters, setShowFilters] = useState(false);

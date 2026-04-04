@@ -27,6 +27,22 @@ const ProductDetail = () => {
   useEffect(() => {
     if (product) {
       document.title = `${product.description ?? product.sku} | ${BASE_TITLE}`;
+      const price = product.net_price ?? product.list_price;
+      const desc = [
+        product.description ?? product.sku,
+        `SKU: ${product.sku}`,
+        product.product_line,
+        `${product.year} ${product.make} ${product.model}`,
+        price != null ? `$${price.toFixed(2)} CAD` : null,
+        "Ships Canada, USA, Mexico.",
+      ].filter(Boolean).join(" — ");
+      let meta = document.querySelector<HTMLMetaElement>('meta[name="description"]');
+      if (!meta) {
+        meta = document.createElement("meta");
+        meta.name = "description";
+        document.head.appendChild(meta);
+      }
+      meta.content = desc;
     }
     return () => { document.title = BASE_TITLE; };
   }, [product]);

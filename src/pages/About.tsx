@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { usePageTitle } from "@/hooks/usePageTitle";
 
 const About = () => {
-  usePageTitle("About Us");
+  usePageTitle("About Us", "Dane Auto Parts Ltd specializes in OEM-grade collision and body parts covering vehicles from 1961 to 2026. 319,910 parts in catalog. Ships to Canada, USA, and Mexico.");
   const stats = [
     { value: "319,910", label: "Parts in Catalog" },
     { value: "65+", label: "Years of Vehicles Covered" },

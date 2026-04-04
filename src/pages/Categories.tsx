@@ -29,7 +29,7 @@ function lineIcon(line: string): string {
 }
 
 const Categories = () => {
-  usePageTitle("Parts Categories");
+  usePageTitle("Parts Categories", "Browse auto body and collision parts by category. Bumpers, fenders, head lamps, tail lamps, hoods, doors, mirrors, radiators and more.");
   const { data: lines = [], isLoading } = useTopProductLines(32);
 
   return (
