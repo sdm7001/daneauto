@@ -21,6 +21,34 @@ const categoryIcons: Record<string, LucideIcon> = {
   "Suspension & Steering": WrenchIcon,
 };
 
+/** Map subcategory names back to their parent category */
+function getParentCategory(subcategory: string): string {
+  const map: Record<string, string> = {
+    "Bumpers & Components": "Body & Exterior",
+    "Fenders & Liners": "Body & Exterior",
+    "Hoods & Hinges": "Body & Exterior",
+    Mirrors: "Body & Exterior",
+    "Radiator Support": "Body & Exterior",
+    Grilles: "Body & Exterior",
+    "Body Repair Panels": "Body & Exterior",
+    "Quarter Panels & Bed Sides": "Body & Exterior",
+    "Doors & Components": "Body & Exterior",
+    "Tailgates & Trunk Lids": "Body & Exterior",
+    "Glass & Windshield Components": "Body & Exterior",
+    "Cameras & Sensors": "Body & Exterior",
+    "Structural & Supports": "Body & Exterior",
+    OTHER: "Body & Exterior",
+    ENGINE: "Body & Exterior",
+    "Lighting Assemblies": "Lighting",
+    "Radiators & Cooling": "Cooling System",
+    "Air Intake": "Engine",
+    "Mufflers & Exhaust Components": "Exhaust",
+    "Control Arms & Suspension": "Suspension & Steering",
+    Wheels: "Suspension & Steering",
+  };
+  return map[subcategory] ?? "Body & Exterior";
+}
+
 const CategoryGrid = () => {
   const { data: subcategories = [], isLoading } = useSubcategories();
 
@@ -48,7 +76,6 @@ const CategoryGrid = () => {
   const grouped = subcategories.reduce<
     Record<string, { subcategory: string; count: number }[]>
   >((acc, sc) => {
-    // Determine parent category from subcategory name
     const category = getParentCategory(sc.subcategory);
     if (!acc[category]) acc[category] = [];
     acc[category].push(sc);
@@ -126,33 +153,5 @@ const CategoryGrid = () => {
     </section>
   );
 };
-
-/** Map subcategory names back to their parent category */
-function getParentCategory(subcategory: string): string {
-  const map: Record<string, string> = {
-    "Bumpers & Components": "Body & Exterior",
-    "Fenders & Liners": "Body & Exterior",
-    "Hoods & Hinges": "Body & Exterior",
-    Mirrors: "Body & Exterior",
-    "Radiator Support": "Body & Exterior",
-    Grilles: "Body & Exterior",
-    "Body Repair Panels": "Body & Exterior",
-    "Quarter Panels & Bed Sides": "Body & Exterior",
-    "Doors & Components": "Body & Exterior",
-    "Tailgates & Trunk Lids": "Body & Exterior",
-    "Glass & Windshield Components": "Body & Exterior",
-    "Cameras & Sensors": "Body & Exterior",
-    "Structural & Supports": "Body & Exterior",
-    OTHER: "Body & Exterior",
-    ENGINE: "Body & Exterior",
-    "Lighting Assemblies": "Lighting",
-    "Radiators & Cooling": "Cooling System",
-    "Air Intake": "Engine",
-    "Mufflers & Exhaust Components": "Exhaust",
-    "Control Arms & Suspension": "Suspension & Steering",
-    Wheels: "Suspension & Steering",
-  };
-  return map[subcategory] ?? "Body & Exterior";
-}
 
 export default CategoryGrid;
