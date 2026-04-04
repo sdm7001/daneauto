@@ -7,11 +7,32 @@ import WhyChooseUs from "@/components/WhyChooseUs";
 import Testimonials from "@/components/Testimonials";
 import heroBg from "@/assets/hero-bg.jpg";
 import { usePageTitle } from "@/hooks/usePageTitle";
+import StructuredData from "@/components/StructuredData";
+
+const ORG_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "AutoPartsStore",
+  name: "Dane Auto Parts Ltd",
+  url: "https://daneautoparts.com",
+  description: "Collision and body parts for vehicles from 1961 to 2026. Shipping Canada, USA, and Mexico.",
+  address: {
+    "@type": "PostalAddress",
+    addressRegion: "ON",
+    addressCountry: "CA",
+  },
+  areaServed: ["CA", "US", "MX"],
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Auto Body Parts",
+    numberOfItems: 319910,
+  },
+};
 
 const Index = () => {
   usePageTitle();
   return (
     <main>
+      <StructuredData data={ORG_SCHEMA} id="org" />
       {/* Hero Section */}
       <section className="relative min-h-[80vh] flex items-center overflow-hidden">
         {/* Background */}

@@ -11,6 +11,7 @@ import { useCart } from "@/contexts/CartContext";
 import { toast } from "sonner";
 import ProductCard from "@/components/ProductCard";
 import WishlistButton from "@/components/WishlistButton";
+import StructuredData from "@/components/StructuredData";
 
 const BASE_TITLE = "Dane Auto Parts Ltd";
 
@@ -68,8 +69,26 @@ const ProductDetail = () => {
     ? Math.round((1 - product.net_price! / product.list_price!) * 100)
     : 0;
 
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.description ?? product.sku,
+    sku: product.sku,
+    ...(product.partslink_number ? { mpn: product.partslink_number } : {}),
+    ...(product.image_url ? { image: product.image_url } : {}),
+    brand: { "@type": "Brand", name: "OEM-Grade" },
+    offers: {
+      "@type": "Offer",
+      priceCurrency: "CAD",
+      price: displayPrice?.toFixed(2) ?? "0.00",
+      availability: "https://schema.org/InStock",
+      seller: { "@type": "Organization", name: "Dane Auto Parts Ltd" },
+    },
+  };
+
   return (
     <main className="min-h-screen py-6 md:py-10">
+      <StructuredData data={productSchema} id={`product-${product.sku}`} />
       <div className="container mx-auto px-4 max-w-7xl">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-6 md:mb-8 flex-wrap">
