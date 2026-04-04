@@ -245,10 +245,10 @@ const Header = () => {
               <Link
                 key={link.name}
                 to={link.path}
-                className={`block py-3 transition-colors duration-300 font-display uppercase tracking-wider ${
+                className={`block py-3 transition-colors duration-300 font-display uppercase tracking-wider border-l-2 pl-3 ${
                   location.pathname === link.path
-                    ? "text-primary font-semibold"
-                    : "text-foreground/80 hover:text-primary"
+                    ? "text-primary border-primary"
+                    : "text-foreground/80 hover:text-primary border-transparent"
                 }`}
                 onClick={() => setIsMenuOpen(false)}
               >
@@ -269,10 +269,10 @@ const Header = () => {
                 <Link
                   key={link.name}
                   to={link.path}
-                  className={`block py-3 transition-colors duration-300 font-display uppercase tracking-wider text-sm ${
+                  className={`block py-3 transition-colors duration-300 font-display uppercase tracking-wider text-sm border-l-2 pl-3 ${
                     location.pathname === link.path
-                      ? "text-primary font-semibold"
-                      : "text-foreground/80 hover:text-primary"
+                      ? "text-primary border-primary"
+                      : "text-foreground/80 hover:text-primary border-transparent"
                   }`}
                   onClick={() => setIsMenuOpen(false)}
                 >
