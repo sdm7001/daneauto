@@ -167,43 +167,78 @@ const Shop = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar */}
-          {lines.length > 0 && (
+          {(lines.length > 0 || subcategories.length > 0) && (
             <aside className={`lg:w-56 shrink-0 ${showFilters ? "block" : "hidden lg:block"}`}>
-              <div className="bg-gradient-card rounded-xl border border-border p-5 sticky top-24">
-                <h3 className="font-display text-base font-semibold mb-4 uppercase tracking-wider">
-                  Product Line
-                </h3>
-                <ul className="space-y-1">
-                  <li>
-                    <button
-                      onClick={() => setParam("line", "")}
-                      className={`w-full text-left py-1.5 px-3 rounded-md text-sm transition-colors ${
-                        !productLine ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-secondary"
-                      }`}
-                    >
-                      All Lines
-                    </button>
-                  </li>
-                  {lines.map((line) => (
-                    <li key={line}>
-                      <button
-                        onClick={() => setParam("line", line)}
-                        className={`w-full text-left py-1.5 px-3 rounded-md text-sm transition-colors ${
-                          productLine === line ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-secondary"
-                        }`}
-                      >
-                        {line}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
+              <div className="bg-gradient-card rounded-xl border border-border p-5 sticky top-24 space-y-6">
+                {/* Subcategory filter */}
+                {subcategories.length > 0 && (
+                  <div>
+                    <h3 className="font-display text-base font-semibold mb-4 uppercase tracking-wider">
+                      Subcategory
+                    </h3>
+                    <ul className="space-y-1">
+                      <li>
+                        <button
+                          onClick={() => setParam("subcategory", "")}
+                          className={`w-full text-left py-1.5 px-3 rounded-md text-sm transition-colors ${
+                            !subcategory ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                          }`}
+                        >
+                          All Subcategories
+                        </button>
+                      </li>
+                      {subcategories.map((sc) => (
+                        <li key={sc.subcategory}>
+                          <button
+                            onClick={() => setParam("subcategory", sc.subcategory)}
+                            className={`w-full text-left py-1.5 px-3 rounded-md text-sm transition-colors ${
+                              subcategory === sc.subcategory ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                            }`}
+                          >
+                            {sc.subcategory}
+                            <span className="text-xs opacity-70 ml-1">({sc.count.toLocaleString()})</span>
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Product Line filter */}
+                {lines.length > 0 && (
+                  <div>
+                    <h3 className="font-display text-base font-semibold mb-4 uppercase tracking-wider">
+                      Product Line
+                    </h3>
+                    <ul className="space-y-1">
+                      <li>
+                        <button
+                          onClick={() => setParam("line", "")}
+                          className={`w-full text-left py-1.5 px-3 rounded-md text-sm transition-colors ${
+                            !productLine ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                          }`}
+                        >
+                          All Lines
+                        </button>
+                      </li>
+                      {lines.map((line) => (
+                        <li key={line}>
+                          <button
+                            onClick={() => setParam("line", line)}
+                            className={`w-full text-left py-1.5 px-3 rounded-md text-sm transition-colors ${
+                              productLine === line ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                            }`}
+                          >
+                            {line}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             </aside>
           )}
-
-          {/* Products */}
-          <div className="flex-1">
-            {productLine && (
               <div className="mb-6">
                 <Button
                   variant="outline"
