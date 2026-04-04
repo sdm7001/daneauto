@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
+import PageBreadcrumb from "@/components/PageBreadcrumb";
 
 const YEARS = Array.from({ length: 35 }, (_, i) => String(2024 - i));
 
@@ -93,6 +94,7 @@ const RequestAPart = () => {
   return (
     <main className="min-h-screen py-8">
       <div className="container mx-auto px-4 max-w-2xl">
+        <PageBreadcrumb segments={[{ label: "Request a Part" }]} className="mb-6" />
         <div className="text-center mb-10">
           <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
             <Search className="w-7 h-7 text-primary" />

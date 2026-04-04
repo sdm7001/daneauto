@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
+import PageBreadcrumb from "@/components/PageBreadcrumb";
 
 const BUSINESS_TYPES = [
   "Auto Body Shop",
@@ -108,6 +109,7 @@ const Wholesale = () => {
   return (
     <main className="min-h-screen py-8">
       <div className="container mx-auto px-4 max-w-4xl">
+        <PageBreadcrumb segments={[{ label: "Wholesale" }]} className="mb-6" />
         {/* Header */}
         <div className="text-center mb-12">
           <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">

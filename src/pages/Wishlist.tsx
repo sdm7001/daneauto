@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import ProductCard from "@/components/ProductCard";
 import type { Product } from "@/hooks/useProducts";
+import PageBreadcrumb from "@/components/PageBreadcrumb";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const db = supabase as any
@@ -62,6 +63,7 @@ const Wishlist = () => {
   return (
     <main className="min-h-screen py-8">
       <div className="container mx-auto px-4 max-w-7xl">
+        <PageBreadcrumb segments={[{ label: "Wishlist" }]} className="mb-6" />
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="font-display text-3xl font-bold">

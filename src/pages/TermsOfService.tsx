@@ -1,5 +1,6 @@
 import { usePageTitle } from "@/hooks/usePageTitle";
 import { Link } from "react-router-dom";
+import PageBreadcrumb from "@/components/PageBreadcrumb";
 
 const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
   <section className="mb-8">
@@ -17,6 +18,7 @@ const TermsOfService = () => {
   return (
     <main className="min-h-screen py-8">
       <div className="container mx-auto px-4 max-w-3xl">
+        <PageBreadcrumb segments={[{ label: "Terms of Service" }]} className="mb-6" />
         <div className="text-center mb-12">
           <h1 className="font-display text-4xl font-bold mb-4">
             Terms of <span className="text-primary">Service</span>

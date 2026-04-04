@@ -2,6 +2,7 @@ import { usePageTitle } from "@/hooks/usePageTitle";
 import { Truck, RotateCcw, Shield, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import PageBreadcrumb from "@/components/PageBreadcrumb";
 
 const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
   <section className="mb-10">
@@ -19,6 +20,7 @@ const ShippingReturns = () => {
   return (
     <main className="min-h-screen py-8">
       <div className="container mx-auto px-4 max-w-3xl">
+        <PageBreadcrumb segments={[{ label: "Shipping & Returns" }]} className="mb-6" />
         <div className="text-center mb-12">
           <h1 className="font-display text-4xl md:text-5xl font-bold mb-4">
             Shipping <span className="text-primary">&</span> Returns

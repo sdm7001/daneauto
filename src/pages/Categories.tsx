@@ -9,6 +9,7 @@ import {
   HIDDEN_SUBCATEGORIES,
 } from "@/lib/categoryIcons";
 import { Wrench as WrenchIcon } from "lucide-react";
+import PageBreadcrumb from "@/components/PageBreadcrumb";
 
 const Categories = () => {
   usePageTitle("Parts Categories", "Browse auto body and collision parts by category. Bumpers, fenders, head lamps, tail lamps, hoods, doors, mirrors, radiators and more.");
@@ -31,6 +32,7 @@ const Categories = () => {
   return (
     <main className="min-h-screen py-8">
       <div className="container mx-auto px-4">
+        <PageBreadcrumb segments={[{ label: "Categories" }]} className="mb-6" />
         <div className="text-center mb-12">
           <h1 className="font-display text-4xl md:text-5xl font-bold mb-4">
             All <span className="text-primary">Categories</span>

@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import PageBreadcrumb from "@/components/PageBreadcrumb";
 
 const contactInfo = [
   { icon: Phone, title: "Phone", value: "1-(204) 599-4562", link: "tel:+12045994562" },
@@ -51,6 +52,7 @@ const Contact = () => {
   return (
     <main className="min-h-screen py-8">
       <div className="container mx-auto px-4">
+        <PageBreadcrumb segments={[{ label: "Contact" }]} className="mb-6" />
         <div className="text-center mb-12">
           <h1 className="font-display text-4xl md:text-5xl font-bold mb-4">
             Contact <span className="text-primary">Us</span>
