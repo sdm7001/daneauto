@@ -195,6 +195,16 @@ const Shop = () => {
 
           {/* Products */}
           <div className="flex-1">
+            {(year && make && model && !isLoading) && (
+              <PopularForVehicle
+                year={year}
+                make={make}
+                model={model}
+                activeLine={productLine}
+                onSelectLine={(line) => setParam("line", line)}
+              />
+            )}
+
             {!hasFilter ? (
               <div className="py-8 max-w-xl mx-auto">
                 <div className="text-center mb-6">
