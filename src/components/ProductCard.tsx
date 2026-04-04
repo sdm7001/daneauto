@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, forwardRef } from "react";
 import { Link } from "react-router-dom";
 import { ShoppingCart, ImageOff, Copy, Check } from "lucide-react";
 import { Button } from "./ui/button";
