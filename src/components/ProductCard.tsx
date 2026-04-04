@@ -28,7 +28,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
     addItem({
       id: product.sku,
       name: product.description ?? product.sku,
-      price: product.net_price ?? product.list_price ?? 0,
+      price: product.list_price ?? product.net_price ?? 0,
       image: product.image_url ?? "",
       category: product.product_line,
     });

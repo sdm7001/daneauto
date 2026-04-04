@@ -103,11 +103,28 @@ export function useFeaturedProducts(limit = 8) {
         .from('products')
         .select('*')
         .not('image_url', 'is', null)
-        .gte('net_price', 10)
-        .order('id', { ascending: false })
-        .limit(limit)
+        .not('list_price', 'is', null)
+        .gte('list_price', 10)
+        .order('list_price', { ascending: false })
+        .limit(200)
       if (error) throw error
-      return (data as Product[]) ?? []
+      // Pick a varied selection from different product lines
+      const all = (data as Product[]) ?? []
+      const seen = new Set<string>()
+      const picked: Product[] = []
+      for (const p of all) {
+        if (picked.length >= limit) break
+        if (!seen.has(p.product_line)) {
+          seen.add(p.product_line)
+          picked.push(p)
+        }
+      }
+      // Fill remaining if needed
+      for (const p of all) {
+        if (picked.length >= limit) break
+        if (!picked.includes(p)) picked.push(p)
+      }
+      return picked
     },
     staleTime: 5 * 60 * 1000,
   })
