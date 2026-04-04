@@ -130,8 +130,8 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
               </li>
               <li className="flex items-center gap-3 text-sm text-muted-foreground">
                 <Mail className="w-5 h-5 text-primary shrink-0" />
-                <a href="mailto:info@daneautoparts.com" className="hover:text-primary transition-colors">
-                  info@daneautoparts.com
+                <a href="mailto:sales@daneauto.ca" className="hover:text-primary transition-colors">
+                  sales@daneauto.ca
                 </a>
               </li>
             </ul>

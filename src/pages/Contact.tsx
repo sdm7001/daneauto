@@ -42,7 +42,7 @@ const Contact = () => {
       setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
     } catch (err) {
       console.error(err);
-      toast.error("Failed to send. Please email us at info@daneautoparts.com");
+      toast.error("Failed to send. Please email us at sales@daneauto.ca");
     } finally {
       setSubmitting(false);
     }
