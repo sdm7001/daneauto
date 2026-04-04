@@ -709,6 +709,148 @@ const Admin = () => {
               </div>
             )}
 
+            {/* Chats Tab */}
+            {activeTab === "chats" && (
+              <div className="space-y-4">
+                <div className="bg-gradient-card rounded-xl border border-border p-6">
+                  <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
+                    <h2 className="font-display text-xl font-bold">Chat Conversations</h2>
+                    <div className="flex gap-2">
+                      {(["all", "new", "archived"] as const).map((f) => (
+                        <button
+                          key={f}
+                          onClick={() => setChatFilter(f)}
+                          className={`text-xs px-3 py-1.5 rounded-full font-medium capitalize transition-colors ${
+                            chatFilter === f
+                              ? "bg-primary text-primary-foreground"
+                              : "bg-secondary text-muted-foreground hover:text-foreground"
+                          }`}
+                        >
+                          {f}
+                          {f === "new" && chatConversations.filter(c => c.status === "new").length > 0 && (
+                            <span className="ml-1">({chatConversations.filter(c => c.status === "new").length})</span>
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {loadingChats ? (
+                    <div className="text-center py-8">
+                      <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto" />
+                    </div>
+                  ) : filteredChats.length === 0 ? (
+                    <p className="text-muted-foreground text-center py-8">No conversations found</p>
+                  ) : (
+                    <div className="space-y-3">
+                      {filteredChats.map((chat) => {
+                        const msgs = Array.isArray(chat.messages)
+                          ? chat.messages
+                          : typeof chat.messages === "string"
+                          ? JSON.parse(chat.messages)
+                          : [];
+                        const isExpanded = expandedChat === chat.id;
+
+                        return (
+                          <div
+                            key={chat.id}
+                            className={`rounded-lg border transition-colors ${
+                              chat.status === "new"
+                                ? "border-primary/40 bg-primary/5"
+                                : chat.status === "archived"
+                                ? "border-border bg-secondary/10 opacity-75"
+                                : "border-border bg-secondary/20"
+                            }`}
+                          >
+                            {/* Header row */}
+                            <div className="flex items-start justify-between gap-4 p-4">
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-2 flex-wrap">
+                                  <span className="font-semibold">{chat.contact_name}</span>
+                                  <a href={`mailto:${chat.contact_email}`} className="text-primary text-sm hover:underline">
+                                    {chat.contact_email}
+                                  </a>
+                                  {chat.contact_phone && (
+                                    <span className="text-muted-foreground text-sm">{chat.contact_phone}</span>
+                                  )}
+                                  {chat.status === "new" && (
+                                    <span className="bg-primary/20 text-primary text-xs font-bold px-2 py-0.5 rounded-full">NEW</span>
+                                  )}
+                                  {chat.status === "archived" && (
+                                    <span className="bg-muted text-muted-foreground text-xs font-bold px-2 py-0.5 rounded-full">ARCHIVED</span>
+                                  )}
+                                </div>
+                                <p className="text-xs text-muted-foreground mt-1">
+                                  {msgs.length} message{msgs.length !== 1 ? "s" : ""} · {new Date(chat.created_at).toLocaleString()}
+                                </p>
+                              </div>
+                              <div className="flex gap-2 shrink-0">
+                                <button
+                                  onClick={() => setExpandedChat(isExpanded ? null : chat.id)}
+                                  className="text-xs text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded border border-border flex items-center gap-1"
+                                >
+                                  <Eye className="w-3 h-3" />
+                                  {isExpanded ? "Hide" : "View"}
+                                  {isExpanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+                                </button>
+                                {chat.status !== "archived" ? (
+                                  <button
+                                    onClick={() => archiveChat(chat.id)}
+                                    className="text-xs text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded border border-border flex items-center gap-1"
+                                  >
+                                    <Archive className="w-3 h-3" /> Archive
+                                  </button>
+                                ) : (
+                                  <button
+                                    onClick={() => reopenChat(chat.id)}
+                                    className="text-xs text-primary hover:text-primary/80 transition-colors px-2 py-1 rounded border border-primary/30"
+                                  >
+                                    Reopen
+                                  </button>
+                                )}
+                                <a
+                                  href={`mailto:${chat.contact_email}?subject=Re: Your chat with Dane Auto Parts`}
+                                  className="text-xs text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded border border-border"
+                                >
+                                  Reply
+                                </a>
+                              </div>
+                            </div>
+
+                            {/* Expanded chat messages */}
+                            {isExpanded && (
+                              <div className="border-t border-border p-4 max-h-96 overflow-auto space-y-2 bg-background/50">
+                                {msgs.length === 0 ? (
+                                  <p className="text-muted-foreground text-sm text-center">No messages</p>
+                                ) : (
+                                  msgs.map((m: any, i: number) => (
+                                    <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
+                                      <div
+                                        className={`max-w-[80%] rounded-lg px-3 py-2 text-sm ${
+                                          m.role === "user"
+                                            ? "bg-primary text-primary-foreground"
+                                            : "bg-secondary text-foreground"
+                                        }`}
+                                      >
+                                        <p className="text-[10px] font-bold uppercase tracking-wider mb-0.5 opacity-60">
+                                          {m.role === "user" ? chat.contact_name : "Bot"}
+                                        </p>
+                                        {m.content}
+                                      </div>
+                                    </div>
+                                  ))
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
             {/* Emails Tab */}
             {activeTab === "emails" && (
               <div className="space-y-6">
