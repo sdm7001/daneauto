@@ -102,7 +102,11 @@ const Header = () => {
               </Link>
             ))}
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-1 text-foreground/80 hover:text-primary transition-colors duration-300 font-display uppercase tracking-wider text-sm outline-none">
+              <DropdownMenuTrigger className={`flex items-center gap-1 transition-colors duration-300 font-display uppercase tracking-wider text-sm outline-none ${
+                mobileExtraLinks.some(l => location.pathname === l.path)
+                  ? "text-primary font-semibold"
+                  : "text-foreground/80 hover:text-primary"
+              }`}>
                 More <ChevronDown className="w-3.5 h-3.5" />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
