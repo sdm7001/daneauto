@@ -44,7 +44,18 @@ interface EmailLog {
   created_at: string;
 }
 
-type AdminTab = "dashboard" | "users" | "emails";
+type AdminTab = "dashboard" | "users" | "emails" | "messages";
+
+interface ContactSubmission {
+  id: string;
+  name: string;
+  email: string;
+  phone: string | null;
+  subject: string;
+  message: string;
+  status: string;
+  created_at: string;
+}
 
 const Admin = () => {
   const { user, loading } = useAuth();
@@ -67,6 +78,11 @@ const Admin = () => {
   const [emailForm, setEmailForm] = useState({ subject: "", body: "" });
   const [sendingEmail, setSendingEmail] = useState(false);
 
+  // Messages state
+  const [messages, setMessages] = useState<ContactSubmission[]>([]);
+  const [loadingMessages, setLoadingMessages] = useState(false);
+  const [expandedMessage, setExpandedMessage] = useState<string | null>(null);
+
   useEffect(() => {
     if (!loading && !user) {
       navigate("/account");
@@ -80,6 +96,7 @@ const Admin = () => {
       if (activeTab === "dashboard") fetchStats();
       if (activeTab === "users") fetchUsers();
       if (activeTab === "emails") fetchEmailLogs();
+      if (activeTab === "messages") fetchMessages();
     }
   }, [isAdmin, activeTab]);
 
@@ -148,6 +165,21 @@ const Admin = () => {
     } else {
       setEmailLogs(data || []);
     }
+  };
+
+  const fetchMessages = async () => {
+    setLoadingMessages(true);
+    const { data, error } = await (supabase as any)
+      .from("contact_submissions")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (!error && data) setMessages(data);
+    setLoadingMessages(false);
+  };
+
+  const markMessageRead = async (id: string) => {
+    await (supabase as any).from("contact_submissions").update({ status: "read" }).eq("id", id);
+    setMessages((prev) => prev.map((m) => m.id === id ? { ...m, status: "read" } : m));
   };
 
   const handleUpdateUser = async () => {
@@ -271,6 +303,22 @@ const Admin = () => {
               >
                 <Mail className="w-5 h-5" />
                 Emails
+              </button>
+              <button
+                onClick={() => setActiveTab("messages")}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                  activeTab === "messages"
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+                }`}
+              >
+                <Edit className="w-5 h-5" />
+                Messages
+                {messages.filter(m => m.status === "new").length > 0 && (
+                  <span className="ml-auto bg-destructive text-destructive-foreground text-xs font-bold px-1.5 py-0.5 rounded-full">
+                    {messages.filter(m => m.status === "new").length}
+                  </span>
+                )}
               </button>
             </nav>
           </aside>
@@ -479,6 +527,69 @@ const Admin = () => {
                     </div>
                   </div>
                 )}
+              </div>
+            )}
+
+            {/* Messages Tab */}
+            {activeTab === "messages" && (
+              <div className="space-y-4">
+                <div className="bg-gradient-card rounded-xl border border-border p-6">
+                  <h2 className="font-display text-xl font-bold mb-6">Contact Form Submissions</h2>
+
+                  {loadingMessages ? (
+                    <div className="text-center py-8">
+                      <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto" />
+                    </div>
+                  ) : messages.length === 0 ? (
+                    <p className="text-muted-foreground text-center py-8">No messages yet</p>
+                  ) : (
+                    <div className="space-y-3">
+                      {messages.map((msg) => (
+                        <div key={msg.id} className={`rounded-lg border p-4 transition-colors ${msg.status === "new" ? "border-primary/40 bg-primary/5" : "border-border bg-secondary/20"}`}>
+                          <div className="flex items-start justify-between gap-4">
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2 flex-wrap">
+                                <span className="font-semibold">{msg.name}</span>
+                                <a href={`mailto:${msg.email}`} className="text-primary text-sm hover:underline">{msg.email}</a>
+                                {msg.phone && <span className="text-muted-foreground text-sm">{msg.phone}</span>}
+                                {msg.status === "new" && (
+                                  <span className="bg-primary/20 text-primary text-xs font-bold px-2 py-0.5 rounded-full">NEW</span>
+                                )}
+                              </div>
+                              <p className="font-medium text-sm mt-1">{msg.subject}</p>
+                              <p className="text-xs text-muted-foreground mt-0.5">{new Date(msg.created_at).toLocaleString()}</p>
+                              {expandedMessage === msg.id && (
+                                <p className="mt-3 text-sm text-muted-foreground whitespace-pre-wrap border-t border-border pt-3">{msg.message}</p>
+                              )}
+                            </div>
+                            <div className="flex gap-2 shrink-0">
+                              <button
+                                onClick={() => setExpandedMessage(expandedMessage === msg.id ? null : msg.id)}
+                                className="text-xs text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded border border-border"
+                              >
+                                {expandedMessage === msg.id ? "Hide" : "Read"}
+                              </button>
+                              {msg.status === "new" && (
+                                <button
+                                  onClick={() => markMessageRead(msg.id)}
+                                  className="text-xs text-primary hover:text-primary/80 transition-colors px-2 py-1 rounded border border-primary/30"
+                                >
+                                  Mark Read
+                                </button>
+                              )}
+                              <a
+                                href={`mailto:${msg.email}?subject=Re: ${encodeURIComponent(msg.subject)}`}
+                                className="text-xs text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded border border-border"
+                              >
+                                Reply
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
             )}
 
