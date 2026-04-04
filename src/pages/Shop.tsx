@@ -136,17 +136,12 @@ const Shop = () => {
           )}
 
           <div className="flex flex-col md:flex-row gap-4">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-              <Input
-                type="text"
-                placeholder="Search by SKU, description, OEM number..."
-                value={searchInput}
-                onChange={(e) => setSearchInput(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                className="pl-10"
-              />
-            </div>
+            <SearchAutocomplete
+              value={searchInput}
+              onChange={setSearchInput}
+              onSearch={handleSearch}
+              className="flex-1"
+            />
             <Button onClick={handleSearch} variant="default">Search</Button>
             <Button
               variant="outline"
