@@ -61,8 +61,16 @@ const Header = () => {
     { name: "Home", path: "/" },
     { name: "Shop", path: "/shop" },
     { name: "Categories", path: "/categories" },
+    { name: "Blog", path: "/blog" },
     { name: "About", path: "/about" },
     { name: "Contact", path: "/contact" },
+  ];
+
+  const mobileExtraLinks = [
+    { name: "FAQ", path: "/faq" },
+    { name: "Request a Part", path: "/request-a-part" },
+    { name: "Wholesale", path: "/wholesale" },
+    { name: "Shipping & Returns", path: "/shipping-returns" },
   ];
 
   return (
@@ -223,6 +231,18 @@ const Header = () => {
                 Admin Dashboard
               </Link>
             )}
+            <div className="border-t border-border mt-2 pt-2">
+              {mobileExtraLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  to={link.path}
+                  className="block py-3 text-foreground/80 hover:text-primary transition-colors duration-300 font-display uppercase tracking-wider text-sm"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {link.name}
+                </Link>
+              ))}
+            </div>
             {user && (
               <Link
                 to="/wishlist"
