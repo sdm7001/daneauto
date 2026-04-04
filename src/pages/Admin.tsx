@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { usePageTitle } from "@/hooks/usePageTitle";
 import { 
   LayoutDashboard, Users, Mail, Package, TrendingUp, DollarSign, 
   UserCheck, Clock, Send, Edit, ArrowLeft
@@ -58,6 +59,7 @@ interface ContactSubmission {
 }
 
 const Admin = () => {
+  usePageTitle("Admin");
   const { user, loading } = useAuth();
   const navigate = useNavigate();
   const [isAdmin, setIsAdmin] = useState(false);
@@ -178,7 +180,7 @@ const Admin = () => {
   };
 
   const markMessageRead = async (id: string) => {
-    await (supabase as any).from("contact_submissions").update({ status: "read" }).eq("id", id);
+    await supabase.from("contact_submissions").update({ status: "read" }).eq("id", id);
     setMessages((prev) => prev.map((m) => m.id === id ? { ...m, status: "read" } : m));
   };
 
