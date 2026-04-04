@@ -365,6 +365,17 @@ const Admin = () => {
                   </span>
                 )}
               </button>
+              <button
+                onClick={() => setActiveTab("import")}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                  activeTab === "import"
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+                }`}
+              >
+                <Upload className="w-5 h-5" />
+                Import
+              </button>
             </nav>
           </aside>
 
