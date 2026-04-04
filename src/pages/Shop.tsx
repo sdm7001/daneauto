@@ -195,6 +195,23 @@ const Shop = () => {
 
           {/* Products */}
           <div className="flex-1">
+            {productLine && (
+              <div className="mb-6">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setParam("line", "")}
+                  className="gap-2"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                  Back to all parts
+                  <span className="text-muted-foreground font-normal">
+                    ({productLine})
+                  </span>
+                </Button>
+              </div>
+            )}
+
             {(year && make && model && !isLoading) && (
               <PopularForVehicle
                 year={year}
