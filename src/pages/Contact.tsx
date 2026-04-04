@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Mail, Phone, MapPin, Clock, Send, CheckCircle } from "lucide-react";
+import { usePageTitle } from "@/hooks/usePageTitle";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -14,6 +15,7 @@ const contactInfo = [
 ];
 
 const Contact = () => {
+  usePageTitle("Contact Us");
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -22,7 +24,7 @@ const Contact = () => {
     e.preventDefault();
     setSubmitting(true);
     try {
-      const { error } = await (supabase as any).from("contact_submissions").insert({
+      const { error } = await supabase.from("contact_submissions").insert({
         name: formData.name,
         email: formData.email,
         phone: formData.phone || null,

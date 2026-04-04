@@ -1,10 +1,12 @@
 import { useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import { usePageTitle } from "@/hooks/usePageTitle";
 import { CheckCircle, ShoppingBag, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
 
 const OrderSuccess = () => {
+  usePageTitle("Order Confirmed");
   const [searchParams] = useSearchParams();
   const { clearCart } = useCart();
   const sessionId = searchParams.get("session_id");

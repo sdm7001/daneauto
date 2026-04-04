@@ -6,8 +6,10 @@ import FeaturedProducts from "@/components/FeaturedProducts";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import Testimonials from "@/components/Testimonials";
 import heroBg from "@/assets/hero-bg.jpg";
+import { usePageTitle } from "@/hooks/usePageTitle";
 
 const Index = () => {
+  usePageTitle();
   return (
     <main>
       {/* Hero Section */}

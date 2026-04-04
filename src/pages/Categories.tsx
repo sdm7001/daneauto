@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { useTopProductLines } from "@/hooks/useVehicles";
+import { usePageTitle } from "@/hooks/usePageTitle";
 
 function lineIcon(line: string): string {
   const l = line.toLowerCase();
@@ -28,6 +29,7 @@ function lineIcon(line: string): string {
 }
 
 const Categories = () => {
+  usePageTitle("Parts Categories");
   const { data: lines = [], isLoading } = useTopProductLines(32);
 
   return (

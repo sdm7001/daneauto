@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { usePageTitle } from "@/hooks/usePageTitle";
 import { User, Mail, Lock, Eye, EyeOff, LogOut, Car, Package, Settings, ChevronDown, ChevronUp, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -37,6 +38,7 @@ interface Order {
 }
 
 const Account = () => {
+  usePageTitle("My Account");
   const { user, loading, signUp, signIn, signOut } = useAuth();
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import {
   ShoppingCart, ArrowLeft, ImageOff, Tag, Wrench, Car, Shield,
@@ -11,6 +12,8 @@ import { toast } from "sonner";
 import ProductCard from "@/components/ProductCard";
 import WishlistButton from "@/components/WishlistButton";
 
+const BASE_TITLE = "Dane Auto Parts Ltd";
+
 const ProductDetail = () => {
   const { sku } = useParams<{ sku: string }>();
   const navigate = useNavigate();
@@ -19,6 +22,13 @@ const ProductDetail = () => {
   const { data: product, isLoading, error } = useProduct(decodedSku);
   const { data: relatedProducts } = useRelatedProducts(product);
   const { data: compatibleVehicles } = useCompatibleVehicles(product?.partslink_number);
+
+  useEffect(() => {
+    if (product) {
+      document.title = `${product.description ?? product.sku} | ${BASE_TITLE}`;
+    }
+    return () => { document.title = BASE_TITLE; };
+  }, [product]);
 
   const handleAddToCart = () => {
     if (!product) return;

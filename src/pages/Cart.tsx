@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { usePageTitle } from "@/hooks/usePageTitle";
 import { Minus, Plus, Trash2, ArrowLeft, ShoppingBag, Loader2, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
@@ -8,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 const Cart = () => {
+  usePageTitle("Cart");
   const { items, updateQuantity, removeItem, total, clearCart } = useCart();
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);

@@ -1,8 +1,10 @@
 import { CheckCircle, Users, Wrench, Award, Package, Globe, ShieldCheck, Truck } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { usePageTitle } from "@/hooks/usePageTitle";
 
 const About = () => {
+  usePageTitle("About Us");
   const stats = [
     { value: "319,910", label: "Parts in Catalog" },
     { value: "65+", label: "Years of Vehicles Covered" },

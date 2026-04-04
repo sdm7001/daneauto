@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
+import { usePageTitle } from "@/hooks/usePageTitle";
 import { Search, SlidersHorizontal, X, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,6 +12,7 @@ import { useProductLines } from "@/hooks/useVehicles";
 const PAGE_SIZE = 24;
 
 const Shop = () => {
+  usePageTitle("Shop Auto Parts");
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchInput, setSearchInput] = useState(searchParams.get("search") ?? "");
   const [showFilters, setShowFilters] = useState(false);

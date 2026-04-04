@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Heart, ShoppingBag } from "lucide-react";
+import { usePageTitle } from "@/hooks/usePageTitle";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useWishlist } from "@/hooks/useWishlist";
@@ -9,6 +10,7 @@ import ProductCard from "@/components/ProductCard";
 import type { Product } from "@/hooks/useProducts";
 
 const Wishlist = () => {
+  usePageTitle("Wishlist");
   const { user, loading: authLoading } = useAuth();
   const { wishlistSkus, isLoading: wishlistLoading } = useWishlist();
 
