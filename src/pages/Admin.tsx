@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { usePageTitle } from "@/hooks/usePageTitle";
 import { 
   LayoutDashboard, Users, Mail, Package, TrendingUp, DollarSign, 
-  UserCheck, Clock, Send, Edit, ArrowLeft, Upload, FileUp, CheckCircle2, AlertCircle
+  UserCheck, Clock, Send, Edit, ArrowLeft, Upload, FileUp, CheckCircle2, AlertCircle,
+  MessageCircle, Archive, Eye, ChevronDown, ChevronUp
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
