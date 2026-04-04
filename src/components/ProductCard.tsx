@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, forwardRef } from "react";
 import { Link } from "react-router-dom";
 import { ShoppingCart, ImageOff, Copy, Check } from "lucide-react";
 import { Button } from "./ui/button";
@@ -11,7 +11,7 @@ interface ProductCardProps {
   product: Product;
 }
 
-const ProductCard = ({ product }: ProductCardProps) => {
+const ProductCard = forwardRef<HTMLDivElement, ProductCardProps>(({ product }, ref) => {
   const { addItem } = useCart();
   const [copied, setCopied] = useState(false);
 
@@ -42,7 +42,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
     : 0;
 
   return (
-    <div className="group bg-gradient-card rounded-xl border border-border overflow-hidden shadow-card hover:shadow-elevated transition-all duration-500 hover:-translate-y-1">
+    <div ref={ref} className="group bg-gradient-card rounded-xl border border-border overflow-hidden shadow-card hover:shadow-elevated transition-all duration-500 hover:-translate-y-1">
       <Link to={`/product/${encodeURIComponent(product.sku)}`} className="block relative overflow-hidden">
         <div className="aspect-square bg-secondary/30 flex items-center justify-center">
           {product.image_url ? (
@@ -117,6 +117,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
       </div>
     </div>
   );
-};
+});
+
+ProductCard.displayName = "ProductCard";
 
 export default ProductCard;

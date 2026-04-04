@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import { Link } from "react-router-dom";
 import { Mail, Phone, MapPin } from "lucide-react";
 import Logo from "./Logo";
@@ -7,7 +8,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 
-const Footer = () => {
+const Footer = forwardRef<HTMLElement>((_, ref) => {
   const [email, setEmail] = useState("");
   const [subscribing, setSubscribing] = useState(false);
 
@@ -50,7 +51,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-card border-t border-border">
+    <footer ref={ref} className="bg-card border-t border-border">
       {/* Newsletter */}
       <div className="bg-gradient-card border-b border-border">
         <div className="container mx-auto px-4 py-12">
@@ -152,6 +153,8 @@ const Footer = () => {
       </div>
     </footer>
   );
-};
+});
+
+Footer.displayName = "Footer";
 
 export default Footer;
