@@ -80,44 +80,24 @@ const Shop = () => {
       <section className="bg-gradient-card border-b border-border py-8 md:py-12">
         <div className="container mx-auto px-4">
           {/* Breadcrumbs */}
-          <nav aria-label="Breadcrumb" className="flex items-center gap-1 text-xs text-muted-foreground mb-4 flex-wrap">
-            <Link to="/" className="flex items-center gap-0.5 hover:text-primary transition-colors">
-              <Home className="w-3 h-3" />
-              <span>Home</span>
-            </Link>
-            <ChevronRight className="w-3 h-3" />
-            {hasFilter ? (
-              <Link to="/shop" className="hover:text-primary transition-colors">Shop</Link>
-            ) : (
-              <span className="text-foreground">Shop</span>
-            )}
-            {(year || make || model) && (
-              <>
-                <ChevronRight className="w-3 h-3" />
-                <span className="text-foreground font-medium">
-                  {[year, make, model].filter(Boolean).join(" ")}
-                </span>
-              </>
-            )}
-            {productLine && (
-              <>
-                <ChevronRight className="w-3 h-3" />
-                <span className="text-foreground font-medium">{productLine}</span>
-              </>
-            )}
-            {subcategory && (
-              <>
-                <ChevronRight className="w-3 h-3" />
-                <span className="text-foreground font-medium">{subcategory}</span>
-              </>
-            )}
-            {search && (
-              <>
-                <ChevronRight className="w-3 h-3" />
-                <span className="text-foreground font-medium">"{search}"</span>
-              </>
-            )}
-          </nav>
+          <PageBreadcrumb
+            segments={(() => {
+              const segs: BreadcrumbSegment[] = [];
+              if (hasFilter) {
+                segs.push({ label: "Shop", href: "/shop" });
+              } else {
+                segs.push({ label: "Shop" });
+              }
+              if (year || make || model) {
+                segs.push({ label: [year, make, model].filter(Boolean).join(" ") });
+              }
+              if (productLine) segs.push({ label: productLine });
+              if (subcategory) segs.push({ label: subcategory });
+              if (search) segs.push({ label: `"${search}"` });
+              return segs;
+            })()}
+            className="mb-4"
+          />
 
           <h1 className="font-display text-3xl md:text-4xl font-bold mb-4">
             Shop <span className="text-primary">Auto Parts</span>
