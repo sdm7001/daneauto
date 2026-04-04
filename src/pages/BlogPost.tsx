@@ -4,6 +4,7 @@ import { Calendar, Clock, ArrowLeft, User } from "lucide-react";
 import { usePageTitle } from "@/hooks/usePageTitle";
 import { Button } from "@/components/ui/button";
 import { blogPosts } from "./Blog";
+import PageBreadcrumb from "@/components/PageBreadcrumb";
 
 /* ─── Static post content ─────────────────────────────────────────────────── */
 
