@@ -33,6 +33,9 @@ export interface ProductsResult {
   total: number
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const db = supabase as any
+
 export function useProducts(filters: ProductFilters = {}) {
   const { year, make, model, productLine, search, page = 1, pageSize = 24 } = filters
   const from = (page - 1) * pageSize
@@ -43,7 +46,7 @@ export function useProducts(filters: ProductFilters = {}) {
   return useQuery<ProductsResult>({
     queryKey: ['products', { year, make, model, productLine, search, page, pageSize }],
     queryFn: async () => {
-      let query = (supabase as any)
+      let query = db
         .from('products')
         .select('*', { count: 'exact' })
         .range(from, to)
@@ -72,7 +75,7 @@ export function useProduct(sku: string) {
   return useQuery<Product | null>({
     queryKey: ['product', sku],
     queryFn: async () => {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await db
         .from('products')
         .select('*')
         .eq('sku', sku)
@@ -89,7 +92,7 @@ export function useFeaturedProducts(limit = 8) {
   return useQuery<Product[]>({
     queryKey: ['products', 'featured', limit],
     queryFn: async () => {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await db
         .from('products')
         .select('*')
         .not('image_url', 'is', null)
@@ -108,7 +111,7 @@ export function useRelatedProducts(product: Product | null | undefined, limit = 
     queryKey: ['products', 'related', product?.sku, limit],
     queryFn: async () => {
       if (!product) return []
-      const { data, error } = await (supabase as any)
+      const { data, error } = await db
         .from('products')
         .select('*')
         .eq('product_line', product.product_line)
@@ -130,7 +133,7 @@ export function useCompatibleVehicles(partslink: string | null | undefined) {
     queryKey: ['products', 'compatibility', partslink],
     queryFn: async () => {
       if (!partslink) return []
-      const { data, error } = await (supabase as any)
+      const { data, error } = await db
         .from('products')
         .select('year, make, model')
         .eq('partslink_number', partslink)
