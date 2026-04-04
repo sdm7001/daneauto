@@ -23,6 +23,7 @@ const Shop = () => {
   const make       = searchParams.get("make") ?? "";
   const model      = searchParams.get("model") ?? "";
   const productLine = searchParams.get("line") ?? "";
+  const subcategory = searchParams.get("subcategory") ?? "";
   const search     = searchParams.get("search") ?? "";
   const sort       = (searchParams.get("sort") ?? "sku") as ProductSort;
   const page       = parseInt(searchParams.get("page") ?? "1");
