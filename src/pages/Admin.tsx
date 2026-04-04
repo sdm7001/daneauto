@@ -128,6 +128,7 @@ const Admin = () => {
       if (activeTab === "users") fetchUsers();
       if (activeTab === "emails") fetchEmailLogs();
       if (activeTab === "messages") fetchMessages();
+      if (activeTab === "chats") fetchChatConversations();
     }
   }, [isAdmin, activeTab]);
 
