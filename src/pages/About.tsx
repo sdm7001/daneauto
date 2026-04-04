@@ -77,13 +77,15 @@ const About = () => {
             </h2>
             <div className="space-y-4 text-muted-foreground">
               <p>
-                Dane Auto Parts Ltd specializes in collision and auto body replacement parts. Our catalog covers headlamps, fenders, bumper covers, hoods, mirrors, grilles, door panels, and hundreds of other body components — all sourced to OEM standards.
+                Dane Auto Parts Ltd specializes in collision and auto body replacement parts. Based at 1000 Henry Ave in Winnipeg, Manitoba, our catalog covers headlamps, fenders, bumper covers, hoods, mirrors, grilles, door panels, and hundreds of other body components — all sourced to OEM standards.
               </p>
               <p>
                 With 319,910 SKUs spanning vehicles from 1961 to 2026, we stock parts for virtually every make and model sold in North America. Each product includes OEM and Partslink cross-reference numbers so you can confirm fitment before ordering.
               </p>
               <p>
-                Orders ship to Canada, the United States, and Mexico. Free shipping on orders over $75 CAD. Secure checkout powered by Stripe.
+                Orders ship to Canada, the United States, and Mexico. Free shipping on orders over $75 CAD. Secure checkout powered by Stripe. Questions? Email us at{" "}
+                <a href="mailto:sales@daneauto.ca" className="text-primary hover:underline">sales@daneauto.ca</a> or call{" "}
+                <a href="tel:+12045994562" className="text-primary hover:underline">1-(204) 599-4562</a>.
               </p>
             </div>
             <div className="mt-8 flex flex-wrap gap-4">
