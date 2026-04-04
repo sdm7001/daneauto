@@ -122,11 +122,11 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
             <ul className="space-y-3">
               <li className="flex items-start gap-3 text-sm text-muted-foreground">
                 <MapPin className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                <span>Ontario, Canada</span>
+                <span>1000 Henry Ave, Winnipeg, MB R3E 3L2</span>
               </li>
               <li className="flex items-center gap-3 text-sm text-muted-foreground">
                 <Phone className="w-5 h-5 text-primary shrink-0" />
-                <a href="tel:+16135550100" className="hover:text-primary transition-colors">(613) 555-0100</a>
+                <a href="tel:+12045994562" className="hover:text-primary transition-colors">1-(204) 599-4562</a>
               </li>
               <li className="flex items-center gap-3 text-sm text-muted-foreground">
                 <Mail className="w-5 h-5 text-primary shrink-0" />
