@@ -1,32 +1,7 @@
 import { Link } from "react-router-dom";
 import { useTopProductLines } from "@/hooks/useVehicles";
 import { Skeleton } from "./ui/skeleton";
-
-// Map product line names to emojis for visual appeal
-function lineIcon(line: string): string {
-  const l = line.toLowerCase();
-  if (l.includes("lamp") || l.includes("light") || l.includes("head")) return "💡";
-  if (l.includes("fender")) return "🚗";
-  if (l.includes("bumper")) return "🛡️";
-  if (l.includes("hood")) return "🔧";
-  if (l.includes("door")) return "🚪";
-  if (l.includes("mirror")) return "🪞";
-  if (l.includes("grille") || l.includes("grill")) return "⚙️";
-  if (l.includes("fog")) return "🌫️";
-  if (l.includes("radiator")) return "🌡️";
-  if (l.includes("quarter")) return "🔩";
-  if (l.includes("tail")) return "🔴";
-  if (l.includes("spoiler") || l.includes("wing")) return "🏎️";
-  if (l.includes("valance") || l.includes("apron")) return "📦";
-  if (l.includes("panel")) return "🖼️";
-  if (l.includes("signal") || l.includes("turn")) return "↩️";
-  if (l.includes("roof")) return "🏠";
-  if (l.includes("wheel") || l.includes("rim")) return "⭕";
-  if (l.includes("air")) return "💨";
-  if (l.includes("engine")) return "⚙️";
-  if (l.includes("brake")) return "🛑";
-  return "🔧";
-}
+import { getCategoryIcon } from "@/lib/categoryIcons";
 
 const CategoryGrid = () => {
   const { data: lines = [], isLoading } = useTopProductLines(8);
