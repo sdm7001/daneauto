@@ -843,6 +843,11 @@ const Admin = () => {
                                 )}
                               </div>
                             )}
+
+                            {/* Internal notes */}
+                            {isExpanded && (
+                              <ChatNotes conversationId={chat.id} />
+                            )}
                           </div>
                         );
                       })}
