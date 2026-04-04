@@ -54,8 +54,8 @@ export function useProducts(filters: ProductFilters = {}) {
         .select('*', { count: 'exact' })
         .range(from, to)
 
-      if (sort === 'price_asc')  query = query.order('net_price', { ascending: true,  nullsFirst: false })
-      else if (sort === 'price_desc') query = query.order('net_price', { ascending: false, nullsFirst: false })
+      if (sort === 'price_asc')  query = query.order('list_price', { ascending: true,  nullsFirst: false })
+      else if (sort === 'price_desc') query = query.order('list_price', { ascending: false, nullsFirst: false })
       else if (sort === 'newest') query = query.order('id', { ascending: false })
       else query = query.order('sku')
 
@@ -99,40 +99,15 @@ export function useFeaturedProducts(limit = 8) {
   return useQuery<Product[]>({
     queryKey: ['products', 'featured', limit],
     queryFn: async () => {
-      // Fetch from multiple price tiers for variety
-      const tiers = [
-        { gte: 500, lte: 6100 },
-        { gte: 100, lte: 499 },
-        { gte: 20, lte: 99 },
-      ]
-      const allProducts: Product[] = []
-      for (const tier of tiers) {
-        const { data, error } = await db
-          .from('products')
-          .select('*')
-          .not('image_url', 'is', null)
-          .not('list_price', 'is', null)
-          .gte('list_price', tier.gte)
-          .lte('list_price', tier.lte)
-          .limit(80)
-        if (error) throw error
-        allProducts.push(...((data as Product[]) ?? []))
-      }
-      // Pick one product per product_line, cycling through tiers
-      const byLine = new Map<string, Product[]>()
-      for (const p of allProducts) {
-        const arr = byLine.get(p.product_line) ?? []
-        arr.push(p)
-        byLine.set(p.product_line, arr)
-      }
-      const picked: Product[] = []
-      const lines = [...byLine.keys()].sort(() => 0.5 - Math.random())
-      for (const line of lines) {
-        if (picked.length >= limit) break
-        const candidates = byLine.get(line)!
-        picked.push(candidates[Math.floor(Math.random() * candidates.length)])
-      }
-      return picked
+      const { data, error } = await db
+        .from('products')
+        .select('*')
+        .not('image_url', 'is', null)
+        .not('list_price', 'is', null)
+        .order('id', { ascending: false })
+        .limit(limit)
+      if (error) throw error
+      return (data as Product[]) ?? []
     },
     staleTime: 5 * 60 * 1000,
   })

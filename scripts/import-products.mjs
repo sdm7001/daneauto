@@ -68,7 +68,7 @@ async function main() {
       sku:              p.sku,
       description:      p.description ?? null,
       list_price:       p.listPrice ?? null,
-      net_price:        p.netPrice ?? null,
+      net_price:        (p.netPrice && p.netPrice !== 1234.44) ? p.netPrice : null,
       oem_number:       p.oemNumber ?? null,
       partslink_number: p.partslinkNumber ?? null,
       image_url:        p.imageUrl ?? null,
