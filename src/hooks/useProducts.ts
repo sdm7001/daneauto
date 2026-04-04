@@ -102,3 +102,51 @@ export function useFeaturedProducts(limit = 8) {
     staleTime: 5 * 60 * 1000,
   })
 }
+
+export function useRelatedProducts(product: Product | null | undefined, limit = 8) {
+  return useQuery<Product[]>({
+    queryKey: ['products', 'related', product?.sku, limit],
+    queryFn: async () => {
+      if (!product) return []
+      const { data, error } = await (supabase as any)
+        .from('products')
+        .select('*')
+        .eq('product_line', product.product_line)
+        .eq('year', product.year)
+        .eq('make', product.make)
+        .eq('model', product.model)
+        .neq('sku', product.sku)
+        .limit(limit)
+      if (error) throw error
+      return (data as Product[]) ?? []
+    },
+    enabled: !!product,
+    staleTime: 5 * 60 * 1000,
+  })
+}
+
+export function useCompatibleVehicles(partslink: string | null | undefined) {
+  return useQuery<Pick<Product, 'year' | 'make' | 'model'>[]>({
+    queryKey: ['products', 'compatibility', partslink],
+    queryFn: async () => {
+      if (!partslink) return []
+      const { data, error } = await (supabase as any)
+        .from('products')
+        .select('year, make, model')
+        .eq('partslink_number', partslink)
+        .order('year', { ascending: false })
+        .limit(50)
+      if (error) throw error
+      // Deduplicate
+      const seen = new Set<string>()
+      return (data as Pick<Product, 'year' | 'make' | 'model'>[]).filter(v => {
+        const key = `${v.year}-${v.make}-${v.model}`
+        if (seen.has(key)) return false
+        seen.add(key)
+        return true
+      })
+    },
+    enabled: !!partslink,
+    staleTime: 5 * 60 * 1000,
+  })
+}
