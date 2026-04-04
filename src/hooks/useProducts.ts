@@ -43,7 +43,7 @@ export function useProducts(filters: ProductFilters = {}) {
   return useQuery<ProductsResult>({
     queryKey: ['products', { year, make, model, productLine, search, page, pageSize }],
     queryFn: async () => {
-      let query = supabase
+      let query = (supabase as any)
         .from('products')
         .select('*', { count: 'exact' })
         .range(from, to)
@@ -72,7 +72,7 @@ export function useProduct(sku: string) {
   return useQuery<Product | null>({
     queryKey: ['product', sku],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('products')
         .select('*')
         .eq('sku', sku)
@@ -89,7 +89,7 @@ export function useFeaturedProducts(limit = 8) {
   return useQuery<Product[]>({
     queryKey: ['products', 'featured', limit],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('products')
         .select('*')
         .not('image_url', 'is', null)
