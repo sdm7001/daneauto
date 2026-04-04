@@ -9,10 +9,10 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 
 const contactInfo = [
-  { icon: Phone, title: "Phone", value: "(613) 555-0100", link: "tel:+16135550100" },
-  { icon: Mail, title: "Email", value: "info@daneautoparts.com", link: "mailto:info@daneautoparts.com" },
-  { icon: MapPin, title: "Address", value: "Ontario, Canada" },
-  { icon: Clock, title: "Hours", value: "Mon–Fri: 8AM – 6PM ET\nSat: 9AM – 4PM ET" },
+  { icon: Phone, title: "Phone", value: "1-(204) 599-4562", link: "tel:+12045994562" },
+  { icon: Mail, title: "Email", value: "sales@daneauto.ca", link: "mailto:sales@daneauto.ca" },
+  { icon: MapPin, title: "Address", value: "1000 Henry Ave\nWinnipeg, MB R3E 3L2\nCanada" },
+  { icon: Clock, title: "Hours", value: "Mon–Fri: 8AM – 6PM CT\nSat: 9AM – 4PM CT" },
 ];
 
 const Contact = () => {
@@ -42,7 +42,7 @@ const Contact = () => {
       setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
     } catch (err) {
       console.error(err);
-      toast.error("Failed to send. Please email us at info@daneautoparts.com");
+      toast.error("Failed to send. Please email us at sales@daneauto.ca");
     } finally {
       setSubmitting(false);
     }
