@@ -64,6 +64,7 @@ export function useProducts(filters: ProductFilters = {}) {
       if (make)        query = query.eq('make', make)
       if (model)       query = query.eq('model', model)
       if (productLine) query = query.eq('product_line', productLine)
+      if (subcategory) query = query.eq('subcategory', subcategory)
       if (search) {
         query = query.or(
           `description.ilike.%${search}%,sku.ilike.%${search}%,oem_number.ilike.%${search}%,partslink_number.ilike.%${search}%`
