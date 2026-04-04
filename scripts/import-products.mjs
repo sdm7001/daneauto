@@ -24,7 +24,7 @@ import { dirname, resolve } from 'node:path'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
-const SUPABASE_URL = 'https://ujewsjvaofhfrfqdqphn.supabase.co'
+const SUPABASE_URL = 'https://suiabbcajimwpvwhxuqh.supabase.co'
 const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY
 
 if (!SERVICE_ROLE_KEY) {
