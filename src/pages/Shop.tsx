@@ -1,11 +1,11 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { usePageTitle } from "@/hooks/usePageTitle";
-import { Home, Search, SlidersHorizontal, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { Home, SlidersHorizontal, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import ProductCard from "@/components/ProductCard";
+import SearchAutocomplete from "@/components/SearchAutocomplete";
 import PopularForVehicle from "@/components/PopularForVehicle";
 import VehicleSearch from "@/components/VehicleSearch";
 import { useProducts, type ProductSort } from "@/hooks/useProducts";
@@ -135,17 +135,12 @@ const Shop = () => {
           )}
 
           <div className="flex flex-col md:flex-row gap-4">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-              <Input
-                type="text"
-                placeholder="Search by SKU, description, OEM number..."
-                value={searchInput}
-                onChange={(e) => setSearchInput(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                className="pl-10"
-              />
-            </div>
+            <SearchAutocomplete
+              value={searchInput}
+              onChange={setSearchInput}
+              onSearch={handleSearch}
+              className="flex-1"
+            />
             <Button onClick={handleSearch} variant="default">Search</Button>
             <Button
               variant="outline"
