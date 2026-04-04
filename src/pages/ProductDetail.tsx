@@ -9,6 +9,7 @@ import { useProduct, useRelatedProducts, useCompatibleVehicles } from "@/hooks/u
 import { useCart } from "@/contexts/CartContext";
 import { toast } from "sonner";
 import ProductCard from "@/components/ProductCard";
+import WishlistButton from "@/components/WishlistButton";
 
 const ProductDetail = () => {
   const { sku } = useParams<{ sku: string }>();
@@ -145,16 +146,19 @@ const ProductDetail = () => {
             </div>
 
             {/* CTA */}
-            <Button
-              size="xl"
-              variant="hero"
-              className="w-full mb-6"
-              onClick={handleAddToCart}
-              disabled={displayPrice == null}
-            >
-              <ShoppingCart className="w-5 h-5 mr-2" />
-              Add to Cart
-            </Button>
+            <div className="flex gap-3 mb-6">
+              <Button
+                size="xl"
+                variant="hero"
+                className="flex-1"
+                onClick={handleAddToCart}
+                disabled={displayPrice == null}
+              >
+                <ShoppingCart className="w-5 h-5 mr-2" />
+                Add to Cart
+              </Button>
+              <WishlistButton sku={product.sku} size="default" className="h-auto px-4 border border-border bg-gradient-card rounded-xl" />
+            </div>
 
             {/* Trust Badges */}
             <div className="grid grid-cols-3 gap-3 mb-8">

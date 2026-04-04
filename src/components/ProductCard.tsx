@@ -4,6 +4,7 @@ import { Button } from "./ui/button";
 import { useCart } from "@/contexts/CartContext";
 import { toast } from "sonner";
 import type { Product } from "@/hooks/useProducts";
+import WishlistButton from "./WishlistButton";
 
 interface ProductCardProps {
   product: Product;
@@ -51,6 +52,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
             -{discount}%
           </span>
         )}
+        <WishlistButton sku={product.sku} className="absolute top-2 right-2 bg-background/60 backdrop-blur-sm rounded-full" />
       </Link>
 
       <div className="p-4">

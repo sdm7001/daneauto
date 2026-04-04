@@ -1,11 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
-import { ShoppingCart, User, Menu, X, Search, LogOut, Shield } from "lucide-react";
+import { ShoppingCart, User, Menu, X, Search, LogOut, Shield, Heart } from "lucide-react";
 import { useState, useEffect } from "react";
 import Logo from "./Logo";
 import { Button } from "./ui/button";
 import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { useWishlist } from "@/hooks/useWishlist";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -13,6 +14,7 @@ const Header = () => {
   const { items } = useCart();
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
+  const { count: wishlistCount } = useWishlist();
   const cartCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
   useEffect(() => {
@@ -73,6 +75,18 @@ const Header = () => {
                 <Search className="w-5 h-5" />
               </Button>
             </Link>
+            {user && (
+              <Link to="/wishlist" className="relative hidden md:flex">
+                <Button variant="ghost" size="icon">
+                  <Heart className="w-5 h-5" />
+                  {wishlistCount > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">
+                      {wishlistCount}
+                    </span>
+                  )}
+                </Button>
+              </Link>
+            )}
             <Link to="/cart" className="relative">
               <Button variant="ghost" size="icon">
                 <ShoppingCart className="w-5 h-5" />
@@ -144,6 +158,15 @@ const Header = () => {
                 onClick={() => setIsMenuOpen(false)}
               >
                 Admin Dashboard
+              </Link>
+            )}
+            {user && (
+              <Link
+                to="/wishlist"
+                className="block py-3 text-foreground/80 hover:text-primary transition-colors duration-300 font-display uppercase tracking-wider"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Wishlist {wishlistCount > 0 && `(${wishlistCount})`}
               </Link>
             )}
             <Link
