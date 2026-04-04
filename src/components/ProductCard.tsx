@@ -28,14 +28,14 @@ const ProductCard = ({ product }: ProductCardProps) => {
     addItem({
       id: product.sku,
       name: product.description ?? product.sku,
-      price: product.net_price ?? product.list_price ?? 0,
+      price: product.list_price ?? product.net_price ?? 0,
       image: product.image_url ?? "",
       category: product.product_line,
     });
     toast.success(`${product.sku} added to cart!`);
   };
 
-  const displayPrice = product.net_price ?? product.list_price;
+  const displayPrice = product.list_price ?? product.net_price;
   const hasDiscount = product.list_price && product.net_price && product.net_price < product.list_price;
   const discount = hasDiscount
     ? Math.round((1 - product.net_price! / product.list_price!) * 100)
