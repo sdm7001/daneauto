@@ -39,9 +39,11 @@ const Categories = () => {
                 className="group bg-gradient-card rounded-xl border border-border p-8 text-center hover:border-primary transition-all duration-500 hover:-translate-y-2 shadow-card hover:shadow-glow animate-fade-in"
                 style={{ animationDelay: `${index * 50}ms` }}
               >
-                <span className="text-6xl block mb-6 group-hover:scale-110 transition-transform duration-300">
-                  {lineIcon(line.product_line)}
-                </span>
+                {(() => { const Icon = getCategoryIcon(line.product_line); return (
+                  <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
+                    <Icon className="w-8 h-8 text-primary" strokeWidth={1.5} />
+                  </div>
+                ); })()}
                 <h2 className="font-display text-xl font-semibold mb-2 group-hover:text-primary transition-colors">
                   {line.product_line}
                 </h2>

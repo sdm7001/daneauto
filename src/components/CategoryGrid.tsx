@@ -46,9 +46,11 @@ const CategoryGrid = () => {
               className="group relative bg-gradient-card rounded-xl border border-border p-6 text-center hover:border-primary transition-all duration-500 hover:-translate-y-1 shadow-card hover:shadow-glow animate-fade-in"
               style={{ animationDelay: `${index * 80}ms` }}
             >
-              <span className="text-4xl md:text-5xl block mb-4 group-hover:scale-110 transition-transform duration-300">
-                {lineIcon(line.product_line)}
-              </span>
+              {(() => { const Icon = getCategoryIcon(line.product_line); return (
+                <div className="w-12 h-12 md:w-14 md:h-14 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
+                  <Icon className="w-6 h-6 md:w-7 md:h-7 text-primary" strokeWidth={1.5} />
+                </div>
+              ); })()}
               <h3 className="font-display text-base font-semibold mb-1 group-hover:text-primary transition-colors leading-tight">
                 {line.product_line}
               </h3>
