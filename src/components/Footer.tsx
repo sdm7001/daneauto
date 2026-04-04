@@ -51,7 +51,7 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
   ];
 
   return (
-    <footer className="bg-card border-t border-border">
+    <footer ref={ref} className="bg-card border-t border-border">
       {/* Newsletter */}
       <div className="bg-gradient-card border-b border-border">
         <div className="container mx-auto px-4 py-12">
