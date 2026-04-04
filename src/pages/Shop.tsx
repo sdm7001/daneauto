@@ -1,10 +1,9 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { usePageTitle } from "@/hooks/usePageTitle";
-import { Home, Search, SlidersHorizontal, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { Home, SlidersHorizontal, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import ProductCard from "@/components/ProductCard";
 import SearchAutocomplete from "@/components/SearchAutocomplete";
 import PopularForVehicle from "@/components/PopularForVehicle";
