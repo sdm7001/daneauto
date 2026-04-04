@@ -4,6 +4,7 @@ import { Button } from "./ui/button";
 import { useCart } from "@/contexts/CartContext";
 import { toast } from "sonner";
 import type { Product } from "@/hooks/useProducts";
+import WishlistButton from "./WishlistButton";
 
 interface ProductCardProps {
   product: Product;
