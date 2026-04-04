@@ -31,4 +31,4 @@ Disallow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://daneautoparts.com/sitemap.xml
+Sitemap: https://daneauto.ca/sitemap.xml

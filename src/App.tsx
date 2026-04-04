@@ -26,8 +26,10 @@ import NotFound from "./pages/NotFound";
 import FAQ from "./pages/FAQ";
 import ShippingReturns from "./pages/ShippingReturns";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
+import RequestAPart from "./pages/RequestAPart";
 
 const queryClient = new QueryClient();
 
@@ -61,6 +63,8 @@ const App = () => (
                   <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                   <Route path="/blog" element={<Blog />} />
                   <Route path="/blog/:slug" element={<BlogPost />} />
+                  <Route path="/terms-of-service" element={<TermsOfService />} />
+                  <Route path="/request-a-part" element={<RequestAPart />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
                 </ErrorBoundary>

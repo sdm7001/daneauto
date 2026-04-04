@@ -4,20 +4,32 @@
 
 ## Key Pages
 
-- `Home -> https://daneautoparts.com/`: Vehicle Year/Make/Model search, featured products, categories
-- `Shop -> https://daneautoparts.com/shop`: Full product catalog with vehicle and product-line filters
-- `Categories -> https://daneautoparts.com/categories`: Browse by product line (bumpers, fenders, lamps, doors, etc.)
-- `About -> https://daneautoparts.com/about`: Company info, 319,910 parts in catalog, collision/body parts specialty
-- `Contact -> https://daneautoparts.com/contact`: Contact form, Ontario Canada location
+- `Home -> https://daneauto.ca/`: Vehicle Year/Make/Model search, featured products, categories
+- `Shop -> https://daneauto.ca/shop`: Full product catalog with vehicle and product-line filters
+- `Categories -> https://daneauto.ca/categories`: Browse by product line (bumpers, fenders, lamps, doors, etc.)
+- `Blog -> https://daneauto.ca/blog`: Parts guides, how-tos, and industry resources
+- `FAQ -> https://daneauto.ca/faq`: Ordering, shipping, fitment, returns, and payment questions
+- `Request a Part -> https://daneauto.ca/request-a-part`: Submit a request for parts not in catalog
+- `About -> https://daneauto.ca/about`: Company info, 319,910 parts in catalog, collision/body parts specialty
+- `Contact -> https://daneauto.ca/contact`: Contact form, Winnipeg MB Canada location
+- `Shipping & Returns -> https://daneauto.ca/shipping-returns`: Rates, delivery times, return policy, warranty
+- `Privacy Policy -> https://daneauto.ca/privacy-policy`: PIPEDA-compliant Canadian privacy policy
 
 ## Key Facts
 
 - 319,910 auto parts in catalog
-- Specializes in collision and body parts
+- Specializes in collision and body parts (93% of catalog)
 - Vehicle coverage: 1961 to 2026
 - Ships to Canada, USA, and Mexico
-- Free shipping on orders $75+ CAD
+- Free shipping on Canadian orders $75+ CAD; flat $9.99 under $75
 - Secure checkout in CAD via Stripe
-- Parts include: head lamps, tail lamps, bumper covers, fenders, hoods, doors, mirrors, grilles, radiators, quarter panels
-- OEM-grade quality with Partslink and OEM cross-references
-- Based in Ontario, Canada
+- Parts include: head lamps, tail lamps, bumper covers, fenders, hoods, doors, mirrors, grilles, radiator supports, quarter panels, trunk lids
+- Many parts are CAPA-certified (independently verified to meet OEM fit, finish, and safety standards)
+- OEM and Partslink cross-references on every listing
+- Based in Winnipeg, Manitoba, Canada
+- Address: 1000 Henry Ave, Winnipeg, MB R3E 3L2
+- Phone: 1-(204) 599-4562
+- Email: sales@daneauto.ca
+- Hours: Mon–Fri 8AM–6PM CT, Sat 9AM–4PM CT
+- 1-year limited warranty on all parts against defects in materials and workmanship
+- 30-day returns on unused parts in original packaging
