@@ -185,7 +185,7 @@ const FAQ = () => {
         <div className="mt-12 bg-gradient-card rounded-xl border border-border p-8 text-center">
           <h2 className="font-display text-xl font-bold mb-2">Still have questions?</h2>
           <p className="text-muted-foreground mb-6 text-sm">
-            Our team is available Monday–Friday 8AM–6PM ET and Saturday 9AM–4PM ET.
+            Our team is available Monday–Friday 8AM–6PM CT and Saturday 9AM–4PM CT.
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <Link to="/contact">

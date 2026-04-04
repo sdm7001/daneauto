@@ -10,6 +10,19 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+# AI Search crawlers — allow for visibility in AI Overviews, ChatGPT, Perplexity, Bing Copilot
 User-agent: GPTBot
 Allow: /
 
@@ -22,9 +35,19 @@ Allow: /
 User-agent: ClaudeBot
 Allow: /
 
+User-agent: anthropic-ai
+Allow: /
+
 User-agent: PerplexityBot
 Allow: /
 
+User-agent: Bytespider
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+# Block Common Crawl training data collection
 User-agent: CCBot
 Disallow: /
 

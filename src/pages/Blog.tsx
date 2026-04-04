@@ -10,6 +10,7 @@ export interface BlogPost {
   date: string;
   readTime: string;
   category: string;
+  author: string;
   image?: string;
 }
 
@@ -22,6 +23,7 @@ export const blogPosts: BlogPost[] = [
     date: "April 3, 2026",
     readTime: "6 min read",
     category: "Buying Guide",
+    author: "Dane Auto Parts Team",
   },
   {
     slug: "what-is-capa-certification",
@@ -31,6 +33,7 @@ export const blogPosts: BlogPost[] = [
     date: "March 28, 2026",
     readTime: "4 min read",
     category: "Education",
+    author: "Dane Auto Parts Team",
   },
   {
     slug: "how-to-find-partslink-number",
@@ -40,6 +43,7 @@ export const blogPosts: BlogPost[] = [
     date: "March 20, 2026",
     readTime: "3 min read",
     category: "How-To",
+    author: "Dane Auto Parts Team",
   },
   {
     slug: "fender-replacement-guide",
@@ -49,6 +53,7 @@ export const blogPosts: BlogPost[] = [
     date: "March 12, 2026",
     readTime: "7 min read",
     category: "How-To",
+    author: "Dane Auto Parts Team",
   },
   {
     slug: "bumper-cover-buying-guide",
@@ -58,6 +63,7 @@ export const blogPosts: BlogPost[] = [
     date: "March 5, 2026",
     readTime: "5 min read",
     category: "Buying Guide",
+    author: "Dane Auto Parts Team",
   },
   {
     slug: "collision-repair-checklist",
@@ -67,6 +73,7 @@ export const blogPosts: BlogPost[] = [
     date: "February 26, 2026",
     readTime: "8 min read",
     category: "Resources",
+    author: "Dane Auto Parts Team",
   },
 ];
 

@@ -125,7 +125,7 @@ const ShippingReturns = () => {
 
         <div className="mt-8 bg-gradient-card rounded-xl border border-border p-8 text-center">
           <h2 className="font-display text-xl font-bold mb-2">Questions about your order?</h2>
-          <p className="text-muted-foreground mb-6 text-sm">We're here Mon–Fri 8AM–6PM ET and Sat 9AM–4PM ET.</p>
+          <p className="text-muted-foreground mb-6 text-sm">We're here Mon–Fri 8AM–6PM CT and Sat 9AM–4PM CT.</p>
           <div className="flex flex-wrap gap-4 justify-center">
             <Link to="/contact"><Button variant="hero">Contact Us</Button></Link>
             <Link to="/faq"><Button variant="outline">View FAQ</Button></Link>

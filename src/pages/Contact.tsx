@@ -16,7 +16,7 @@ const contactInfo = [
 ];
 
 const Contact = () => {
-  usePageTitle("Contact Us", "Contact Dane Auto Parts Ltd. Based in Ontario, Canada. Reach us for parts inquiries, orders, and support.");
+  usePageTitle("Contact Us", "Contact Dane Auto Parts Ltd. in Winnipeg, Manitoba. Reach us for collision parts inquiries, orders, and support. Mon–Fri 8AM–6PM CT.");
   const [searchParams] = useSearchParams();
   const [formData, setFormData] = useState({
     name: "", email: "", phone: "",
@@ -117,7 +117,7 @@ const Contact = () => {
                 <div className="grid md:grid-cols-2 gap-4 mb-4">
                   <div>
                     <label className="block text-sm font-medium mb-2">Phone Number</label>
-                    <Input type="tel" placeholder="(613) 555-0100" value={formData.phone}
+                    <Input type="tel" placeholder="(204) 555-0100" value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })} />
                   </div>
                   <div>

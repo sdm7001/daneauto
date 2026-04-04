@@ -15,7 +15,8 @@ const ORG_SCHEMA = {
   "@type": "AutoPartsStore",
   name: "Dane Auto Parts Ltd",
   url: "https://daneauto.ca",
-  description: "Collision and body parts for vehicles from 1961 to 2026. Shipping Canada, USA, and Mexico.",
+  logo: "https://daneauto.ca/favicon.ico",
+  description: "Canada's source for collision and auto body parts. 319,910 SKUs covering vehicles from 1961 to 2026. Ships to Canada, USA, and Mexico.",
   address: {
     "@type": "PostalAddress",
     streetAddress: "1000 Henry Ave",
@@ -24,12 +25,39 @@ const ORG_SCHEMA = {
     postalCode: "R3E 3L2",
     addressCountry: "CA",
   },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 49.8997,
+    longitude: -97.1575,
+  },
   email: "sales@daneauto.ca",
   telephone: "+1-204-599-4562",
+  priceRange: "$$",
+  currenciesAccepted: "CAD",
+  paymentAccepted: "Credit Card, Debit Card",
   areaServed: ["CA", "US", "MX"],
+  openingHoursSpecification: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      opens: "08:00",
+      closes: "18:00",
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: "Saturday",
+      opens: "09:00",
+      closes: "16:00",
+    },
+  ],
+  sameAs: [
+    "https://www.facebook.com/daneauto",
+    "https://www.instagram.com/daneautoparts",
+    "https://www.youtube.com/@daneautoparts",
+  ],
   hasOfferCatalog: {
     "@type": "OfferCatalog",
-    name: "Auto Body Parts",
+    name: "Auto Body & Collision Parts",
     numberOfItems: 319910,
   },
 };
