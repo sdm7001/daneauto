@@ -3,6 +3,7 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import { usePageTitle } from "@/hooks/usePageTitle";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import PageBreadcrumb from "@/components/PageBreadcrumb";
 
 interface FAQItem {
   question: string;
