@@ -46,7 +46,7 @@ interface EmailLog {
   created_at: string;
 }
 
-type AdminTab = "dashboard" | "users" | "emails" | "messages";
+type AdminTab = "dashboard" | "users" | "emails" | "messages" | "import";
 
 interface ContactSubmission {
   id: string;
