@@ -13,6 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import ChatNotes from "@/components/ChatNotes";
 
 interface AdminStats {
   total_users: number;
@@ -841,6 +842,11 @@ const Admin = () => {
                                   ))
                                 )}
                               </div>
+                            )}
+
+                            {/* Internal notes */}
+                            {isExpanded && (
+                              <ChatNotes conversationId={chat.id} />
                             )}
                           </div>
                         );
