@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { Loader2 } from "lucide-react";
 import { useTopProductLines } from "@/hooks/useVehicles";
+import { Skeleton } from "./ui/skeleton";
 
 // Map product line names to emojis for visual appeal
 function lineIcon(line: string): string {
@@ -34,8 +34,16 @@ const CategoryGrid = () => {
   if (isLoading) {
     return (
       <section className="py-16 md:py-24">
-        <div className="container mx-auto px-4 flex justify-center">
-          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <Skeleton className="h-10 w-56 mx-auto mb-4" />
+            <Skeleton className="h-4 w-80 mx-auto" />
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <Skeleton key={i} className="h-36 rounded-xl" />
+            ))}
+          </div>
         </div>
       </section>
     );

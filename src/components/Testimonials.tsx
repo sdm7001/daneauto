@@ -2,24 +2,24 @@ import { Star, Quote } from "lucide-react";
 
 const testimonials = [
   {
-    name: "Mike Johnson",
-    location: "New York, NY",
+    name: "Mike T.",
+    location: "Ottawa, ON",
     rating: 5,
-    text: "Found the exact brake pads I needed for my Camry. Great prices and fast shipping. Will definitely order again!",
+    text: "Found the exact head lamp assembly for my Camry in minutes. Arrived faster than expected and fit perfectly. Will definitely order again!",
     vehicle: "2020 Toyota Camry",
   },
   {
-    name: "Sarah Williams",
-    location: "Los Angeles, CA",
+    name: "Sarah W.",
+    location: "Calgary, AB",
     rating: 5,
-    text: "The vehicle search feature made it so easy to find compatible parts. Customer service was incredibly helpful too.",
+    text: "The Year/Make/Model search makes it so easy to find compatible parts. Ordered a front bumper cover and it was OEM quality at a great price.",
     vehicle: "2019 Honda CR-V",
   },
   {
-    name: "David Chen",
-    location: "Chicago, IL",
+    name: "David L.",
+    location: "Vancouver, BC",
     rating: 5,
-    text: "Best auto parts store online. Quality parts at competitive prices. The warranty coverage gives me peace of mind.",
+    text: "Ordered fender and door panel for my F-150. Both parts matched perfectly. Fast shipping to BC and well-packaged. Highly recommend.",
     vehicle: "2021 Ford F-150",
   },
 ];
