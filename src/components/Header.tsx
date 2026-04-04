@@ -245,7 +245,11 @@ const Header = () => {
               <Link
                 key={link.name}
                 to={link.path}
-                className="block py-3 text-foreground/80 hover:text-primary transition-colors duration-300 font-display uppercase tracking-wider"
+                className={`block py-3 transition-colors duration-300 font-display uppercase tracking-wider ${
+                  location.pathname === link.path
+                    ? "text-primary font-semibold"
+                    : "text-foreground/80 hover:text-primary"
+                }`}
                 onClick={() => setIsMenuOpen(false)}
               >
                 {link.name}
