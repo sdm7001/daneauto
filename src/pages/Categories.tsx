@@ -2,58 +2,23 @@ import { Link } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useSubcategories } from "@/hooks/useVehicles";
 import { usePageTitle } from "@/hooks/usePageTitle";
-import { getCategoryIcon } from "@/lib/categoryIcons";
 import {
-  Car,
-  Lightbulb,
-  Thermometer,
-  Cog,
-  Wind,
-  Wrench as WrenchIcon,
-  type LucideIcon,
-} from "lucide-react";
-
-const categoryIcons: Record<string, LucideIcon> = {
-  "Body & Exterior": Car,
-  Lighting: Lightbulb,
-  "Cooling System": Thermometer,
-  Engine: Cog,
-  Exhaust: Wind,
-  "Suspension & Steering": WrenchIcon,
-};
-
-const categoryMap: Record<string, string> = {
-  "Bumpers & Components": "Body & Exterior",
-  "Fenders & Liners": "Body & Exterior",
-  "Hoods & Hinges": "Body & Exterior",
-  Mirrors: "Body & Exterior",
-  "Radiator Support": "Body & Exterior",
-  Grilles: "Body & Exterior",
-  "Body Repair Panels": "Body & Exterior",
-  "Quarter Panels & Bed Sides": "Body & Exterior",
-  "Doors & Components": "Body & Exterior",
-  "Tailgates & Trunk Lids": "Body & Exterior",
-  "Glass & Windshield Components": "Body & Exterior",
-  "Cameras & Sensors": "Body & Exterior",
-  "Structural & Supports": "Body & Exterior",
-  "Lighting Assemblies": "Lighting",
-  "Radiators & Cooling": "Cooling System",
-  "Air Intake": "Engine",
-  "Mufflers & Exhaust Components": "Exhaust",
-  "Control Arms & Suspension": "Suspension & Steering",
-  Wheels: "Suspension & Steering",
-};
+  getCategoryIcon,
+  getParentCategory,
+  parentCategoryIcons,
+  HIDDEN_SUBCATEGORIES,
+} from "@/lib/categoryIcons";
+import { Wrench as WrenchIcon } from "lucide-react";
 
 const Categories = () => {
   usePageTitle("Parts Categories", "Browse auto body and collision parts by category. Bumpers, fenders, head lamps, tail lamps, hoods, doors, mirrors, radiators and more.");
   const { data: subcategories = [], isLoading } = useSubcategories();
 
-  // Group by parent category
   const grouped = subcategories.reduce<
     Record<string, { subcategory: string; count: number }[]>
   >((acc, sc) => {
-    if (sc.subcategory === "OTHER" || sc.subcategory === "ENGINE") return acc;
-    const cat = categoryMap[sc.subcategory] ?? "Body & Exterior";
+    if (HIDDEN_SUBCATEGORIES.has(sc.subcategory)) return acc;
+    const cat = getParentCategory(sc.subcategory);
     if (!acc[cat]) acc[cat] = [];
     acc[cat].push(sc);
     return acc;
@@ -95,7 +60,7 @@ const Categories = () => {
         ) : (
           <div className="space-y-12">
             {sortedCategories.map(([category, subs]) => {
-              const CatIcon = categoryIcons[category] || WrenchIcon;
+              const CatIcon = parentCategoryIcons[category] || WrenchIcon;
               const totalCount = subs.reduce((s, x) => s + x.count, 0);
 
               return (

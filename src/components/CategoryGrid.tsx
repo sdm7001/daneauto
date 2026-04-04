@@ -1,53 +1,13 @@
 import { Link } from "react-router-dom";
 import { useSubcategories } from "@/hooks/useVehicles";
 import { Skeleton } from "./ui/skeleton";
-import { getCategoryIcon } from "@/lib/categoryIcons";
 import {
-  Car,
-  Lightbulb,
-  Thermometer,
-  Cog,
-  Wind,
-  Wrench as WrenchIcon,
-  type LucideIcon,
-} from "lucide-react";
-
-const categoryIcons: Record<string, LucideIcon> = {
-  "Body & Exterior": Car,
-  Lighting: Lightbulb,
-  "Cooling System": Thermometer,
-  Engine: Cog,
-  Exhaust: Wind,
-  "Suspension & Steering": WrenchIcon,
-};
-
-/** Map subcategory names back to their parent category */
-function getParentCategory(subcategory: string): string {
-  const map: Record<string, string> = {
-    "Bumpers & Components": "Body & Exterior",
-    "Fenders & Liners": "Body & Exterior",
-    "Hoods & Hinges": "Body & Exterior",
-    Mirrors: "Body & Exterior",
-    "Radiator Support": "Body & Exterior",
-    Grilles: "Body & Exterior",
-    "Body Repair Panels": "Body & Exterior",
-    "Quarter Panels & Bed Sides": "Body & Exterior",
-    "Doors & Components": "Body & Exterior",
-    "Tailgates & Trunk Lids": "Body & Exterior",
-    "Glass & Windshield Components": "Body & Exterior",
-    "Cameras & Sensors": "Body & Exterior",
-    "Structural & Supports": "Body & Exterior",
-    OTHER: "Body & Exterior",
-    ENGINE: "Body & Exterior",
-    "Lighting Assemblies": "Lighting",
-    "Radiators & Cooling": "Cooling System",
-    "Air Intake": "Engine",
-    "Mufflers & Exhaust Components": "Exhaust",
-    "Control Arms & Suspension": "Suspension & Steering",
-    Wheels: "Suspension & Steering",
-  };
-  return map[subcategory] ?? "Body & Exterior";
-}
+  getCategoryIcon,
+  getParentCategory,
+  parentCategoryIcons,
+  HIDDEN_SUBCATEGORIES,
+} from "@/lib/categoryIcons";
+import { Wrench as WrenchIcon } from "lucide-react";
 
 const CategoryGrid = () => {
   const { data: subcategories = [], isLoading } = useSubcategories();
@@ -72,7 +32,6 @@ const CategoryGrid = () => {
 
   if (subcategories.length === 0) return null;
 
-  // Group subcategories by parent category
   const grouped = subcategories.reduce<
     Record<string, { subcategory: string; count: number }[]>
   >((acc, sc) => {
@@ -82,7 +41,6 @@ const CategoryGrid = () => {
     return acc;
   }, {});
 
-  // Sort categories by total count
   const sortedCategories = Object.entries(grouped).sort(
     (a, b) =>
       b[1].reduce((s, x) => s + x.count, 0) -
@@ -103,7 +61,7 @@ const CategoryGrid = () => {
 
         <div className="space-y-10">
           {sortedCategories.map(([category, subs]) => {
-            const CatIcon = categoryIcons[category] || WrenchIcon;
+            const CatIcon = parentCategoryIcons[category] || WrenchIcon;
             const totalCount = subs.reduce((s, x) => s + x.count, 0);
 
             return (
@@ -122,7 +80,7 @@ const CategoryGrid = () => {
 
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
                   {subs
-                    .filter((s) => s.subcategory !== "OTHER" && s.subcategory !== "ENGINE")
+                    .filter((s) => !HIDDEN_SUBCATEGORIES.has(s.subcategory))
                     .map((sc, index) => {
                       const Icon = getCategoryIcon(sc.subcategory);
                       return (
