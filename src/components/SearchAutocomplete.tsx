@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, Loader2 } from "lucide-react";
+import { Search, Loader2, Clock, X } from "lucide-react";
 import { Input } from "./ui/input";
 import { useSearchSuggestions, type SearchSuggestion } from "@/hooks/useSearchSuggestions";
+import { useRecentSearches } from "@/hooks/useRecentSearches";
 
 interface SearchAutocompleteProps {
   value: string;
