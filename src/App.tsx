@@ -8,6 +8,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
+import ErrorBoundary from "@/components/ErrorBoundary";
 import Index from "./pages/Index";
 import Shop from "./pages/Shop";
 import Cart from "./pages/Cart";
@@ -35,6 +36,7 @@ const App = () => (
             <div className="flex flex-col min-h-screen">
               <Header />
               <div className="flex-1">
+                <ErrorBoundary>
                 <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/shop" element={<Shop />} />
@@ -49,6 +51,7 @@ const App = () => (
                   <Route path="/order-success" element={<OrderSuccess />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
+                </ErrorBoundary>
               </div>
               <Footer />
             </div>
