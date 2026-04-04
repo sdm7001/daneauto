@@ -45,11 +45,12 @@ const Shop = () => {
   });
 
   const { data: lines = [] } = useProductLines(year, make, model);
+  const { data: subcategories = [] } = useSubcategories(year || undefined, make || undefined, model || undefined);
 
   const products = data?.products ?? [];
   const total    = data?.total ?? 0;
   const totalPages = Math.ceil(total / PAGE_SIZE);
-  const hasFilter = !!(year || make || model || productLine || search);
+  const hasFilter = !!(year || make || model || productLine || subcategory || search);
 
   const setParam = useCallback((key: string, value: string) => {
     const p = new URLSearchParams(searchParams);
