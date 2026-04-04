@@ -1,0 +1,1 @@
+UPDATE public.products SET net_price = NULL WHERE net_price = 1234.44;
