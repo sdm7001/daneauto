@@ -26,6 +26,9 @@ const SearchAutocomplete = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const { searches: recentSearches, addSearch, clearSearches } = useRecentSearches();
+
+  const showRecent = open && value.trim().length < 2 && recentSearches.length > 0;
 
   // Debounce the query by 300ms
   useEffect(() => {
