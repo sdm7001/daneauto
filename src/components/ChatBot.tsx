@@ -20,6 +20,7 @@ const ChatBot = () => {
   const [contactForm, setContactForm] = useState({ name: "", email: "", phone: "" });
   const [messages, setMessages] = useState<Msg[]>([]);
   const [conversationId, setConversationId] = useState<string | null>(null);
+  const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
