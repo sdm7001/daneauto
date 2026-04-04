@@ -1,10 +1,20 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Home } from "lucide-react";
+import { Home, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { usePageTitle } from "@/hooks/usePageTitle";
 
 const NotFound = () => {
   usePageTitle("Page Not Found");
+  useEffect(() => {
+    // Tell search engines not to index the 404 page
+    const meta = document.createElement("meta");
+    meta.name = "robots";
+    meta.content = "noindex";
+    document.head.appendChild(meta);
+    return () => meta.remove();
+  }, []);
+
   return (
     <main className="min-h-[60vh] flex items-center justify-center">
       <div className="text-center px-4">
@@ -17,12 +27,20 @@ const NotFound = () => {
         <p className="text-muted-foreground mb-8 max-w-md mx-auto">
           Looks like this part is out of stock! The page you're looking for doesn't exist or has been moved.
         </p>
-        <Link to="/">
-          <Button variant="hero" size="lg">
-            <Home className="w-4 h-4" />
-            Back to Home
-          </Button>
-        </Link>
+        <div className="flex flex-wrap gap-4 justify-center">
+          <Link to="/">
+            <Button variant="hero" size="lg">
+              <Home className="w-4 h-4" />
+              Back to Home
+            </Button>
+          </Link>
+          <Link to="/shop">
+            <Button variant="outline" size="lg">
+              <ShoppingBag className="w-4 h-4" />
+              Browse Parts
+            </Button>
+          </Link>
+        </div>
       </div>
     </main>
   );
