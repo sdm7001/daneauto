@@ -158,9 +158,22 @@ const Cart = () => {
                 </div>
               </div>
 
-              {total < 75 && (
-                <p className="text-xs text-muted-foreground mb-4 bg-primary/10 rounded-lg px-3 py-2">
-                  Add <span className="text-primary font-semibold">${(75 - total).toFixed(2)}</span> more for free shipping
+              {total < 75 ? (
+                <div className="mb-4">
+                  <div className="flex justify-between text-xs text-muted-foreground mb-1.5">
+                    <span>Add <span className="text-primary font-semibold">${(75 - total).toFixed(2)}</span> more for free shipping</span>
+                    <span>${total.toFixed(2)} / $75</span>
+                  </div>
+                  <div className="w-full bg-secondary rounded-full h-1.5">
+                    <div
+                      className="bg-primary h-1.5 rounded-full transition-all duration-500"
+                      style={{ width: `${Math.min((total / 75) * 100, 100)}%` }}
+                    />
+                  </div>
+                </div>
+              ) : (
+                <p className="text-xs text-green-400 mb-4 bg-green-500/10 rounded-lg px-3 py-2 text-center font-semibold">
+                  🎉 You qualify for free shipping!
                 </p>
               )}
 
