@@ -739,6 +739,142 @@ const Admin = () => {
                 </div>
               </div>
             )}
+
+            {/* Import Tab */}
+            {activeTab === "import" && (
+              <div className="space-y-6">
+                <div className="bg-gradient-card rounded-xl border border-border p-6">
+                  <h2 className="font-display text-xl font-bold mb-2">Import Products</h2>
+                  <p className="text-muted-foreground text-sm mb-6">
+                    Upload a CSV or JSONL file to bulk-import products into the catalog.
+                  </p>
+
+                  <div className="space-y-4">
+                    {/* File picker */}
+                    <label
+                      className={`flex flex-col items-center justify-center border-2 border-dashed rounded-xl p-8 cursor-pointer transition-colors ${
+                        importFile
+                          ? "border-primary bg-primary/5"
+                          : "border-border hover:border-primary/50 hover:bg-secondary/30"
+                      }`}
+                    >
+                      <FileUp className="w-10 h-10 text-muted-foreground mb-3" />
+                      {importFile ? (
+                        <div className="text-center">
+                          <p className="font-semibold">{importFile.name}</p>
+                          <p className="text-sm text-muted-foreground">
+                            {(importFile.size / 1024 / 1024).toFixed(1)} MB
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="text-center">
+                          <p className="font-semibold">Choose a file or drag it here</p>
+                          <p className="text-sm text-muted-foreground">CSV or JSONL, up to 200 MB</p>
+                        </div>
+                      )}
+                      <input
+                        type="file"
+                        accept=".csv,.jsonl,.json"
+                        className="hidden"
+                        onChange={(e) => {
+                          setImportFile(e.target.files?.[0] ?? null);
+                          setImportResult(null);
+                        }}
+                      />
+                    </label>
+
+                    {/* Import button */}
+                    <Button
+                      onClick={handleImport}
+                      disabled={!importFile || importing}
+                      variant="hero"
+                      size="lg"
+                      className="w-full"
+                    >
+                      {importing ? (
+                        <>
+                          <div className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin mr-2" />
+                          Importing…
+                        </>
+                      ) : (
+                        <>
+                          <Upload className="w-4 h-4 mr-2" />
+                          Start Import
+                        </>
+                      )}
+                    </Button>
+
+                    {/* Results */}
+                    {importResult && (
+                      <div className={`rounded-xl border p-6 ${
+                        importResult.failed_batches === 0
+                          ? "border-primary/40 bg-primary/5"
+                          : "border-accent/40 bg-accent/5"
+                      }`}>
+                        <div className="flex items-center gap-3 mb-4">
+                          {importResult.failed_batches === 0 ? (
+                            <CheckCircle2 className="w-6 h-6 text-primary" />
+                          ) : (
+                            <AlertCircle className="w-6 h-6 text-accent" />
+                          )}
+                          <h3 className="font-display font-semibold text-lg">Import Complete</h3>
+                        </div>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                          <div>
+                            <p className="text-2xl font-bold text-primary">{importResult.inserted.toLocaleString()}</p>
+                            <p className="text-xs text-muted-foreground">Inserted</p>
+                          </div>
+                          <div>
+                            <p className="text-2xl font-bold">{importResult.total_rows.toLocaleString()}</p>
+                            <p className="text-xs text-muted-foreground">Total Rows</p>
+                          </div>
+                          <div>
+                            <p className="text-2xl font-bold">{importResult.skipped}</p>
+                            <p className="text-xs text-muted-foreground">Skipped</p>
+                          </div>
+                          <div>
+                            <p className={`text-2xl font-bold ${importResult.failed_batches > 0 ? "text-destructive" : ""}`}>
+                              {importResult.failed_batches}
+                            </p>
+                            <p className="text-xs text-muted-foreground">Failed Batches</p>
+                          </div>
+                        </div>
+                        {importResult.errors && importResult.errors.length > 0 && (
+                          <div className="mt-4 space-y-1">
+                            {importResult.errors.map((err, i) => (
+                              <p key={i} className="text-sm text-destructive">{err}</p>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Format Guide */}
+                <div className="bg-gradient-card rounded-xl border border-border p-6">
+                  <h3 className="font-display text-lg font-semibold mb-4">File Format Guide</h3>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <p className="font-medium mb-2">JSONL (one JSON object per line)</p>
+                      <pre className="bg-secondary/50 rounded-lg p-3 text-xs overflow-x-auto text-muted-foreground">
+{`{"sku":"AB12-001","year":"2024","make":"HONDA","model":"CIVIC","product_line":"LIGHTING","list_price":89.99,"description":"Headlamp Assembly"}`}
+                      </pre>
+                    </div>
+                    <div>
+                      <p className="font-medium mb-2">CSV (comma-separated with headers)</p>
+                      <pre className="bg-secondary/50 rounded-lg p-3 text-xs overflow-x-auto text-muted-foreground">
+{`sku,year,make,model,product_line,list_price,description
+AB12-001,2024,HONDA,CIVIC,LIGHTING,89.99,Headlamp Assembly`}
+                      </pre>
+                    </div>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-4">
+                    Required fields: <span className="font-semibold">sku, year, make, model, product_line</span>. Optional: description, list_price, net_price, oem_number, partslink_number, image_url, certification.
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
