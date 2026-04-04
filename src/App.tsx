@@ -30,6 +30,7 @@ import TermsOfService from "./pages/TermsOfService";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import RequestAPart from "./pages/RequestAPart";
+import Wholesale from "./pages/Wholesale";
 
 const queryClient = new QueryClient();
 
@@ -65,6 +66,7 @@ const App = () => (
                   <Route path="/blog/:slug" element={<BlogPost />} />
                   <Route path="/terms-of-service" element={<TermsOfService />} />
                   <Route path="/request-a-part" element={<RequestAPart />} />
+                  <Route path="/wholesale" element={<Wholesale />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
                 </ErrorBoundary>

@@ -49,6 +49,7 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
     { name: "Blog", path: "/blog" },
     { name: "FAQ", path: "/faq" },
     { name: "Request a Part", path: "/request-a-part" },
+    { name: "Wholesale Accounts", path: "/wholesale" },
     { name: "Shipping & Returns", path: "/shipping-returns" },
     { name: "My Account", path: "/account" },
   ];

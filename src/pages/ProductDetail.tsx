@@ -3,8 +3,9 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   ShoppingCart, ArrowLeft, ImageOff, Tag, Wrench, Car, Shield,
-  CheckCircle, Package, Truck, RotateCcw, Info, ChevronRight, Copy, Share2
+  CheckCircle, Package, Truck, RotateCcw, Info, ChevronRight, Copy, Share2, Star
 } from "lucide-react";
+import ProductReviews from "@/components/ProductReviews";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useProduct, useRelatedProducts, useCompatibleVehicles } from "@/hooks/useProducts";
@@ -376,6 +377,13 @@ const ProductDetail = () => {
                 <Package className="w-4 h-4 mr-2" />
                 Related Parts
               </TabsTrigger>
+              <TabsTrigger
+                value="reviews"
+                className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-6 py-3 font-display font-semibold text-sm"
+              >
+                <Star className="w-4 h-4 mr-2" />
+                Reviews
+              </TabsTrigger>
             </TabsList>
 
             {/* Specifications Tab */}
@@ -466,6 +474,11 @@ const ProductDetail = () => {
                   <div className="animate-pulse text-muted-foreground">Loading compatibility data...</div>
                 </div>
               )}
+            </TabsContent>
+
+            {/* Reviews Tab */}
+            <TabsContent value="reviews" className="mt-8">
+              <ProductReviews sku={product.sku} />
             </TabsContent>
 
             {/* Related Parts Tab */}
