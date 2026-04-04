@@ -1,0 +1,70 @@
+import {
+  Lightbulb,
+  Car,
+  Shield,
+  Wrench,
+  DoorOpen,
+  Disc,
+  Settings,
+  CloudFog,
+  Thermometer,
+  CircleDot,
+  Circle,
+  Wind,
+  Cog,
+  OctagonX,
+  Frame,
+  CornerDownLeft,
+  Home,
+  Layers,
+  Box,
+  Gauge,
+  PanelTop,
+  RectangleHorizontal,
+  type LucideIcon,
+} from "lucide-react";
+
+const iconMap: Record<string, LucideIcon> = {
+  lamp: Lightbulb,
+  light: Lightbulb,
+  head: Lightbulb,
+  lighting: Lightbulb,
+  fender: Car,
+  bumper: Shield,
+  hood: PanelTop,
+  door: DoorOpen,
+  mirror: Disc,
+  grille: Settings,
+  grill: Settings,
+  fog: CloudFog,
+  radiator: Thermometer,
+  cooling: Thermometer,
+  quarter: Frame,
+  tail: CircleDot,
+  spoiler: Gauge,
+  wing: Gauge,
+  valance: Box,
+  apron: Box,
+  panel: Layers,
+  signal: CornerDownLeft,
+  turn: CornerDownLeft,
+  roof: Home,
+  wheel: Circle,
+  rim: Circle,
+  air: Wind,
+  engine: Cog,
+  brake: OctagonX,
+  exhaust: Wind,
+  trunk: RectangleHorizontal,
+  tailgate: RectangleHorizontal,
+  windshield: PanelTop,
+  other: Wrench,
+};
+
+export function getCategoryIcon(line: string): LucideIcon {
+  const l = line.toLowerCase();
+  for (const [keyword, icon] of Object.entries(iconMap)) {
+    if (l.includes(keyword)) return icon;
+  }
+  return Wrench;
+}
