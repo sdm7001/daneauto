@@ -58,6 +58,7 @@ const App = () => (
               <Footer />
             </div>
             <BackToTop />
+            <ChatBot />
           </BrowserRouter>
         </CartProvider>
       </AuthProvider>
