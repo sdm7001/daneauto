@@ -10,6 +10,7 @@ UPDATE public.products SET net_price = NULL WHERE net_price = 1234.44;
 ALTER TABLE public.products
   ADD COLUMN IF NOT EXISTS category       TEXT,
   ADD COLUMN IF NOT EXISTS subcategory    TEXT,
+  ADD COLUMN IF NOT EXISTS condition      TEXT,    -- 'new' or 'minor_damage'
   ADD COLUMN IF NOT EXISTS image_verified BOOLEAN DEFAULT false,
   ADD COLUMN IF NOT EXISTS data_source    TEXT DEFAULT 'apt.partsordering.com';
 
@@ -17,13 +18,19 @@ CREATE INDEX IF NOT EXISTS idx_products_category    ON public.products(category)
 CREATE INDEX IF NOT EXISTS idx_products_subcategory ON public.products(subcategory);
 
 -- STEP 3: Normalize product_line — fix typos and merge duplicates
-UPDATE public.products SET product_line = 'WINDSHIELD'             WHERE product_line IN ('Windshield', 'WINDSHEILD');
-UPDATE public.products SET product_line = 'HEADER PANEL'           WHERE product_line IN ('Header panel', 'HEADER PANELAR');
-UPDATE public.products SET product_line = 'PARTSLINK'              WHERE product_line = 'Partslink';
-UPDATE public.products SET product_line = 'ENGINE COVER'           WHERE product_line = 'Lower engine cover';
-UPDATE public.products SET product_line = 'COOLING'                WHERE product_line IN ('SOUL', 'Radiator cooling fan assy');
+UPDATE public.products SET product_line = 'WINDSHIELD'              WHERE product_line IN ('Windshield', 'WINDSHEILD');
+UPDATE public.products SET product_line = 'HEADER PANEL'            WHERE product_line IN ('Header panel', 'HEADER PANELAR');
+UPDATE public.products SET product_line = 'PARTSLINK'               WHERE product_line = 'Partslink';
+UPDATE public.products SET product_line = 'ENGINE COVER'            WHERE product_line = 'Lower engine cover';
+UPDATE public.products SET product_line = 'COOLING'                 WHERE product_line IN ('SOUL', 'Radiator cooling fan assy');
 UPDATE public.products SET product_line = 'FRONT BUMPER COMPONENTS' WHERE product_line IN ('Bumper', 'Front bumper energy absorber');
-UPDATE public.products SET product_line = 'LIGHTING'               WHERE product_line IN ('RT Taillamp assy', 'Lamp');
+UPDATE public.products SET product_line = 'LIGHTING'                WHERE product_line IN ('RT Taillamp assy', 'Lamp');
+
+-- Tag minor-damage items then merge into canonical product lines
+UPDATE public.products SET condition = 'minor_damage' WHERE product_line LIKE 'MINOR- DAMAGED-%';
+UPDATE public.products SET product_line = 'GRILLE'                   WHERE product_line = 'MINOR- DAMAGED- GRILLE';
+UPDATE public.products SET product_line = 'QUARTER PANEL / BOX SIDE' WHERE product_line = 'MINOR- DAMAGED- QUARTER PANEL / BOX SIDE';
+UPDATE public.products SET product_line = 'TAILGATE'                 WHERE product_line = 'MINOR- DAMAGED- TAILGATE';
 
 -- STEP 4: Populate category
 UPDATE public.products SET category = CASE

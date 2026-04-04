@@ -1,0 +1,121 @@
+{
+  "taxonomy_version": "1.0.0",
+  "created": "2026-04-04",
+  "source": "Cross-reference of AutoZone, NAPA, RockAuto, O'Reilly category structures",
+  "total_product_lines": 42,
+  "unique_canonical_lines": 23,
+  "duplicates_and_typos": 15,
+  "top_categories": [
+    "Body & Exterior",
+    "Lighting",
+    "Cooling System",
+    "Engine",
+    "Exhaust",
+    "Suspension & Steering",
+    "Wheels & Tires"
+  ],
+  "category_hierarchy": {
+    "Body & Exterior": {
+      "subcategories": [
+        "Bumpers & Components",
+        "Fenders & Liners",
+        "Hoods & Hinges",
+        "Mirrors",
+        "Grilles",
+        "Doors & Components",
+        "Tailgates & Trunk Lids",
+        "Body Repair Panels",
+        "Quarter Panels & Bed Sides",
+        "Structural & Supports",
+        "Glass & Windshield Components",
+        "Cameras & Sensors"
+      ],
+      "item_count": 200574
+    },
+    "Lighting": {
+      "subcategories": ["Lighting Assemblies"],
+      "item_count": 56254
+    },
+    "Cooling System": {
+      "subcategories": ["Radiators & Cooling", "Radiator Support"],
+      "item_count": 38010
+    },
+    "Engine": {
+      "subcategories": ["Engine Covers & Shields", "Air Intake"],
+      "item_count": 6195
+    },
+    "Suspension & Steering": {
+      "subcategories": ["Control Arms & Suspension", "Structural"],
+      "item_count": 354
+    },
+    "Exhaust": {
+      "subcategories": ["Mufflers & Exhaust Components"],
+      "item_count": 23
+    },
+    "Wheels & Tires": {
+      "subcategories": ["Wheels"],
+      "item_count": 46
+    }
+  },
+  "product_lines": [
+    { "original_name": "FRONT BUMPER COMPONENTS", "count": 59504, "top_category": "Body & Exterior", "subcategory": "Bumpers & Components", "canonical_name": "FRONT BUMPER COMPONENTS", "merge_into": null, "action": "keep" },
+    { "original_name": "LIGHTING", "count": 56250, "top_category": "Lighting", "subcategory": "Lighting Assemblies", "canonical_name": "LIGHTING", "merge_into": null, "action": "keep" },
+    { "original_name": "FENDER", "count": 29685, "top_category": "Body & Exterior", "subcategory": "Fenders & Liners", "canonical_name": "FENDER", "merge_into": null, "action": "keep" },
+    { "original_name": "REAR BUMPER COMPONENTS", "count": 24891, "top_category": "Body & Exterior", "subcategory": "Bumpers & Components", "canonical_name": "REAR BUMPER COMPONENTS", "merge_into": null, "action": "keep" },
+    { "original_name": "COOLING", "count": 22648, "top_category": "Cooling System", "subcategory": "Radiators & Cooling", "canonical_name": "COOLING", "merge_into": null, "action": "keep" },
+    { "original_name": "HOOD", "count": 18369, "top_category": "Body & Exterior", "subcategory": "Hoods & Hinges", "canonical_name": "HOOD", "merge_into": null, "action": "keep" },
+    { "original_name": "MIRROR", "count": 16749, "top_category": "Body & Exterior", "subcategory": "Mirrors", "canonical_name": "MIRROR", "merge_into": null, "action": "keep" },
+    { "original_name": "REAR BUMPER", "count": 16700, "top_category": "Body & Exterior", "subcategory": "Bumpers & Components", "canonical_name": "REAR BUMPER", "merge_into": null, "action": "keep" },
+    { "original_name": "RADIATOR SUPPORT", "count": 15362, "top_category": "Cooling System", "subcategory": "Radiator Support", "canonical_name": "RADIATOR SUPPORT", "merge_into": null, "action": "keep" },
+    { "original_name": "GRILLE", "count": 14084, "top_category": "Body & Exterior", "subcategory": "Grilles", "canonical_name": "GRILLE", "merge_into": null, "action": "keep" },
+    { "original_name": "FRONT BUMPER", "count": 14013, "top_category": "Body & Exterior", "subcategory": "Bumpers & Components", "canonical_name": "FRONT BUMPER", "merge_into": null, "action": "keep" },
+    { "original_name": "REPAIR PANELS", "count": 8725, "top_category": "Body & Exterior", "subcategory": "Body Repair Panels", "canonical_name": "REPAIR PANELS", "merge_into": null, "action": "keep" },
+    { "original_name": "ENGINE COVER", "count": 6121, "top_category": "Engine", "subcategory": "Engine Covers & Shields", "canonical_name": "ENGINE COVER", "merge_into": null, "action": "keep" },
+    { "original_name": "QUARTER PANEL / BOX SIDE", "count": 5373, "top_category": "Body & Exterior", "subcategory": "Quarter Panels & Bed Sides", "canonical_name": "QUARTER PANEL / BOX SIDE", "merge_into": null, "action": "keep" },
+    { "original_name": "DOOR", "count": 4619, "top_category": "Body & Exterior", "subcategory": "Doors & Components", "canonical_name": "DOOR", "merge_into": null, "action": "keep" },
+    { "original_name": "TAILGATE", "count": 2464, "top_category": "Body & Exterior", "subcategory": "Tailgates & Trunk Lids", "canonical_name": "TAILGATE", "merge_into": null, "action": "keep" },
+    { "original_name": "WINDSHIELD", "count": 1713, "top_category": "Body & Exterior", "subcategory": "Glass & Windshield Components", "canonical_name": "WINDSHIELD", "merge_into": null, "action": "keep" },
+    { "original_name": "CAMERA", "count": 1011, "top_category": "Body & Exterior", "subcategory": "Cameras & Sensors", "canonical_name": "CAMERA", "merge_into": null, "action": "keep" },
+    { "original_name": "HEADER PANEL", "count": 720, "top_category": "Body & Exterior", "subcategory": "Structural & Supports", "canonical_name": "HEADER PANEL", "merge_into": null, "action": "keep" },
+    { "original_name": "SUSPENSION", "count": 323, "top_category": "Suspension & Steering", "subcategory": "Control Arms & Suspension", "canonical_name": "SUSPENSION", "merge_into": null, "action": "keep" },
+    { "original_name": "REAR BODY PANEL", "count": 67, "top_category": "Body & Exterior", "subcategory": "Body Repair Panels", "canonical_name": "REAR BODY PANEL", "merge_into": "REPAIR PANELS", "action": "merge" },
+    { "original_name": "Lower engine cover", "count": 54, "top_category": "Engine", "subcategory": "Engine Covers & Shields", "canonical_name": "ENGINE COVER", "merge_into": "ENGINE COVER", "action": "merge", "notes": "Contains some misclassified bumper covers — review individually" },
+    { "original_name": "WHEEL", "count": 46, "top_category": "Wheels & Tires", "subcategory": "Wheels", "canonical_name": "WHEEL", "merge_into": null, "action": "keep" },
+    { "original_name": "TRUNK LID", "count": 40, "top_category": "Body & Exterior", "subcategory": "Tailgates & Trunk Lids", "canonical_name": "TRUNK LID", "merge_into": null, "action": "keep" },
+    { "original_name": "Engine crossmember", "count": 31, "top_category": "Suspension & Steering", "subcategory": "Structural", "canonical_name": "Engine crossmember", "merge_into": "RADIATOR SUPPORT", "action": "merge" },
+    { "original_name": "MINOR- DAMAGED- GRILLE", "count": 27, "top_category": "Body & Exterior", "subcategory": "Grilles", "canonical_name": "GRILLE", "merge_into": "GRILLE", "action": "merge_with_condition", "condition_value": "minor_damage" },
+    { "original_name": "MINOR- DAMAGED- QUARTER PANEL / BOX SIDE", "count": 27, "top_category": "Body & Exterior", "subcategory": "Quarter Panels & Bed Sides", "canonical_name": "QUARTER PANEL / BOX SIDE", "merge_into": "QUARTER PANEL / BOX SIDE", "action": "merge_with_condition", "condition_value": "minor_damage" },
+    { "original_name": "EXHAUST", "count": 23, "top_category": "Exhaust", "subcategory": "Mufflers & Exhaust Components", "canonical_name": "EXHAUST", "merge_into": null, "action": "keep" },
+    { "original_name": "AIR CLEANER", "count": 20, "top_category": "Engine", "subcategory": "Air Intake", "canonical_name": "AIR CLEANER", "merge_into": null, "action": "keep" },
+    { "original_name": "Windshield", "count": 16, "top_category": "Body & Exterior", "subcategory": "Glass & Windshield Components", "canonical_name": "WINDSHIELD", "merge_into": "WINDSHIELD", "action": "merge", "flag": "case_duplicate" },
+    { "original_name": "Radiator cooling fan assy", "count": 10, "top_category": "Cooling System", "subcategory": "Radiators & Cooling", "canonical_name": "COOLING", "merge_into": "COOLING", "action": "merge", "flag": "description_leaked_into_product_line" },
+    { "original_name": "MINOR- DAMAGED- TAILGATE", "count": 7, "top_category": "Body & Exterior", "subcategory": "Tailgates & Trunk Lids", "canonical_name": "TAILGATE", "merge_into": "TAILGATE", "action": "merge_with_condition", "condition_value": "minor_damage" },
+    { "original_name": "HEADER PANELAR", "count": 4, "top_category": "Body & Exterior", "subcategory": "Structural & Supports", "canonical_name": "HEADER PANEL", "merge_into": "HEADER PANEL", "action": "merge", "flag": "typo" },
+    { "original_name": "WINDSHEILD", "count": 4, "top_category": "Body & Exterior", "subcategory": "Glass & Windshield Components", "canonical_name": "WINDSHIELD", "merge_into": "WINDSHIELD", "action": "merge", "flag": "typo" },
+    { "original_name": "Bumper", "count": 4, "top_category": "Body & Exterior", "subcategory": "Bumpers & Components", "canonical_name": "FRONT BUMPER COMPONENTS", "merge_into": "FRONT BUMPER COMPONENTS", "action": "merge", "flag": "ambiguous" },
+    { "original_name": "SOUL", "count": 3, "top_category": null, "subcategory": null, "canonical_name": null, "merge_into": "DISTRIBUTE_BY_DESCRIPTION", "action": "manual_review", "flag": "vehicle_model_leaked_into_product_line", "notes": "Kia Soul model name in product_line field. 3 items need individual re-categorization." },
+    { "original_name": "Header panel", "count": 3, "top_category": "Body & Exterior", "subcategory": "Structural & Supports", "canonical_name": "HEADER PANEL", "merge_into": "HEADER PANEL", "action": "merge", "flag": "case_duplicate" },
+    { "original_name": "RT Taillamp assy", "count": 3, "top_category": "Lighting", "subcategory": "Lighting Assemblies", "canonical_name": "LIGHTING", "merge_into": "LIGHTING", "action": "merge", "flag": "description_leaked_into_product_line" },
+    { "original_name": "Front bumper energy absorber", "count": 2, "top_category": "Body & Exterior", "subcategory": "Bumpers & Components", "canonical_name": "FRONT BUMPER COMPONENTS", "merge_into": "FRONT BUMPER COMPONENTS", "action": "merge", "flag": "description_leaked_into_product_line" },
+    { "original_name": "Lamp", "count": 1, "top_category": "Lighting", "subcategory": "Lighting Assemblies", "canonical_name": "LIGHTING", "merge_into": "LIGHTING", "action": "merge", "flag": "description_leaked_into_product_line" },
+    { "original_name": "PARTSLINK", "count": 118, "top_category": null, "subcategory": null, "canonical_name": null, "merge_into": "DISTRIBUTE_BY_DESCRIPTION", "action": "manual_review", "flag": "not_a_product_category", "notes": "Partslink is a cross-reference numbering system, not a category. 194 combined items need re-categorization by description." },
+    { "original_name": "Partslink", "count": 76, "top_category": null, "subcategory": null, "canonical_name": null, "merge_into": "DISTRIBUTE_BY_DESCRIPTION", "action": "manual_review", "flag": "not_a_product_category_and_case_duplicate" }
+  ],
+  "data_quality_flags": {
+    "typos": ["HEADER PANELAR", "WINDSHEILD"],
+    "case_duplicates": ["Partslink", "Windshield", "Header panel"],
+    "description_leaked_into_product_line": ["RT Taillamp assy", "Front bumper energy absorber", "Lamp", "Radiator cooling fan assy"],
+    "vehicle_model_leaked_into_product_line": ["SOUL"],
+    "not_a_real_category": ["PARTSLINK", "Partslink"],
+    "condition_modifier_not_category": ["MINOR- DAMAGED- GRILLE", "MINOR- DAMAGED- QUARTER PANEL / BOX SIDE", "MINOR- DAMAGED- TAILGATE"],
+    "items_needing_manual_review": 200,
+    "items_auto_mergeable": 131
+  },
+  "key_insight": "Dane Auto Parts is overwhelmingly a collision/body shop supplier. ~93% of inventory is Body & Exterior or Lighting. This is not a general auto parts retailer — marketing and SEO should reflect this specialty.",
+  "sources": [
+    "https://www.autozone.com/parts/collision-body-parts-and-hardware",
+    "https://www.rockauto.com/en/tools/body+&+lamp+assembly",
+    "https://www.napaonline.com/en/shop/replacement-parts/exterior-parts/body",
+    "https://www.oreillyauto.com/shop/b"
+  ]
+}
