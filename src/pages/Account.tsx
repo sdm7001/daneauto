@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import PageBreadcrumb from "@/components/PageBreadcrumb";
 
 interface SavedVehicle {
   id: string;
