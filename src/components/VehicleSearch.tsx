@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { Button } from "./ui/button";
-import { Search, Loader2 } from "lucide-react";
+import { Search, Loader2, BookmarkPlus, Check } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useVehicleYears, useVehicleMakes, useVehicleModels } from "@/hooks/useVehicles";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const selectCls =
   "w-full h-12 rounded-md border border-input bg-secondary/50 px-3 text-foreground " +
@@ -10,13 +13,34 @@ const selectCls =
 
 const VehicleSearch = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [year, setYear] = useState("");
   const [make, setMake] = useState("");
   const [model, setModel] = useState("");
+  const [saved, setSaved] = useState(false);
 
   const { data: years = [], isLoading: yearsLoading } = useVehicleYears();
   const { data: makes = [], isLoading: makesLoading } = useVehicleMakes(year);
   const { data: models = [], isLoading: modelsLoading } = useVehicleModels(year, make);
+
+  const canSave = !!(user && year && make && model);
+
+  const handleSaveVehicle = async () => {
+    if (!canSave) return;
+    try {
+      const { error } = await supabase.from("saved_vehicles").insert({
+        user_id: user!.id,
+        year: parseInt(year),
+        make,
+        model,
+      });
+      if (error) throw error;
+      setSaved(true);
+      toast.success(`${year} ${make} ${model} saved to My Vehicles`);
+    } catch {
+      toast.error("Could not save vehicle. It may already be saved.");
+    }
+  };
 
   const handleSearch = () => {
     if (!year && !make && !model) return;
@@ -82,16 +106,31 @@ const VehicleSearch = () => {
           </div>
         </div>
       </div>
-      <Button
-        onClick={handleSearch}
-        variant="hero"
-        size="xl"
-        className="w-full"
-        disabled={!year && !make && !model}
-      >
-        <Search className="w-5 h-5" />
-        Search Parts
-      </Button>
+      <div className="flex flex-col sm:flex-row gap-3">
+        <Button
+          onClick={handleSearch}
+          variant="hero"
+          size="xl"
+          className="flex-1"
+          disabled={!year && !make && !model}
+        >
+          <Search className="w-5 h-5" />
+          Search Parts
+        </Button>
+        {canSave && (
+          <Button
+            onClick={handleSaveVehicle}
+            variant="outline"
+            size="xl"
+            disabled={saved}
+            title="Save this vehicle to My Vehicles"
+          >
+            {saved
+              ? <><Check className="w-4 h-4 mr-2 text-green-400" /> Saved</>
+              : <><BookmarkPlus className="w-4 h-4 mr-2" /> Save Vehicle</>}
+          </Button>
+        )}
+      </div>
     </div>
   );
 };
