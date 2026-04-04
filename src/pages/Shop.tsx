@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import ProductCard from "@/components/ProductCard";
 import VehicleSearch from "@/components/VehicleSearch";
-import { useProducts } from "@/hooks/useProducts";
+import { useProducts, type ProductSort } from "@/hooks/useProducts";
 import { useProductLines } from "@/hooks/useVehicles";
 
 const PAGE_SIZE = 24;
@@ -23,6 +23,7 @@ const Shop = () => {
   const model      = searchParams.get("model") ?? "";
   const productLine = searchParams.get("line") ?? "";
   const search     = searchParams.get("search") ?? "";
+  const sort       = (searchParams.get("sort") ?? "sku") as ProductSort;
   const page       = parseInt(searchParams.get("page") ?? "1");
 
   // Auto-search after 400 ms of inactivity (skip on initial render)
@@ -38,7 +39,7 @@ const Shop = () => {
   }, [searchInput]);
 
   const { data, isLoading, isPlaceholderData } = useProducts({
-    year, make, model, productLine, search, page, pageSize: PAGE_SIZE,
+    year, make, model, productLine, search, sort, page, pageSize: PAGE_SIZE,
   });
 
   const { data: lines = [] } = useProductLines(year, make, model);
@@ -229,7 +230,7 @@ const Shop = () => {
               </div>
             ) : (
               <>
-                <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
                   <p className="text-muted-foreground text-sm">
                     Showing{" "}
                     <span className="text-foreground font-semibold">
@@ -239,6 +240,17 @@ const Shop = () => {
                     <span className="text-foreground font-semibold">{total.toLocaleString()}</span>{" "}
                     parts
                   </p>
+                  <select
+                    value={sort}
+                    onChange={(e) => setParam("sort", e.target.value === "sku" ? "" : e.target.value)}
+                    className="text-sm bg-secondary border border-border rounded-md px-3 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+                    aria-label="Sort products"
+                  >
+                    <option value="sku">Sort: Default</option>
+                    <option value="price_asc">Price: Low to High</option>
+                    <option value="price_desc">Price: High to Low</option>
+                    <option value="newest">Newest First</option>
+                  </select>
                 </div>
 
                 <div

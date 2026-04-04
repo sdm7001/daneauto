@@ -18,12 +18,15 @@ export interface Product {
   scraped_at: string | null
 }
 
+export type ProductSort = 'sku' | 'price_asc' | 'price_desc' | 'newest'
+
 export interface ProductFilters {
   year?: string
   make?: string
   model?: string
   productLine?: string
   search?: string
+  sort?: ProductSort
   page?: number
   pageSize?: number
 }
@@ -37,20 +40,24 @@ export interface ProductsResult {
 const db = supabase as any
 
 export function useProducts(filters: ProductFilters = {}) {
-  const { year, make, model, productLine, search, page = 1, pageSize = 24 } = filters
+  const { year, make, model, productLine, search, sort = 'sku', page = 1, pageSize = 24 } = filters
   const from = (page - 1) * pageSize
   const to = from + pageSize - 1
 
   const hasFilter = !!(year || make || model || productLine || search)
 
   return useQuery<ProductsResult>({
-    queryKey: ['products', { year, make, model, productLine, search, page, pageSize }],
+    queryKey: ['products', { year, make, model, productLine, search, sort, page, pageSize }],
     queryFn: async () => {
       let query = db
         .from('products')
         .select('*', { count: 'exact' })
         .range(from, to)
-        .order('sku')
+
+      if (sort === 'price_asc')  query = query.order('net_price', { ascending: true,  nullsFirst: false })
+      else if (sort === 'price_desc') query = query.order('net_price', { ascending: false, nullsFirst: false })
+      else if (sort === 'newest') query = query.order('id', { ascending: false })
+      else query = query.order('sku')
 
       if (year)        query = query.eq('year', year)
       if (make)        query = query.eq('make', make)
