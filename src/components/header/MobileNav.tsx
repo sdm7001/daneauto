@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { Search } from "lucide-react";
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { useAuth } from "@/contexts/AuthContext";
@@ -29,8 +30,14 @@ const MobileNav = ({ isAdmin, onClose, onSignOut, onSearch }: MobileNavProps) =>
   };
 
   return (
-    <nav className="lg:hidden py-4 border-t border-border animate-fade-in">
-      {/* Mobile Search */}
+    <motion.nav
+      initial={{ height: 0, opacity: 0 }}
+      animate={{ height: "auto", opacity: 1 }}
+      exit={{ height: 0, opacity: 0 }}
+      transition={{ duration: 0.25, ease: "easeInOut" }}
+      className="lg:hidden overflow-hidden border-t border-border"
+    >
+      <div className="py-4">
       <div className="flex items-center gap-2 mb-4">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -125,7 +132,8 @@ const MobileNav = ({ isAdmin, onClose, onSignOut, onSearch }: MobileNavProps) =>
           Sign Out
         </button>
       )}
-    </nav>
+      </div>
+    </motion.nav>
   );
 };
 

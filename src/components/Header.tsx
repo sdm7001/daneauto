@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { AnimatePresence } from "framer-motion";
 import Logo from "./Logo";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -56,14 +57,16 @@ const Header = () => {
           />
         </div>
 
-        {isMenuOpen && (
-          <MobileNav
-            isAdmin={isAdmin}
-            onClose={() => setIsMenuOpen(false)}
-            onSignOut={handleSignOut}
-            onSearch={handleSearch}
-          />
-        )}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <MobileNav
+              isAdmin={isAdmin}
+              onClose={() => setIsMenuOpen(false)}
+              onSignOut={handleSignOut}
+              onSearch={handleSearch}
+            />
+          )}
+        </AnimatePresence>
       </div>
     </header>
   );
