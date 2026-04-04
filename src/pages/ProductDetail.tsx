@@ -153,30 +153,9 @@ const ProductDetail = () => {
     },
   };
 
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://daneauto.ca" },
-      { "@type": "ListItem", position: 2, name: "Shop", item: "https://daneauto.ca/shop" },
-      {
-        "@type": "ListItem", position: 3,
-        name: `${product.year} ${product.make} ${product.model}`,
-        item: `https://daneauto.ca/shop?year=${product.year}&make=${product.make}&model=${product.model}`,
-      },
-      {
-        "@type": "ListItem", position: 4,
-        name: product.product_line,
-        item: `https://daneauto.ca/shop?year=${product.year}&make=${product.make}&model=${product.model}&line=${encodeURIComponent(product.product_line)}`,
-      },
-      { "@type": "ListItem", position: 5, name: product.description ?? product.sku },
-    ],
-  };
-
   return (
     <main className="min-h-screen py-6 md:py-10">
       <StructuredData data={productSchema} id={`product-${product.sku}`} />
-      <StructuredData data={breadcrumbSchema} id={`breadcrumb-${product.sku}`} />
       <div className="container mx-auto px-4 max-w-7xl">
         <PageBreadcrumb
           segments={[
