@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { ShoppingCart, User, Menu, X, Search, LogOut, Shield } from "lucide-react";
+import { ShoppingCart, User, Menu, X, Search, LogOut, Shield, Heart } from "lucide-react";
 import { useState, useEffect } from "react";
 import Logo from "./Logo";
 import { Button } from "./ui/button";
