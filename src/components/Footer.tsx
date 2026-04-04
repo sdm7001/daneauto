@@ -8,7 +8,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 
-const Footer = () => {
+const Footer = forwardRef<HTMLElement>((_, ref) => {
   const [email, setEmail] = useState("");
   const [subscribing, setSubscribing] = useState(false);
 
