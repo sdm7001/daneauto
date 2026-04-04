@@ -159,10 +159,13 @@ export type Database = {
       }
       products: {
         Row: {
+          category: string | null
           certification: string | null
+          condition: string | null
           description: string | null
           id: number
           image_url: string | null
+          image_verified: boolean | null
           list_price: number | null
           make: string
           model: string
@@ -172,13 +175,17 @@ export type Database = {
           product_line: string
           scraped_at: string | null
           sku: string
+          subcategory: string | null
           year: string
         }
         Insert: {
+          category?: string | null
           certification?: string | null
+          condition?: string | null
           description?: string | null
           id?: number
           image_url?: string | null
+          image_verified?: boolean | null
           list_price?: number | null
           make: string
           model: string
@@ -188,13 +195,17 @@ export type Database = {
           product_line: string
           scraped_at?: string | null
           sku: string
+          subcategory?: string | null
           year: string
         }
         Update: {
+          category?: string | null
           certification?: string | null
+          condition?: string | null
           description?: string | null
           id?: number
           image_url?: string | null
+          image_verified?: boolean | null
           list_price?: number | null
           make?: string
           model?: string
@@ -204,6 +215,7 @@ export type Database = {
           product_line?: string
           scraped_at?: string | null
           sku?: string
+          subcategory?: string | null
           year?: string
         }
         Relationships: []
