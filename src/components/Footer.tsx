@@ -46,6 +46,9 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
     { name: "About Us", path: "/about" },
     { name: "Contact", path: "/contact" },
     { name: "Shop Parts", path: "/shop" },
+    { name: "Blog", path: "/blog" },
+    { name: "FAQ", path: "/faq" },
+    { name: "Shipping & Returns", path: "/shipping-returns" },
     { name: "My Account", path: "/account" },
     { name: "My Wishlist", path: "/wishlist" },
   ];
@@ -145,8 +148,9 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
             <p>&copy; {new Date().getFullYear()} Dane Auto Parts Ltd. All rights reserved.</p>
             <div className="flex gap-6">
+              <Link to="/privacy-policy" className="hover:text-primary transition-colors">Privacy Policy</Link>
+              <Link to="/shipping-returns" className="hover:text-primary transition-colors">Shipping & Returns</Link>
               <Link to="/contact" className="hover:text-primary transition-colors">Contact</Link>
-              <Link to="/about" className="hover:text-primary transition-colors">About</Link>
             </div>
           </div>
         </div>
