@@ -6,6 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import ProductCard from "@/components/ProductCard";
+import SearchAutocomplete from "@/components/SearchAutocomplete";
 import PopularForVehicle from "@/components/PopularForVehicle";
 import VehicleSearch from "@/components/VehicleSearch";
 import { useProducts, type ProductSort } from "@/hooks/useProducts";
