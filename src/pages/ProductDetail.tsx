@@ -448,7 +448,7 @@ const ProductDetail = () => {
                                 </span>
                               ) : (
                                 <Link
-                                  to={`/shop?year=${v.year}&make=${v.make}&model=${v.model}`}
+                                  to={`/shop?year=${v.year}&make=${encodeURIComponent(v.make)}&model=${encodeURIComponent(v.model)}`}
                                   className="text-xs text-muted-foreground hover:text-primary transition-colors"
                                 >
                                   View →
@@ -472,9 +472,17 @@ const ProductDetail = () => {
             <TabsContent value="related" className="mt-8">
               {relatedProducts && relatedProducts.length > 0 ? (
                 <div>
-                  <p className="text-muted-foreground text-sm mb-6">
-                    Other <span className="text-foreground font-medium">{product.product_line}</span> parts for the {product.year} {product.make} {product.model}:
-                  </p>
+                  <div className="flex items-center justify-between mb-6">
+                    <p className="text-muted-foreground text-sm">
+                      Other <span className="text-foreground font-medium">{product.product_line}</span> parts for the {product.year} {product.make} {product.model}:
+                    </p>
+                    <Link
+                      to={`/shop?year=${product.year}&make=${encodeURIComponent(product.make)}&model=${encodeURIComponent(product.model)}&line=${encodeURIComponent(product.product_line)}`}
+                      className="text-sm text-primary hover:underline shrink-0 ml-4"
+                    >
+                      View all →
+                    </Link>
+                  </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     {relatedProducts.map((p) => (
                       <ProductCard key={p.sku} product={p} />
