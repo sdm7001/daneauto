@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Loader2 } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useTopProductLines } from "@/hooks/useVehicles";
 import { usePageTitle } from "@/hooks/usePageTitle";
 
@@ -45,8 +45,14 @@ const Categories = () => {
         </div>
 
         {isLoading ? (
-          <div className="flex justify-center py-20">
-            <Loader2 className="w-10 h-10 animate-spin text-primary" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {Array.from({ length: 16 }).map((_, i) => (
+              <div key={i} className="bg-gradient-card rounded-xl border border-border p-8 text-center">
+                <Skeleton className="w-16 h-16 rounded-full mx-auto mb-6" />
+                <Skeleton className="h-5 w-3/4 mx-auto mb-2" />
+                <Skeleton className="h-3 w-1/2 mx-auto" />
+              </div>
+            ))}
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
