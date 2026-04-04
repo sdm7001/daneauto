@@ -48,8 +48,22 @@ const ProductDetail = () => {
         document.head.appendChild(meta);
       }
       meta.content = desc;
+
+      // Canonical URL
+      const canonicalId = "product-canonical";
+      let canonical = document.getElementById(canonicalId) as HTMLLinkElement | null;
+      if (!canonical) {
+        canonical = document.createElement("link");
+        canonical.id = canonicalId;
+        canonical.rel = "canonical";
+        document.head.appendChild(canonical);
+      }
+      canonical.href = `https://daneautoparts.com/product/${encodeURIComponent(product.sku)}`;
     }
-    return () => { document.title = BASE_TITLE; };
+    return () => {
+      document.title = BASE_TITLE;
+      document.getElementById("product-canonical")?.remove();
+    };
   }, [product]);
 
   const handleAddToCart = () => {
@@ -252,7 +266,12 @@ const ProductDetail = () => {
                   )}
                 </div>
               ) : (
-                <p className="text-muted-foreground text-lg">Contact us for pricing</p>
+                <div>
+                  <p className="text-muted-foreground text-lg mb-3">Call for price</p>
+                  <Link to={`/contact?subject=${encodeURIComponent(`Price inquiry: ${product.sku}`)}`}>
+                    <Button variant="outline" size="sm">Request a Quote</Button>
+                  </Link>
+                </div>
               )}
             </div>
 

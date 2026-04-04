@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Mail, Phone, MapPin, Clock, Send, CheckCircle } from "lucide-react";
 import { usePageTitle } from "@/hooks/usePageTitle";
 import { Button } from "@/components/ui/button";
@@ -16,7 +17,12 @@ const contactInfo = [
 
 const Contact = () => {
   usePageTitle("Contact Us", "Contact Dane Auto Parts Ltd. Based in Ontario, Canada. Reach us for parts inquiries, orders, and support.");
-  const [formData, setFormData] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
+  const [searchParams] = useSearchParams();
+  const [formData, setFormData] = useState({
+    name: "", email: "", phone: "",
+    subject: searchParams.get("subject") ?? "",
+    message: "",
+  });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
