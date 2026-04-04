@@ -155,17 +155,17 @@ const ProductDetail = () => {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://daneautoparts.com" },
-      { "@type": "ListItem", position: 2, name: "Shop", item: "https://daneautoparts.com/shop" },
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://daneauto.ca" },
+      { "@type": "ListItem", position: 2, name: "Shop", item: "https://daneauto.ca/shop" },
       {
         "@type": "ListItem", position: 3,
         name: `${product.year} ${product.make} ${product.model}`,
-        item: `https://daneautoparts.com/shop?year=${product.year}&make=${product.make}&model=${product.model}`,
+        item: `https://daneauto.ca/shop?year=${product.year}&make=${product.make}&model=${product.model}`,
       },
       {
         "@type": "ListItem", position: 4,
         name: product.product_line,
-        item: `https://daneautoparts.com/shop?year=${product.year}&make=${product.make}&model=${product.model}&line=${encodeURIComponent(product.product_line)}`,
+        item: `https://daneauto.ca/shop?year=${product.year}&make=${product.make}&model=${product.model}&line=${encodeURIComponent(product.product_line)}`,
       },
       { "@type": "ListItem", position: 5, name: product.description ?? product.sku },
     ],
