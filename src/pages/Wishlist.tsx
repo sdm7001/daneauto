@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import ProductCard from "@/components/ProductCard";
 import type { Product } from "@/hooks/useProducts";
+import PageBreadcrumb from "@/components/PageBreadcrumb";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const db = supabase as any
