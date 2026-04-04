@@ -2,6 +2,9 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { supabase } from '@/integrations/supabase/client'
 import { useAuth } from '@/contexts/AuthContext'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const db = supabase as any
+
 export function useWishlist() {
   const { user } = useAuth()
   const queryClient = useQueryClient()
@@ -10,7 +13,7 @@ export function useWishlist() {
     queryKey: ['wishlist', user?.id],
     queryFn: async () => {
       if (!user) return []
-      const { data, error } = await (supabase as any)
+      const { data, error } = await db
         .from('wishlist')
         .select('product_sku')
         .eq('user_id', user.id)
@@ -26,7 +29,7 @@ export function useWishlist() {
   const addMutation = useMutation({
     mutationFn: async (sku: string) => {
       if (!user) throw new Error('Not logged in')
-      const { error } = await (supabase as any)
+      const { error } = await db
         .from('wishlist')
         .insert({ user_id: user.id, product_sku: sku })
       if (error) throw error
@@ -48,7 +51,7 @@ export function useWishlist() {
   const removeMutation = useMutation({
     mutationFn: async (sku: string) => {
       if (!user) throw new Error('Not logged in')
-      const { error } = await (supabase as any)
+      const { error } = await db
         .from('wishlist')
         .delete()
         .eq('user_id', user.id)

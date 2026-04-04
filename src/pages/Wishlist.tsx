@@ -9,6 +9,9 @@ import { supabase } from "@/integrations/supabase/client";
 import ProductCard from "@/components/ProductCard";
 import type { Product } from "@/hooks/useProducts";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const db = supabase as any
+
 const Wishlist = () => {
   usePageTitle("Wishlist");
   const { user, loading: authLoading } = useAuth();
@@ -18,7 +21,7 @@ const Wishlist = () => {
     queryKey: ['wishlist-products', wishlistSkus],
     queryFn: async () => {
       if (!wishlistSkus.length) return [];
-      const { data, error } = await (supabase as any)
+      const { data, error } = await db
         .from('products')
         .select('*')
         .in('sku', wishlistSkus)

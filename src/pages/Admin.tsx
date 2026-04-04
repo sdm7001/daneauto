@@ -171,7 +171,7 @@ const Admin = () => {
 
   const fetchMessages = async () => {
     setLoadingMessages(true);
-    const { data, error } = await (supabase as any)
+    const { data, error } = await supabase
       .from("contact_submissions")
       .select("*")
       .order("created_at", { ascending: false });
