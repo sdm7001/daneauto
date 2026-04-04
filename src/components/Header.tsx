@@ -24,6 +24,7 @@ const Header = () => {
   const { items } = useCart();
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const { count: wishlistCount } = useWishlist();
   const cartCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
