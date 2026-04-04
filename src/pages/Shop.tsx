@@ -1,7 +1,8 @@
 import { useState, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import { usePageTitle } from "@/hooks/usePageTitle";
-import { Search, SlidersHorizontal, X, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
+import { Search, SlidersHorizontal, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import ProductCard from "@/components/ProductCard";
@@ -157,8 +158,21 @@ const Shop = () => {
                 <VehicleSearch />
               </div>
             ) : isLoading ? (
-              <div className="flex items-center justify-center py-20">
-                <Loader2 className="w-10 h-10 animate-spin text-primary" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+                {Array.from({ length: 12 }).map((_, i) => (
+                  <div key={i} className="bg-gradient-card rounded-xl border border-border overflow-hidden">
+                    <Skeleton className="aspect-square w-full" />
+                    <div className="p-4 space-y-2">
+                      <Skeleton className="h-3 w-1/3" />
+                      <Skeleton className="h-4 w-3/4" />
+                      <Skeleton className="h-3 w-1/4" />
+                      <div className="flex items-center justify-between mt-4">
+                        <Skeleton className="h-6 w-16" />
+                        <Skeleton className="h-9 w-9 rounded-md" />
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             ) : products.length === 0 ? (
               <div className="text-center py-16">
