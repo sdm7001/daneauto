@@ -7,6 +7,7 @@ import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import PageBreadcrumb from "@/components/PageBreadcrumb";
 
 const Cart = () => {
   usePageTitle("Cart");
