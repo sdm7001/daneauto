@@ -74,10 +74,24 @@ const SearchAutocomplete = ({
   const handleSelect = useCallback(
     (suggestion: SearchSuggestion) => {
       setOpen(false);
+      addSearch(suggestion.description ?? suggestion.sku);
       navigate(`/product/${encodeURIComponent(suggestion.sku)}`);
     },
-    [navigate]
+    [navigate, addSearch]
   );
+
+  const handleSearchSubmit = () => {
+    if (value.trim()) addSearch(value.trim());
+    setOpen(false);
+    onSearch();
+  };
+
+  const handleRecentClick = (term: string) => {
+    onChange(term);
+    setOpen(false);
+    addSearch(term);
+    navigate(`/shop?search=${encodeURIComponent(term)}`);
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!open || itemCount === 0) {
