@@ -157,7 +157,7 @@ const SearchAutocomplete = ({
   };
 
   return (
-    <div ref={containerRef} className={`relative ${className ?? ""}`} role="combobox" aria-expanded={open && itemCount > 0} aria-haspopup="listbox">
+    <div ref={containerRef} className={`relative ${className ?? ""}`} role="combobox" aria-expanded={open && (itemCount > 0 || showRecent)} aria-haspopup="listbox">
       <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground z-10" />
       {isLoading && debouncedQuery.length >= 2 && (
         <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground animate-spin z-10" />
