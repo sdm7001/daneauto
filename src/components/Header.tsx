@@ -96,6 +96,20 @@ const Header = () => {
                 {link.name}
               </Link>
             ))}
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex items-center gap-1 text-foreground/80 hover:text-primary transition-colors duration-300 font-display uppercase tracking-wider text-sm outline-none">
+                More <ChevronDown className="w-3.5 h-3.5" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                {mobileExtraLinks.map((link) => (
+                  <DropdownMenuItem key={link.name} asChild>
+                    <Link to={link.path} className="cursor-pointer">
+                      {link.name}
+                    </Link>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </nav>
 
           {/* Actions */}
