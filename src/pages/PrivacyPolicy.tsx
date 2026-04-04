@@ -1,4 +1,5 @@
 import { usePageTitle } from "@/hooks/usePageTitle";
+import PageBreadcrumb from "@/components/PageBreadcrumb";
 
 const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
   <section className="mb-8">
