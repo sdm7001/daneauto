@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import PageBreadcrumb from "@/components/PageBreadcrumb";
 
 const contactInfo = [
   { icon: Phone, title: "Phone", value: "1-(204) 599-4562", link: "tel:+12045994562" },
