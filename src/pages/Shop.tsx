@@ -104,6 +104,12 @@ const Shop = () => {
                 <span className="text-foreground font-medium">{productLine}</span>
               </>
             )}
+            {subcategory && (
+              <>
+                <ChevronRight className="w-3 h-3" />
+                <span className="text-foreground font-medium">{subcategory}</span>
+              </>
+            )}
             {search && (
               <>
                 <ChevronRight className="w-3 h-3" />
