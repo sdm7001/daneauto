@@ -41,18 +41,31 @@ const PopularForVehicle = ({ year, make, model, onSelectLine, activeLine }: Prop
               <button
                 key={line.product_line}
                 onClick={() => onSelectLine(isActive ? "" : line.product_line)}
-                className={`shrink-0 flex flex-col items-center gap-1.5 rounded-xl border px-4 py-3 text-center transition-all duration-300 hover:-translate-y-0.5 ${
+                className={`shrink-0 flex flex-col items-center gap-1.5 rounded-xl border px-3 py-3 text-center transition-all duration-300 hover:-translate-y-0.5 min-w-[7rem] ${
                   isActive
                     ? "border-primary bg-primary/10 shadow-glow"
                     : "border-border bg-gradient-card hover:border-primary/50 shadow-card"
                 }`}
               >
-                <div className={`w-9 h-9 rounded-full flex items-center justify-center ${
-                  isActive ? "bg-primary/20" : "bg-primary/10"
-                }`}>
-                  <Icon className="w-4.5 h-4.5 text-primary" strokeWidth={1.5} />
-                </div>
-                <span className={`text-xs font-medium leading-tight max-w-[5rem] ${
+                {line.sample_image ? (
+                  <div className={`w-12 h-12 rounded-lg overflow-hidden border ${
+                    isActive ? "border-primary/40" : "border-border"
+                  }`}>
+                    <img
+                      src={line.sample_image}
+                      alt={line.product_line}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                ) : (
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                    isActive ? "bg-primary/20" : "bg-primary/10"
+                  }`}>
+                    <Icon className="w-5 h-5 text-primary" strokeWidth={1.5} />
+                  </div>
+                )}
+                <span className={`text-xs font-medium leading-tight max-w-[5.5rem] ${
                   isActive ? "text-primary" : "text-foreground"
                 }`}>
                   {line.product_line}
