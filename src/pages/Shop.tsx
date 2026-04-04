@@ -9,7 +9,7 @@ import ProductCard from "@/components/ProductCard";
 import PopularForVehicle from "@/components/PopularForVehicle";
 import VehicleSearch from "@/components/VehicleSearch";
 import { useProducts, type ProductSort } from "@/hooks/useProducts";
-import { useProductLines } from "@/hooks/useVehicles";
+import { useProductLines, useSubcategories } from "@/hooks/useVehicles";
 
 const PAGE_SIZE = 24;
 
