@@ -196,6 +196,37 @@ const Admin = () => {
     setMessages((prev) => prev.map((m) => m.id === id ? { ...m, status: "read" } : m));
   };
 
+  const handleImport = async () => {
+    if (!importFile) return;
+    setImporting(true);
+    setImportResult(null);
+    try {
+      const formData = new FormData();
+      formData.append("file", importFile);
+
+      const { data: { session } } = await supabase.auth.getSession();
+      const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
+      const res = await fetch(
+        `https://${projectId}.supabase.co/functions/v1/import-products`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${session?.access_token}`,
+          },
+          body: formData,
+        }
+      );
+      const result = await res.json();
+      if (!res.ok) throw new Error(result.error || "Import failed");
+      setImportResult(result);
+      toast.success(`Imported ${result.inserted} products!`);
+    } catch (err: any) {
+      toast.error(err.message || "Import failed");
+    } finally {
+      setImporting(false);
+    }
+  };
+
   const handleUpdateUser = async () => {
     if (!editingUser) return;
 
