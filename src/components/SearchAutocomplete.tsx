@@ -94,10 +94,36 @@ const SearchAutocomplete = ({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (!open || itemCount === 0) {
-      if (e.key === "Enter") {
-        onSearch();
+    // Recent searches mode
+    if (showRecent) {
+      const count = recentSearches.length;
+      switch (e.key) {
+        case "ArrowDown":
+          e.preventDefault();
+          setActiveIndex((prev) => (prev < count - 1 ? prev + 1 : 0));
+          break;
+        case "ArrowUp":
+          e.preventDefault();
+          setActiveIndex((prev) => (prev > 0 ? prev - 1 : count - 1));
+          break;
+        case "Enter":
+          e.preventDefault();
+          if (activeIndex >= 0 && activeIndex < count) {
+            handleRecentClick(recentSearches[activeIndex]);
+          } else {
+            handleSearchSubmit();
+          }
+          break;
+        case "Escape":
+          setOpen(false);
+          setActiveIndex(-1);
+          break;
       }
+      return;
+    }
+
+    if (!open || itemCount === 0) {
+      if (e.key === "Enter") handleSearchSubmit();
       return;
     }
 
@@ -114,13 +140,8 @@ const SearchAutocomplete = ({
         e.preventDefault();
         if (activeIndex >= 0 && activeIndex < suggestions.length) {
           handleSelect(suggestions[activeIndex]);
-        } else if (activeIndex === suggestions.length) {
-          // "View all results" item
-          setOpen(false);
-          onSearch();
         } else {
-          setOpen(false);
-          onSearch();
+          handleSearchSubmit();
         }
         break;
       case "Escape":
