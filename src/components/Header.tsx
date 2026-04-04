@@ -92,10 +92,10 @@ const Header = () => {
               <Link
                 key={link.name}
                 to={link.path}
-                className={`transition-colors duration-300 font-display uppercase tracking-wider text-sm ${
+                className={`relative font-display uppercase tracking-wider text-sm transition-colors duration-300 after:content-[''] after:absolute after:left-0 after:bottom-[-4px] after:h-0.5 after:bg-primary after:transition-transform after:duration-300 after:origin-bottom-left ${
                   location.pathname === link.path
-                    ? "text-primary font-semibold"
-                    : "text-foreground/80 hover:text-primary"
+                    ? "text-primary after:w-full after:scale-x-100"
+                    : "text-foreground/80 hover:text-primary after:w-full after:scale-x-0 hover:after:scale-x-100"
                 }`}
               >
                 {link.name}
