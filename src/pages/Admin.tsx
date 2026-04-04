@@ -410,6 +410,22 @@ const Admin = () => {
                 )}
               </button>
               <button
+                onClick={() => setActiveTab("chats")}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                  activeTab === "chats"
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+                }`}
+              >
+                <MessageCircle className="w-5 h-5" />
+                Chats
+                {chatConversations.filter(c => c.status === "new").length > 0 && (
+                  <span className="ml-auto bg-destructive text-destructive-foreground text-xs font-bold px-1.5 py-0.5 rounded-full">
+                    {chatConversations.filter(c => c.status === "new").length}
+                  </span>
+                )}
+              </button>
+              <button
                 onClick={() => setActiveTab("import")}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                   activeTab === "import"
