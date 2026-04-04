@@ -231,6 +231,18 @@ const Header = () => {
                 Admin Dashboard
               </Link>
             )}
+            <div className="border-t border-border mt-2 pt-2">
+              {mobileExtraLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  to={link.path}
+                  className="block py-3 text-foreground/80 hover:text-primary transition-colors duration-300 font-display uppercase tracking-wider text-sm"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {link.name}
+                </Link>
+              ))}
+            </div>
             {user && (
               <Link
                 to="/wishlist"
