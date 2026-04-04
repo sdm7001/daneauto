@@ -1,25 +1,25 @@
-import { Truck, Shield, Clock, Award } from "lucide-react";
+import { Truck, Shield, Globe, Award } from "lucide-react";
 
 const features = [
   {
     icon: Truck,
-    title: "Free Shipping",
-    description: "Free delivery on orders over $75 across the country",
+    title: "Free Shipping Over $75 CAD",
+    description: "Free delivery on orders $75+ CAD. Flat-rate shipping on smaller orders.",
   },
   {
     icon: Shield,
-    title: "Warranty Guaranteed",
-    description: "All parts come with manufacturer warranty protection",
+    title: "OEM-Grade Quality",
+    description: "Every part meets OEM specifications. Partslink and OEM cross-references included.",
   },
   {
-    icon: Clock,
-    title: "Same Day Dispatch",
-    description: "Order before 2PM for same-day shipping",
+    icon: Globe,
+    title: "Canada · USA · Mexico",
+    description: "We ship across North America. Secure checkout in CAD via Stripe.",
   },
   {
     icon: Award,
-    title: "Quality Assured",
-    description: "Only genuine OEM and certified aftermarket parts",
+    title: "319,910 Parts In Stock",
+    description: "Collision and body parts covering vehicles from 1961 to 2026.",
   },
 ];
 

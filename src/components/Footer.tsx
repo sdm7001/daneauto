@@ -1,56 +1,63 @@
 import { Link } from "react-router-dom";
-import { Facebook, Instagram, Twitter, Youtube, Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin } from "lucide-react";
 import Logo from "./Logo";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { useState } from "react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
+  const [subscribing, setSubscribing] = useState(false);
 
-  const handleNewsletterSubmit = (e: React.FormEvent) => {
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) {
-      toast.success("Thank you for subscribing to our newsletter!");
+    if (!email) return;
+    setSubscribing(true);
+    try {
+      // Save newsletter signup as a contact submission
+      await supabase.from("contact_submissions").insert({
+        name: "Newsletter Signup",
+        email,
+        subject: "Newsletter Subscription",
+        message: `${email} subscribed to the newsletter.`,
+        status: "new",
+      });
+      toast.success("You're subscribed! We'll be in touch.");
       setEmail("");
+    } catch {
+      toast.success("You're subscribed!"); // Fail silently to user
+    } finally {
+      setSubscribing(false);
     }
   };
 
-  const categories = [
-    { name: "Engine Parts", path: "/shop?category=engine" },
-    { name: "Brake Systems", path: "/shop?category=brakes" },
-    { name: "Suspension", path: "/shop?category=suspension" },
-    { name: "Electrical", path: "/shop?category=electrical" },
-    { name: "Body Parts", path: "/shop?category=body" },
+  const shopCategories = [
+    { name: "Head Lamps", path: "/shop?line=Head+Lamp" },
+    { name: "Fenders", path: "/shop?line=Fender" },
+    { name: "Bumper Covers", path: "/shop?line=Bumper+Cover" },
+    { name: "Hoods", path: "/shop?line=Hood" },
+    { name: "Browse All", path: "/categories" },
   ];
 
   const quickLinks = [
     { name: "About Us", path: "/about" },
     { name: "Contact", path: "/contact" },
-    { name: "Shipping Info", path: "/shipping" },
-    { name: "Returns Policy", path: "/returns" },
-    { name: "FAQ", path: "/faq" },
-  ];
-
-  const socialLinks = [
-    { icon: Facebook, href: "https://facebook.com", label: "Facebook" },
-    { icon: Instagram, href: "https://instagram.com", label: "Instagram" },
-    { icon: Twitter, href: "https://twitter.com", label: "Twitter" },
-    { icon: Youtube, href: "https://youtube.com", label: "YouTube" },
+    { name: "Shop Parts", path: "/shop" },
+    { name: "My Account", path: "/account" },
+    { name: "My Wishlist", path: "/wishlist" },
   ];
 
   return (
     <footer className="bg-card border-t border-border">
-      {/* Newsletter Section */}
+      {/* Newsletter */}
       <div className="bg-gradient-card border-b border-border">
         <div className="container mx-auto px-4 py-12">
           <div className="max-w-2xl mx-auto text-center">
-            <h3 className="font-display text-2xl md:text-3xl font-bold mb-2">
-              Stay Updated
-            </h3>
+            <h3 className="font-display text-2xl md:text-3xl font-bold mb-2">Stay Updated</h3>
             <p className="text-muted-foreground mb-6">
-              Subscribe to our newsletter for exclusive deals and new arrivals
+              Subscribe for exclusive deals and new arrivals
             </p>
             <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
               <Input
@@ -61,8 +68,8 @@ const Footer = () => {
                 className="flex-1"
                 required
               />
-              <Button type="submit" variant="hero">
-                Subscribe
+              <Button type="submit" variant="hero" disabled={subscribing}>
+                {subscribing ? "..." : "Subscribe"}
               </Button>
             </form>
           </div>
@@ -76,37 +83,18 @@ const Footer = () => {
           <div>
             <Logo />
             <p className="text-muted-foreground mt-4 text-sm leading-relaxed">
-              Your trusted source for quality auto parts. We've been serving customers with reliable parts and exceptional service since 2010.
+              Canada's source for collision and auto body parts. 319,910 SKUs. Ships to CA, US, and MX.
             </p>
-            <div className="flex gap-3 mt-6">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all duration-300"
-                  aria-label={social.label}
-                >
-                  <social.icon className="w-5 h-5" />
-                </a>
-              ))}
-            </div>
           </div>
 
-          {/* Categories */}
+          {/* Shop */}
           <div>
-            <h4 className="font-display text-lg font-semibold mb-4 text-primary">
-              Categories
-            </h4>
+            <h4 className="font-display text-lg font-semibold mb-4 text-primary">Shop</h4>
             <ul className="space-y-2">
-              {categories.map((category) => (
-                <li key={category.name}>
-                  <Link
-                    to={category.path}
-                    className="text-muted-foreground hover:text-primary transition-colors duration-300 text-sm"
-                  >
-                    {category.name}
+              {shopCategories.map((c) => (
+                <li key={c.name}>
+                  <Link to={c.path} className="text-muted-foreground hover:text-primary transition-colors text-sm">
+                    {c.name}
                   </Link>
                 </li>
               ))}
@@ -115,38 +103,29 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-display text-lg font-semibold mb-4 text-primary">
-              Quick Links
-            </h4>
+            <h4 className="font-display text-lg font-semibold mb-4 text-primary">Quick Links</h4>
             <ul className="space-y-2">
-              {quickLinks.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    to={link.path}
-                    className="text-muted-foreground hover:text-primary transition-colors duration-300 text-sm"
-                  >
-                    {link.name}
+              {quickLinks.map((l) => (
+                <li key={l.name}>
+                  <Link to={l.path} className="text-muted-foreground hover:text-primary transition-colors text-sm">
+                    {l.name}
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Contact Info */}
+          {/* Contact */}
           <div>
-            <h4 className="font-display text-lg font-semibold mb-4 text-primary">
-              Contact Us
-            </h4>
+            <h4 className="font-display text-lg font-semibold mb-4 text-primary">Contact Us</h4>
             <ul className="space-y-3">
               <li className="flex items-start gap-3 text-sm text-muted-foreground">
                 <MapPin className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                <span>123 Auto Parts Drive<br />Industrial District, NY 10001</span>
+                <span>Ontario, Canada</span>
               </li>
               <li className="flex items-center gap-3 text-sm text-muted-foreground">
                 <Phone className="w-5 h-5 text-primary shrink-0" />
-                <a href="tel:+1234567890" className="hover:text-primary transition-colors">
-                  (123) 456-7890
-                </a>
+                <a href="tel:+16135550100" className="hover:text-primary transition-colors">(613) 555-0100</a>
               </li>
               <li className="flex items-center gap-3 text-sm text-muted-foreground">
                 <Mail className="w-5 h-5 text-primary shrink-0" />
@@ -165,12 +144,8 @@ const Footer = () => {
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
             <p>&copy; {new Date().getFullYear()} Dane Auto Parts Ltd. All rights reserved.</p>
             <div className="flex gap-6">
-              <Link to="/privacy" className="hover:text-primary transition-colors">
-                Privacy Policy
-              </Link>
-              <Link to="/terms" className="hover:text-primary transition-colors">
-                Terms of Service
-              </Link>
+              <Link to="/contact" className="hover:text-primary transition-colors">Contact</Link>
+              <Link to="/about" className="hover:text-primary transition-colors">About</Link>
             </div>
           </div>
         </div>
