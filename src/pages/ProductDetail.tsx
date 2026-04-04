@@ -58,7 +58,7 @@ const ProductDetail = () => {
         canonical.rel = "canonical";
         document.head.appendChild(canonical);
       }
-      canonical.href = `https://daneautoparts.com/product/${encodeURIComponent(product.sku)}`;
+      canonical.href = `https://daneauto.ca/product/${encodeURIComponent(product.sku)}`;
     }
     return () => {
       document.title = BASE_TITLE;
