@@ -9,6 +9,7 @@ import { useProduct, useRelatedProducts, useCompatibleVehicles } from "@/hooks/u
 import { useCart } from "@/contexts/CartContext";
 import { toast } from "sonner";
 import ProductCard from "@/components/ProductCard";
+import WishlistButton from "@/components/WishlistButton";
 
 const ProductDetail = () => {
   const { sku } = useParams<{ sku: string }>();
