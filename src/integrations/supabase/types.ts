@@ -342,7 +342,7 @@ export type Database = {
         }[]
       }
       get_vehicle_makes: {
-        Args: { p_year: string }
+        Args: { p_year?: string }
         Returns: {
           make: string
         }[]
