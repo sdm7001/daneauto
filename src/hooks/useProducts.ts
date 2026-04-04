@@ -99,30 +99,38 @@ export function useFeaturedProducts(limit = 8) {
   return useQuery<Product[]>({
     queryKey: ['products', 'featured', limit],
     queryFn: async () => {
-      const { data, error } = await db
-        .from('products')
-        .select('*')
-        .not('image_url', 'is', null)
-        .not('list_price', 'is', null)
-        .gte('list_price', 10)
-        .order('list_price', { ascending: false })
-        .limit(200)
-      if (error) throw error
-      // Pick a varied selection from different product lines
-      const all = (data as Product[]) ?? []
-      const seen = new Set<string>()
-      const picked: Product[] = []
-      for (const p of all) {
-        if (picked.length >= limit) break
-        if (!seen.has(p.product_line)) {
-          seen.add(p.product_line)
-          picked.push(p)
-        }
+      // Fetch from multiple price tiers for variety
+      const tiers = [
+        { gte: 500, lte: 6100 },
+        { gte: 100, lte: 499 },
+        { gte: 20, lte: 99 },
+      ]
+      const allProducts: Product[] = []
+      for (const tier of tiers) {
+        const { data, error } = await db
+          .from('products')
+          .select('*')
+          .not('image_url', 'is', null)
+          .not('list_price', 'is', null)
+          .gte('list_price', tier.gte)
+          .lte('list_price', tier.lte)
+          .limit(80)
+        if (error) throw error
+        allProducts.push(...((data as Product[]) ?? []))
       }
-      // Fill remaining if needed
-      for (const p of all) {
+      // Pick one product per product_line, cycling through tiers
+      const byLine = new Map<string, Product[]>()
+      for (const p of allProducts) {
+        const arr = byLine.get(p.product_line) ?? []
+        arr.push(p)
+        byLine.set(p.product_line, arr)
+      }
+      const picked: Product[] = []
+      const lines = [...byLine.keys()].sort(() => 0.5 - Math.random())
+      for (const line of lines) {
         if (picked.length >= limit) break
-        if (!picked.includes(p)) picked.push(p)
+        const candidates = byLine.get(line)!
+        picked.push(candidates[Math.floor(Math.random() * candidates.length)])
       }
       return picked
     },
