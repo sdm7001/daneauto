@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, Loader2 } from "lucide-react";
+import { Search, Loader2, Clock, X } from "lucide-react";
 import { Input } from "./ui/input";
 import { useSearchSuggestions, type SearchSuggestion } from "@/hooks/useSearchSuggestions";
+import { useRecentSearches } from "@/hooks/useRecentSearches";
 
 interface SearchAutocompleteProps {
   value: string;
@@ -25,6 +26,9 @@ const SearchAutocomplete = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const { searches: recentSearches, addSearch, clearSearches } = useRecentSearches();
+
+  const showRecent = open && value.trim().length < 2 && recentSearches.length > 0;
 
   // Debounce the query by 300ms
   useEffect(() => {
@@ -70,16 +74,56 @@ const SearchAutocomplete = ({
   const handleSelect = useCallback(
     (suggestion: SearchSuggestion) => {
       setOpen(false);
+      addSearch(suggestion.description ?? suggestion.sku);
       navigate(`/product/${encodeURIComponent(suggestion.sku)}`);
     },
-    [navigate]
+    [navigate, addSearch]
   );
 
+  const handleSearchSubmit = () => {
+    if (value.trim()) addSearch(value.trim());
+    setOpen(false);
+    onSearch();
+  };
+
+  const handleRecentClick = (term: string) => {
+    onChange(term);
+    setOpen(false);
+    addSearch(term);
+    navigate(`/shop?search=${encodeURIComponent(term)}`);
+  };
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (!open || itemCount === 0) {
-      if (e.key === "Enter") {
-        onSearch();
+    // Recent searches mode
+    if (showRecent) {
+      const count = recentSearches.length;
+      switch (e.key) {
+        case "ArrowDown":
+          e.preventDefault();
+          setActiveIndex((prev) => (prev < count - 1 ? prev + 1 : 0));
+          break;
+        case "ArrowUp":
+          e.preventDefault();
+          setActiveIndex((prev) => (prev > 0 ? prev - 1 : count - 1));
+          break;
+        case "Enter":
+          e.preventDefault();
+          if (activeIndex >= 0 && activeIndex < count) {
+            handleRecentClick(recentSearches[activeIndex]);
+          } else {
+            handleSearchSubmit();
+          }
+          break;
+        case "Escape":
+          setOpen(false);
+          setActiveIndex(-1);
+          break;
       }
+      return;
+    }
+
+    if (!open || itemCount === 0) {
+      if (e.key === "Enter") handleSearchSubmit();
       return;
     }
 
@@ -96,13 +140,8 @@ const SearchAutocomplete = ({
         e.preventDefault();
         if (activeIndex >= 0 && activeIndex < suggestions.length) {
           handleSelect(suggestions[activeIndex]);
-        } else if (activeIndex === suggestions.length) {
-          // "View all results" item
-          setOpen(false);
-          onSearch();
         } else {
-          setOpen(false);
-          onSearch();
+          handleSearchSubmit();
         }
         break;
       case "Escape":
@@ -118,7 +157,7 @@ const SearchAutocomplete = ({
   };
 
   return (
-    <div ref={containerRef} className={`relative ${className ?? ""}`} role="combobox" aria-expanded={open && itemCount > 0} aria-haspopup="listbox">
+    <div ref={containerRef} className={`relative ${className ?? ""}`} role="combobox" aria-expanded={open && (itemCount > 0 || showRecent)} aria-haspopup="listbox">
       <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground z-10" />
       {isLoading && debouncedQuery.length >= 2 && (
         <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground animate-spin z-10" />
@@ -140,7 +179,45 @@ const SearchAutocomplete = ({
         aria-activedescendant={activeIndex >= 0 ? `search-option-${activeIndex}` : undefined}
       />
 
-      {open && suggestions.length > 0 && (
+      {/* Recent searches */}
+      {showRecent && (
+        <div
+          ref={listRef}
+          id="search-listbox"
+          role="listbox"
+          className="absolute top-full left-0 right-0 mt-1 bg-card border border-border rounded-xl shadow-xl z-50 overflow-hidden"
+        >
+          <div className="flex items-center justify-between px-4 py-2 border-b border-border/50">
+            <span className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Recent Searches</span>
+            <button
+              onClick={(e) => { e.stopPropagation(); clearSearches(); }}
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Clear
+            </button>
+          </div>
+          {recentSearches.map((term, index) => (
+            <button
+              key={term}
+              id={`search-option-${index}`}
+              role="option"
+              aria-selected={index === activeIndex}
+              data-autocomplete-item
+              onClick={() => handleRecentClick(term)}
+              onMouseEnter={() => setActiveIndex(index)}
+              className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-colors ${
+                index === activeIndex ? "bg-secondary/80" : "hover:bg-secondary/60"
+              }`}
+            >
+              <Clock className="w-4 h-4 text-muted-foreground shrink-0" />
+              <span className="text-sm text-foreground truncate">{term}</span>
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Product suggestions */}
+      {open && !showRecent && suggestions.length > 0 && (
         <div
           ref={listRef}
           id="search-listbox"
@@ -160,49 +237,29 @@ const SearchAutocomplete = ({
                 index === activeIndex ? "bg-secondary/80" : "hover:bg-secondary/60"
               }`}
             >
-              {/* Thumbnail */}
               <div className="w-10 h-10 rounded-md bg-muted flex items-center justify-center shrink-0 overflow-hidden">
                 {s.image_url ? (
-                  <img
-                    src={s.image_url}
-                    alt=""
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                  />
+                  <img src={s.image_url} alt="" className="w-full h-full object-cover" loading="lazy" />
                 ) : (
                   <Search className="w-4 h-4 text-muted-foreground" />
                 )}
               </div>
-
-              {/* Details */}
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium truncate text-foreground">
-                  {s.description ?? s.sku}
-                </p>
-                <p className="text-xs text-muted-foreground truncate">
-                  {s.year} {s.make} {s.model} · {s.product_line}
-                </p>
+                <p className="text-sm font-medium truncate text-foreground">{s.description ?? s.sku}</p>
+                <p className="text-xs text-muted-foreground truncate">{s.year} {s.make} {s.model} · {s.product_line}</p>
               </div>
-
-              {/* Price */}
               {formatPrice(s.list_price) && (
-                <span className="text-sm font-semibold text-primary shrink-0">
-                  {formatPrice(s.list_price)}
-                </span>
+                <span className="text-sm font-semibold text-primary shrink-0">{formatPrice(s.list_price)}</span>
               )}
             </button>
           ))}
 
-          {/* View all results */}
           <button
             id={`search-option-${suggestions.length}`}
             role="option"
             aria-selected={activeIndex === suggestions.length}
             data-autocomplete-item
-            onClick={() => {
-              setOpen(false);
-              onSearch();
-            }}
+            onClick={handleSearchSubmit}
             onMouseEnter={() => setActiveIndex(suggestions.length)}
             className={`w-full px-4 py-3 text-sm text-primary font-medium transition-colors text-center ${
               activeIndex === suggestions.length ? "bg-secondary/80" : "hover:bg-secondary/60"
