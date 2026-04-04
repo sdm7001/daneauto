@@ -71,7 +71,7 @@ function ReviewForm({ sku, onSubmitted }: { sku: string; onSubmitted: () => void
 
   const mutation = useMutation({
     mutationFn: async () => {
-      const { error } = await supabase.from("product_reviews").insert({
+      const { error } = await (supabase as any).from("product_reviews").insert({
         sku,
         reviewer_name: form.name,
         reviewer_email: form.email,
