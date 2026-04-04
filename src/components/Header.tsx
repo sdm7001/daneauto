@@ -6,6 +6,7 @@ import { Button } from "./ui/button";
 import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { useWishlist } from "@/hooks/useWishlist";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
