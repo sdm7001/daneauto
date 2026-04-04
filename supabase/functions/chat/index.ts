@@ -11,19 +11,39 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const { messages, contactInfo } = await req.json();
+    const { messages, contactInfo, conversationId } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
-    // Get the latest user message for product search context
-    const lastUserMsg = [...messages].reverse().find((m: any) => m.role === "user")?.content ?? "";
-
-    // Search products if the message seems like a parts query
-    let productContext = "";
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
+
+    // Create or update conversation in DB
+    let convId = conversationId;
+    if (!convId && contactInfo) {
+      const { data: conv, error: convErr } = await supabase
+        .from("chat_conversations")
+        .insert({
+          contact_name: contactInfo.name || "Unknown",
+          contact_email: contactInfo.email || "Unknown",
+          contact_phone: contactInfo.phone || null,
+          messages: JSON.stringify(messages),
+        })
+        .select("id")
+        .single();
+      if (!convErr && conv) convId = conv.id;
+    } else if (convId) {
+      await supabase
+        .from("chat_conversations")
+        .update({ messages: JSON.stringify(messages) })
+        .eq("id", convId);
+    }
+
+    // Search products
+    const lastUserMsg = [...messages].reverse().find((m: any) => m.role === "user")?.content ?? "";
+    let productContext = "";
 
     if (lastUserMsg.length >= 2) {
       const searchTerms = lastUserMsg.replace(/[^\w\s]/g, "").trim();
@@ -83,32 +103,67 @@ Guidelines:
     if (!response.ok) {
       if (response.status === 429) {
         return new Response(JSON.stringify({ error: "We're experiencing high traffic. Please try again in a moment." }), {
-          status: 429,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
       if (response.status === 402) {
         return new Response(JSON.stringify({ error: "Service temporarily unavailable." }), {
-          status: 402,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
       const t = await response.text();
       console.error("AI gateway error:", response.status, t);
       return new Response(JSON.stringify({ error: "Chat service error" }), {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    return new Response(response.body, {
-      headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
+    // Stream the response but also capture it for saving
+    const { readable, writable } = new TransformStream();
+    const writer = writable.getWriter();
+    const reader = response.body!.getReader();
+    let assistantContent = "";
+
+    (async () => {
+      try {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          await writer.write(value);
+
+          // Parse SSE to capture assistant content
+          const text = new TextDecoder().decode(value);
+          for (const line of text.split("\n")) {
+            if (!line.startsWith("data: ")) continue;
+            const json = line.slice(6).trim();
+            if (json === "[DONE]") continue;
+            try {
+              const parsed = JSON.parse(json);
+              const c = parsed.choices?.[0]?.delta?.content;
+              if (c) assistantContent += c;
+            } catch { /* partial chunk */ }
+          }
+        }
+      } finally {
+        await writer.close();
+        // Save final messages with assistant response
+        if (convId && assistantContent) {
+          const finalMessages = [...messages, { role: "assistant", content: assistantContent }];
+          await supabase
+            .from("chat_conversations")
+            .update({ messages: JSON.stringify(finalMessages) })
+            .eq("id", convId);
+        }
+      }
+    })();
+
+    return new Response(readable, {
+      headers: { ...corsHeaders, "Content-Type": "text/event-stream", "X-Conversation-Id": convId || "" },
     });
   } catch (e) {
     console.error("chat error:", e);
     return new Response(JSON.stringify({ error: e instanceof Error ? e.message : "Unknown error" }), {
-      status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
 });

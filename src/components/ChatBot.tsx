@@ -19,6 +19,7 @@ const ChatBot = () => {
   const [contactInfo, setContactInfo] = useState<ContactInfo | null>(null);
   const [contactForm, setContactForm] = useState({ name: "", email: "", phone: "" });
   const [messages, setMessages] = useState<Msg[]>([]);
+  const [conversationId, setConversationId] = useState<string | null>(null);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -47,8 +48,12 @@ const ChatBot = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
         },
-        body: JSON.stringify({ messages: allMessages, contactInfo }),
+        body: JSON.stringify({ messages: allMessages, contactInfo, conversationId }),
       });
+
+      // Capture conversation ID from response header
+      const convId = resp.headers.get("X-Conversation-Id");
+      if (convId && !conversationId) setConversationId(convId);
 
       if (!resp.ok || !resp.body) {
         const err = await resp.json().catch(() => ({ error: "Chat unavailable" }));
@@ -100,7 +105,7 @@ const ChatBot = () => {
         }
       }
     },
-    [contactInfo]
+    [contactInfo, conversationId]
   );
 
   const send = async () => {
