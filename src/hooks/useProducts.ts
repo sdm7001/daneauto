@@ -48,7 +48,7 @@ export function useProducts(filters: ProductFilters = {}) {
   const hasFilter = !!(year || make || model || productLine || subcategory || search)
 
   return useQuery<ProductsResult>({
-    queryKey: ['products', { year, make, model, productLine, search, sort, page, pageSize }],
+    queryKey: ['products', { year, make, model, productLine, subcategory, search, sort, page, pageSize }],
     queryFn: async () => {
       let query = db
         .from('products')
