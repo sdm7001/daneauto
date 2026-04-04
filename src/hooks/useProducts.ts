@@ -25,6 +25,7 @@ export interface ProductFilters {
   make?: string
   model?: string
   productLine?: string
+  subcategory?: string
   search?: string
   sort?: ProductSort
   page?: number

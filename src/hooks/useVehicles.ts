@@ -94,3 +94,40 @@ export function useProductLines(year: string, make: string, model: string) {
     staleTime: Infinity,
   })
 }
+
+export interface SubcategoryCount {
+  subcategory: string
+  count: number
+}
+
+export function useSubcategories(year?: string, make?: string, model?: string, category?: string) {
+  return useQuery<SubcategoryCount[]>({
+    queryKey: ['vehicles', 'subcategories', year, make, model, category],
+    queryFn: async () => {
+      const { data, error } = await (supabase as any).rpc('get_subcategories', {
+        p_year: year || null,
+        p_make: make || null,
+        p_model: model || null,
+        p_category: category || null,
+      })
+      if (error) throw error
+      return (data as SubcategoryCount[]) ?? []
+    },
+    staleTime: Infinity,
+  })
+}
+  return useQuery<string[]>({
+    queryKey: ['vehicles', 'lines', year, make, model],
+    queryFn: async () => {
+      const { data, error } = await supabase.rpc('get_product_lines', {
+        p_year: year,
+        p_make: make,
+        p_model: model,
+      })
+      if (error) throw error
+      return (data as { product_line: string }[]).map(r => r.product_line)
+    },
+    enabled: !!year && !!make && !!model,
+    staleTime: Infinity,
+  })
+}
