@@ -1,7 +1,8 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { usePageTitle } from "@/hooks/usePageTitle";
-import { Home, SlidersHorizontal, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { SlidersHorizontal, X, ChevronLeft, ChevronRight } from "lucide-react";
+import PageBreadcrumb, { type BreadcrumbSegment } from "@/components/PageBreadcrumb";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import ProductCard from "@/components/ProductCard";
