@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { ShoppingCart, User, Menu, X, Search, LogOut, Shield, Heart, ChevronDown } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import {
@@ -24,6 +24,7 @@ const Header = () => {
   const { items } = useCart();
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const { count: wishlistCount } = useWishlist();
   const cartCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -91,13 +92,21 @@ const Header = () => {
               <Link
                 key={link.name}
                 to={link.path}
-                className="text-foreground/80 hover:text-primary transition-colors duration-300 font-display uppercase tracking-wider text-sm"
+                className={`transition-colors duration-300 font-display uppercase tracking-wider text-sm ${
+                  location.pathname === link.path
+                    ? "text-primary font-semibold"
+                    : "text-foreground/80 hover:text-primary"
+                }`}
               >
                 {link.name}
               </Link>
             ))}
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-1 text-foreground/80 hover:text-primary transition-colors duration-300 font-display uppercase tracking-wider text-sm outline-none">
+              <DropdownMenuTrigger className={`flex items-center gap-1 transition-colors duration-300 font-display uppercase tracking-wider text-sm outline-none ${
+                mobileExtraLinks.some(l => location.pathname === l.path)
+                  ? "text-primary font-semibold"
+                  : "text-foreground/80 hover:text-primary"
+              }`}>
                 More <ChevronDown className="w-3.5 h-3.5" />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
@@ -236,7 +245,11 @@ const Header = () => {
               <Link
                 key={link.name}
                 to={link.path}
-                className="block py-3 text-foreground/80 hover:text-primary transition-colors duration-300 font-display uppercase tracking-wider"
+                className={`block py-3 transition-colors duration-300 font-display uppercase tracking-wider ${
+                  location.pathname === link.path
+                    ? "text-primary font-semibold"
+                    : "text-foreground/80 hover:text-primary"
+                }`}
                 onClick={() => setIsMenuOpen(false)}
               >
                 {link.name}
@@ -256,7 +269,11 @@ const Header = () => {
                 <Link
                   key={link.name}
                   to={link.path}
-                  className="block py-3 text-foreground/80 hover:text-primary transition-colors duration-300 font-display uppercase tracking-wider text-sm"
+                  className={`block py-3 transition-colors duration-300 font-display uppercase tracking-wider text-sm ${
+                    location.pathname === link.path
+                      ? "text-primary font-semibold"
+                      : "text-foreground/80 hover:text-primary"
+                  }`}
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {link.name}
