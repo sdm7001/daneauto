@@ -238,6 +238,7 @@ const Shop = () => {
                 )}
               </div>
             </aside>
+          )}
 
           {/* Products */}
           <div className="flex-1">
