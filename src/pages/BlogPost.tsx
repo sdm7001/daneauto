@@ -1,10 +1,10 @@
-import { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Calendar, Clock, ArrowLeft, User } from "lucide-react";
 import { usePageTitle } from "@/hooks/usePageTitle";
 import { Button } from "@/components/ui/button";
 import { blogPosts } from "./Blog";
 import PageBreadcrumb from "@/components/PageBreadcrumb";
+import StructuredData from "@/components/StructuredData";
 
 /* ─── Static post content ─────────────────────────────────────────────────── */
 
