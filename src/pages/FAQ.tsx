@@ -4,6 +4,7 @@ import { usePageTitle } from "@/hooks/usePageTitle";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import PageBreadcrumb from "@/components/PageBreadcrumb";
+import StructuredData from "@/components/StructuredData";
 
 interface FAQItem {
   question: string;
