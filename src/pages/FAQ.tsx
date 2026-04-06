@@ -4,6 +4,7 @@ import { usePageTitle } from "@/hooks/usePageTitle";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import PageBreadcrumb from "@/components/PageBreadcrumb";
+import StructuredData from "@/components/StructuredData";
 
 interface FAQItem {
   question: string;
@@ -137,9 +138,24 @@ const FAQ = () => {
 
   const toggle = (key: string) => setOpen(open === key ? null : key);
 
+  const allQuestions = faqs.flatMap((s) => s.items);
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: allQuestions.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  };
+
   return (
     <main className="min-h-screen py-8">
       <div className="container mx-auto px-4 max-w-3xl">
+        <StructuredData data={faqSchema} id="faq" />
         <PageBreadcrumb segments={[{ label: "FAQ" }]} className="mb-6" />
         <div className="text-center mb-12">
           <h1 className="font-display text-4xl md:text-5xl font-bold mb-4">
