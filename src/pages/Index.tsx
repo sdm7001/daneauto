@@ -62,11 +62,27 @@ const ORG_SCHEMA = {
   },
 };
 
+const WEBSITE_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Dane Auto Parts Ltd",
+  url: "https://daneauto.ca",
+  potentialAction: {
+    "@type": "SearchAction",
+    target: {
+      "@type": "EntryPoint",
+      urlTemplate: "https://daneauto.ca/shop?search={search_term_string}",
+    },
+    "query-input": "required name=search_term_string",
+  },
+};
+
 const Index = () => {
   usePageTitle();
   return (
     <main>
       <StructuredData data={ORG_SCHEMA} id="org" />
+      <StructuredData data={WEBSITE_SCHEMA} id="website" />
       {/* Hero Section */}
       <section className="relative min-h-[80vh] flex items-center overflow-hidden">
         {/* Background */}
