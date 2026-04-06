@@ -461,6 +461,7 @@ const BlogPost = () => {
 
   return (
     <main className="min-h-screen py-8">
+      {articleSchema && <StructuredData data={articleSchema} id="article" />}
       <div className="container mx-auto px-4 max-w-3xl">
         <PageBreadcrumb
           segments={[
