@@ -1,10 +1,10 @@
-import { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Calendar, Clock, ArrowLeft, User } from "lucide-react";
 import { usePageTitle } from "@/hooks/usePageTitle";
 import { Button } from "@/components/ui/button";
 import { blogPosts } from "./Blog";
 import PageBreadcrumb from "@/components/PageBreadcrumb";
+import StructuredData from "@/components/StructuredData";
 
 /* ─── Static post content ─────────────────────────────────────────────────── */
 
@@ -417,39 +417,27 @@ const BlogPost = () => {
     post?.excerpt ?? "Dane Auto Parts Ltd. — Canada's collision parts specialists."
   );
 
-  // Inject Article schema into <head> so AI crawlers (which don't run JS via useEffect) can still
-  // read structured data from the static HTML shell when the page is pre-cached or server-rendered.
-  useEffect(() => {
-    if (!post) return;
-    const id = "json-ld-article";
-    let script = document.getElementById(id) as HTMLScriptElement | null;
-    if (!script) {
-      script = document.createElement("script");
-      script.id = id;
-      script.type = "application/ld+json";
-      document.head.appendChild(script);
-    }
-    script.textContent = JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "Article",
-      headline: post.title,
-      description: post.excerpt,
-      datePublished: post.date,
-      author: {
-        "@type": "Organization",
-        name: post.author,
-        url: "https://daneauto.ca",
-      },
-      publisher: {
-        "@type": "Organization",
-        name: "Dane Auto Parts Ltd",
-        url: "https://daneauto.ca",
-        logo: { "@type": "ImageObject", url: "https://daneauto.ca/favicon.ico" },
-      },
-      mainEntityOfPage: { "@type": "WebPage", "@id": `https://daneauto.ca/blog/${post.slug}` },
-    });
-    return () => { document.getElementById(id)?.remove(); };
-  }, [post]);
+  const articleSchema = post ? {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    description: post.excerpt,
+    datePublished: post.date,
+    image: post.image,
+    wordCount: post.readTime ? parseInt(post.readTime) * 200 : undefined,
+    author: {
+      "@type": "Organization",
+      name: post.author,
+      url: "https://daneauto.ca",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Dane Auto Parts Ltd",
+      url: "https://daneauto.ca",
+      logo: { "@type": "ImageObject", url: "https://daneauto.ca/favicon.ico" },
+    },
+    mainEntityOfPage: { "@type": "WebPage", "@id": `https://daneauto.ca/blog/${post.slug}` },
+  } : null;
 
   if (!post) {
     return (
@@ -473,6 +461,7 @@ const BlogPost = () => {
 
   return (
     <main className="min-h-screen py-8">
+      {articleSchema && <StructuredData data={articleSchema} id="article" />}
       <div className="container mx-auto px-4 max-w-3xl">
         <PageBreadcrumb
           segments={[
