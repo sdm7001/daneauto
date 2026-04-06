@@ -82,6 +82,7 @@ const Index = () => {
   return (
     <main>
       <StructuredData data={ORG_SCHEMA} id="org" />
+      <StructuredData data={WEBSITE_SCHEMA} id="website" />
       {/* Hero Section */}
       <section className="relative min-h-[80vh] flex items-center overflow-hidden">
         {/* Background */}
