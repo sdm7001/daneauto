@@ -152,7 +152,7 @@ const ProductDetail = () => {
     ].filter(Boolean).join(". ") + ".",
     brand: { "@type": "Brand", name: product.make },
     category: product.product_line,
-    ...(product.condition ? { itemCondition: product.condition === "New" ? "https://schema.org/NewCondition" : "https://schema.org/UsedCondition" } : {}),
+    ...((product as any).condition ? { itemCondition: (product as any).condition === "New" ? "https://schema.org/NewCondition" : "https://schema.org/UsedCondition" } : {}),
     offers: {
       "@type": "Offer",
       priceCurrency: "CAD",
